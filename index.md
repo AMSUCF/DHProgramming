@@ -2,12 +2,6 @@
 layout: default
 ---
 
-# Digital Humanities Programming Pedagogy in the Age of AI
-
-**DHSI 2025**
-
-*Instructors:* Anastasia Salter and John Murray
-
 ## Workshop Overview
 
 In this team-taught workshop, we invite scholars to join us in exploring the relationship between generative AI and the future of programming pedagogy in the digital humanities and a frontline of what the MLA-CCCC Joint Task Force on Writing and AI called "critical AI literacy." Generative AI offers opportunities to make programming more accessible to diverse learners, and we explore how to use these emerging technologies to build inclusive pathways into programming through natural language interfaces and "literate programming." 
