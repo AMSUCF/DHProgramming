@@ -2,3 +2,146 @@
 ---
 
 @import "{{ site.theme }}";
+
+// Midcentury Modern Color Palette
+$teal: #057676;
+$coral: #FF7F50;
+$mustard: #E4B363;
+$navy: #1E3D59;
+$sage: #8DAA9D;
+$cream: #FFF8E8;
+$dark-gray: #333333;
+
+// Base Styling Updates
+body {
+  background-color: $cream;
+  color: $dark-gray;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#header_wrap {
+  background: linear-gradient(to right, $navy, $teal);
+  .inner {
+    padding: 40px 10px 30px 10px;
+  }
+}
+
+#project_title {
+  position: relative;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  font-weight: 700;
+  font-size: 2.5em;
+  background: linear-gradient(45deg, $teal, $navy, $coral);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding: 0.5em 0;
+  animation: gradient-shift 10s ease infinite;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 5s infinite;
+  }
+}
+
+#project_tagline {
+  color: $cream;
+  font-size: 1.2em;
+}
+
+// Section Styling
+h2, h3 {
+  color: $navy;
+  border-bottom: 2px solid $coral;
+  padding-bottom: 0.3em;
+}
+
+h3 {
+  border-bottom: 1px solid $coral;
+}
+
+h4 {
+  color: $teal;
+}
+
+a {
+  color: $teal;
+  transition: color 0.3s ease;
+  &:hover {
+    color: $coral;
+    text-decoration: none;
+  }
+}
+
+ul li {
+  margin-bottom: 0.5em;
+}
+
+// Animations
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  20%, 100% {
+    transform: translateX(100%);
+  }
+}
+
+// Digital Humanities Visual Elements
+#main_content {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="%23057676" stroke-width="1" fill="none" /><circle cx="50" cy="50" r="30" stroke="%23FF7F50" stroke-width="1" fill="none" /><circle cx="50" cy="50" r="20" stroke="%23E4B363" stroke-width="1" fill="none" /><path d="M25,50 L75,50" stroke="%231E3D59" stroke-width="1" /><path d="M50,25 L50,75" stroke="%231E3D59" stroke-width="1" /></svg>');
+    background-repeat: no-repeat;
+    background-position: top right;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Workshop agenda styling
+.workshop-day {
+  background-color: rgba($teal, 0.05);
+  border-left: 4px solid $teal;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+#footer_wrap {
+  background: linear-gradient(to left, $navy, $teal);
+}
+
+// Responsive adjustments
+@media screen and (max-width: 640px) {
+  #project_title {
+    font-size: 2em;
+  }
+}
