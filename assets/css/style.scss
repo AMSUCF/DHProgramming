@@ -17,27 +17,28 @@ body {
   background-color: $cream;
   color: $dark-gray;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path d="M0,0 L200,200 M40,0 L200,160 M80,0 L200,120 M120,0 L200,80 M160,0 L200,40 M0,40 L160,200 M0,80 L120,200 M0,120 L80,200 M0,160 L40,200" stroke="%23E4D8C5" stroke-width="1" /></svg>');
-  background-attachment: fixed;
 }
 
 #header_wrap {
   background: linear-gradient(to right, $navy, $teal);
   .inner {
     padding: 40px 10px 30px 10px;
-    text-align: center;
   }
 }
 
 #project_title {
   position: relative;
-  color: $cream;
+  color: white;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   font-weight: 700;
   font-size: 2.5em;
+  background: linear-gradient(45deg, $teal, $navy, $coral);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   padding: 0.5em 0;
   animation: gradient-shift 10s ease infinite;
-  
   &:before {
     content: "";
     position: absolute;
@@ -54,7 +55,6 @@ body {
 #project_tagline {
   color: $cream;
   font-size: 1.2em;
-  font-weight: 500;
 }
 
 // Section Styling
@@ -133,51 +133,6 @@ ul li {
   padding: 15px;
   margin: 20px 0;
   border-radius: 0 4px 4px 0;
-}
-
-#github-banner {
-  background: $coral !important;
-  color: $cream !important;
-  border: none !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-  font-weight: 600;
-  
-  &:hover {
-    background: darken($coral, 10%) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  }
-  
-  .button {
-    color: $cream !important;
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    border: none !important;
-    background: none !important;
-    text-shadow: none !important;
-  }
-}
-
-// Override for the "View on GitHub" button
-#view-on-github {
-  background: $coral !important;
-  color: $cream !important;
-  border-radius: 4px !important;
-  border: none !important;
-  padding: 10px 20px !important;
-  font-weight: 600 !important;
-  transition: all 0.3s ease;
-  text-shadow: none !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  display: inline-block;
-  margin: 10px 0;
-  
-  &:hover {
-    background: darken($coral, 10%) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    text-decoration: none !important;
-  }
 }
 
 #footer_wrap {

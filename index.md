@@ -43,6 +43,10 @@ We will walk through the installation process of more complicated tools during t
 * ["Can language models predict the next twist in a story?", Ted Underwood](https://tedunderwood.com/2024/01/05/can-language-models-predict-the-next-twist-in-a-story/)
 * Analysis, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
 
+#### Exercises
+* [Assisted Distant Reading](distantread.md)
+* [Combining in Colab](combinetext.md)
+
 #### Additional References
 * [The Data-Sitters Club](https://datasittersclub.github.io/site/)
 * ["Corpus Analysis with spaCy," Megan S. Kane](https://programminghistorian.org/en/lessons/corpus-analysis-with-spacy)
@@ -52,6 +56,9 @@ We will walk through the installation process of more complicated tools during t
 #### Pre-readings
 * ["The Ground Truth of DH Text Mining," Tanya E. Clement](https://dhdebates.gc.cuny.edu/read/untitled/section/ef78ddc7-4087-4bb3-b192-16724631a172)
 * "Programmable World," *Code to Joy,* Michael Littman
+
+#### Exercises
+* [Scraping and Robots](scraper.md)
 
 #### Additional References
 * ["So You Want to Be a Wizard," Julia Evans](https://wizardzines.com/zines/wizard/)
