@@ -1,0 +1,7 @@
+remote_theme: pages-themes/slate@v0.2.0
+title: "Digital Humanities Programming Pedagogy in the Age of AI"
+description: "DHSI 2025 Workshop with Anastasia Salter and John Murray"
+github:
+  is_project_page: true
+plugins:
+  - jekyll-remote-theme
