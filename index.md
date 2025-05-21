@@ -77,6 +77,9 @@ We will walk through the installation process of more complicated tools during t
 #### Pre-readings
 * Conclusion, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
 
+#### Exercises
+* [Image Scraping](imagescraping.md)
+
 #### Additional References
 * Creating Deep Convolutional Neural Networks for Image Classification, Nabeel Siddiqui
 * [ml5 Beginner's Guide, Daniel Shiffman](https://thecodingtrain.com/tracks/ml5js-beginners-guide)
