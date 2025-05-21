@@ -101,8 +101,11 @@ We will walk through the installation process of more complicated tools during t
 * [Introducing VS Code Copilot Chat Agent Mode](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode)
 * [Vibe Coding: AI-Assisted Coding for Non-Developers](https://medium.com/@niall.mcnulty/vibe-coding-b79a6d3f0caa), Niall McNulty
 
+#### Exercises
+* [Prototyping with Agent Mode](agentwebsite.md)
+
 #### Additional References
-* Additional References will be shared during the workshop.
+* Additional References will be updated during the workshop.
 
 ### 8. Thursday: Ollama, Vibe Coding, and DH Futures (Afternoon)
 
@@ -111,4 +114,4 @@ We will walk through the installation process of more complicated tools during t
 * ["DSC #12: The DSC and the New programming Language," Katherine Bowers, Quinn Dombrowski, and Roopika Risam](https://datasittersclub.github.io/site/dsc12.html)
 
 #### Additional References
-* Additional References will be shared during the workshop.
+* Additional References will be updated during the workshop.
