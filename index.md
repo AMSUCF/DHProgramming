@@ -57,7 +57,7 @@ We will walk through the installation process of more complicated tools during t
 * ["The Ground Truth of DH Text Mining," Tanya E. Clement](https://dhdebates.gc.cuny.edu/read/untitled/section/ef78ddc7-4087-4bb3-b192-16724631a172)
 * "Programmable World," *Code to Joy,* Michael Littman
 
-#### Exercises
+#### Exercise
 * [Scraping and Robots](scraper.md)
 
 #### Additional References
@@ -69,6 +69,9 @@ We will walk through the installation process of more complicated tools during t
 #### Pre-readings
 * [P5.js Tutorial: Get Started, Layal Quinones and Jaleesa Trapp](https://p5js.org/tutorials/get-started/)
 
+#### Exercise
+* [P5 Game](p5.md)
+
 #### Additional References
 * [Creative Coding, Allison Parrish](https://creative-coding.decontextualize.com/)
 
@@ -78,7 +81,8 @@ We will walk through the installation process of more complicated tools during t
 * Conclusion, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
 
 #### Exercises
-* [Image Scraping](imagescraping.md)
+* [Image Scraping and Teachable Machine](imagescraping.md)
+* [ML5](ml5.md)
 
 #### Additional References
 * Creating Deep Convolutional Neural Networks for Image Classification, Nabeel Siddiqui
@@ -89,6 +93,9 @@ We will walk through the installation process of more complicated tools during t
 #### Pre-readings
 * [Evaluating GitHub for DH, Sean Morey Smith](https://seanmsmithphd.net/evaluating-github-for-dh/)
 * [GitHub and Git Tutorial](https://hh2022f.amason.sites.carleton.edu/week-9-project-preparation/github-and-git-tutorial/index.html)
+
+#### Exercise
+* [GitHub Pages](github.md)
 
 #### Additional References
 * [DHRI VS Code Installation](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md)
@@ -101,7 +108,7 @@ We will walk through the installation process of more complicated tools during t
 * [Introducing VS Code Copilot Chat Agent Mode](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode)
 * [Vibe Coding: AI-Assisted Coding for Non-Developers](https://medium.com/@niall.mcnulty/vibe-coding-b79a6d3f0caa), Niall McNulty
 
-#### Exercises
+#### Exercise
 * [Prototyping with Agent Mode](agentwebsite.md)
 
 #### Additional References
@@ -112,6 +119,9 @@ We will walk through the installation process of more complicated tools during t
 #### Pre-readings
 * "Conclusion," *Algorithms of Oppression,* Safiya Umoja Noble
 * ["DSC #12: The DSC and the New programming Language," Katherine Bowers, Quinn Dombrowski, and Roopika Risam](https://datasittersclub.github.io/site/dsc12.html)
+
+#### Exercise
+* [Ollama](ollama.md)
 
 #### Additional References
 * Additional References will be updated during the workshop.
