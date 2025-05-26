@@ -90,7 +90,7 @@ We will walk through the installation process of more complicated tools during t
 * [ML5](ml5.md)
 
 #### Additional References
-* Creating Deep Convolutional Neural Networks for Image Classification, Nabeel Siddiqui
+* [Creating Deep Convolutional Neural Networks for Image Classification, Nabeel Siddiqui](https://programminghistorian.org/en/lessons/image-classification-neural-networks)
 * [ml5 Beginner's Guide, Daniel Shiffman](https://thecodingtrain.com/tracks/ml5js-beginners-guide)
 
 ### 6. Wednesday: GitHub and Visual Studio Code (Afternoon)
