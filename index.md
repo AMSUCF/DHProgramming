@@ -32,6 +32,7 @@ We will walk through the installation process of more complicated tools during t
 * [Stephen Wolfram, "What Is ChatGPT Doing ... and Why Does It Work?"](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work)
 
 #### Additional References
+* ["All the ways I want the AI debate to be better," Andy Masley](https://andymasley.substack.com/p/all-the-ways-i-want-the-ai-debate)
 * [*Artificial Intelligence: A Guide for Thinking Humans,* Melanie Mitchell](https://melaniemitchell.me/aibook/)
 * [MLA-CCCC Joint Task Force on Writing and AI](https://aiandwriting.hcommons.org/)
 * [TextGenEd: Teaching with Text Generation Technologies](https://wac.colostate.edu/repository/collections/textgened/)
