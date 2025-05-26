@@ -25,9 +25,9 @@ We will walk through the installation process of more complicated tools during t
 ### 1. Monday: Introduction and Positioning GenAI (Morning)
 
 #### Pre-readings
-* MLA Student AI Literacy Guide
-* "The US of AI" Public Draft, Matt Kirschenbaum
-* Intro, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
+* [MLA Student AI Literacy Guide](https://aiandwriting.hcommons.org/student-guide-to-ai-literacy/)
+* ["The US of AI" Public Draft, Matt Kirschenbaum](https://drive.google.com/file/d/1O2qkjhg7Ei5zZWmBraNwXq4V0lTauspN/view)
+* [Intro, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter](https://services.publishing.umich.edu/Books/C/Critical-Making-in-the-Age-of-AI3)
 * ["Interfaced," Lori Emerson](https://loriemerson.net/2020/02/07/interfaced/)
 * [Stephen Wolfram, "What Is ChatGPT Doing ... and Why Does It Work?"](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work)
 
@@ -83,7 +83,7 @@ We will walk through the installation process of more complicated tools during t
 ### 5. Wednesday: ml5.js and Teachable Machine (Morning)
 
 #### Pre-readings
-* Conclusion, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
+* [Conclusion, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter](https://services.publishing.umich.edu/Books/C/Critical-Making-in-the-Age-of-AI3)
 
 #### Exercises
 * [Image Scraping and Teachable Machine](imagescraping.md)
