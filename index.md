@@ -44,6 +44,10 @@ We will walk through the installation process of more complicated tools during t
 * ["Can language models predict the next twist in a story?", Ted Underwood](https://tedunderwood.com/2024/01/05/can-language-models-predict-the-next-twist-in-a-story/)
 * Analysis, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
 
+#### Slides
+
+* [Positioning GenAI in DH](https://docs.google.com/presentation/d/1orii16-2VykEMT9aVJvt-unwKyKt82RQ/edit?usp=sharing&ouid=115206709767153443873&rtpof=true&sd=true)
+
 #### Exercises
 * [Assisted Distant Reading](distantread.md)
 * [Combining in Colab](combinetext.md)
