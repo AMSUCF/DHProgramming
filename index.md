@@ -42,7 +42,7 @@ We will walk through the installation process of more complicated tools during t
 
 #### Pre-readings
 * ["Can language models predict the next twist in a story?", Ted Underwood](https://tedunderwood.com/2024/01/05/can-language-models-predict-the-next-twist-in-a-story/)
-* Analysis, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter
+* [Analysis, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter](https://services.publishing.umich.edu/Books/C/Critical-Making-in-the-Age-of-AI3)
 
 #### Slides
 
