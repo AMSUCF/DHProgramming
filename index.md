@@ -74,7 +74,7 @@ We will walk through the installation process of more complicated tools during t
 * ["So You Want to Be a Wizard," Julia Evans](https://wizardzines.com/zines/wizard/)
 * ["Understanding and Creating Word Embeddings," Avery Blankenship, Sarah Connell, and Quinn Dombrowski](https://programminghistorian.org/en/lessons/understanding-creating-word-embeddings)
 
-### 4. Tuesday: P5.js, OpenProcessing, and GitHub Basics (Afternoon)
+### 4. Tuesday: P5.js and OpenProcessing (Afternoon)
 
 #### Pre-readings
 * [P5.js Tutorial: Get Started, Layal Quinones and Jaleesa Trapp](https://p5js.org/tutorials/get-started/)
@@ -82,12 +82,9 @@ We will walk through the installation process of more complicated tools during t
 #### Exercise
 * [Open Processing](https://openprocessing.org/)
 * [P5 Game](p5.md)
-* [GitHub Pages](github.md)
 
 #### Additional References
 * [Creative Coding, Allison Parrish](https://creative-coding.decontextualize.com/)
-* [Evaluating GitHub for DH, Sean Morey Smith](https://seanmsmithphd.net/evaluating-github-for-dh/)
-* [GitHub and Git Tutorial](https://hh2022f.amason.sites.carleton.edu/week-9-project-preparation/github-and-git-tutorial/index.html)
 
 ### 5. Wednesday: ml5.js and Teachable Machine (Morning)
 
@@ -95,12 +92,15 @@ We will walk through the installation process of more complicated tools during t
 * [Conclusion, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter](https://services.publishing.umich.edu/Books/C/Critical-Making-in-the-Age-of-AI3)
 
 #### Exercises
+* [GitHub Pages](github.md)
 * [Image Scraping and Teachable Machine](imagescraping.md)
 * [ML5](ml5.md)
 
 #### Additional References
 * [Creating Deep Convolutional Neural Networks for Image Classification, Nabeel Siddiqui](https://programminghistorian.org/en/lessons/image-classification-neural-networks)
 * [ml5 Beginner's Guide, Daniel Shiffman](https://thecodingtrain.com/tracks/ml5js-beginners-guide)
+* [Evaluating GitHub for DH, Sean Morey Smith](https://seanmsmithphd.net/evaluating-github-for-dh/)
+* [GitHub and Git Tutorial](https://hh2022f.amason.sites.carleton.edu/week-9-project-preparation/github-and-git-tutorial/index.html)
 
 ### 6. Wednesday: Distant Coding in Visual Studio Code (Afternoon)
 
