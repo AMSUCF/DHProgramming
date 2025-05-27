@@ -3,7 +3,7 @@
 
 - [Starter Notebook](https://colab.research.google.com/github/AMSUCF/DHProgramming/blob/main/bluesky.ipynb)
 - [Workshop Slides](bluesky_slides.html)
-- [Completed Analysis Sample](Bluesky_Gemini.ipynb)
+- [Completed Analysis Sample](https://colab.research.google.com/github/AMSUCF/DHProgramming/blob/main/BlueSky_Gemini.ipynb)
 
 ## Workshop Overview
 **Building on Your Experience:** Combinatorial text generation → Social media data analysis  
