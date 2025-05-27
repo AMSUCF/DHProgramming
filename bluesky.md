@@ -1,7 +1,7 @@
 # AI-Assisted Programming Pedagogy: Workshop Guide
 *Social Media Analysis Workshop*
 
-Starter Notebook: https://colab.research.google.com/github/AMSUCF/DHProgramming/blob/main/bluesky.ipynb
+[Starter Notebook](https://colab.research.google.com/github/AMSUCF/DHProgramming/blob/main/bluesky.ipynb)
 
 [Workshop Slides](bluesky_slides.html)
 
