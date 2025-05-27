@@ -1,679 +1,692 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Assisted Programming Pedagogy Workshop</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-        }
-        
-        .slide {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin: 30px auto;
-            padding: 40px;
-            max-width: 900px;
-            page-break-after: always;
-            position: relative;
-        }
-        
-        .slide h1 {
-            color: #4a5568;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-        }
-        
-        .slide h2 {
-            color: #2d3748;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-        
-        .slide h3 {
-            color: #4a5568;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-        
-        .slide ul {
-            line-height: 1.8;
-            padding-left: 20px;
-        }
-        
-        .slide li {
-            margin-bottom: 8px;
-        }
-        
-        .code-block {
-            background: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            overflow-x: auto;
-        }
-        
-        .highlight {
-            background: #fed7d7;
-            padding: 15px;
-            border-left: 4px solid #f56565;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-        
-        .success {
-            background: #c6f6d5;
-            padding: 15px;
-            border-left: 4px solid #48bb78;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-        
-        .slide-number {
-            position: absolute;
-            bottom: 20px;
-            right: 30px;
-            background: #667eea;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-        
-        .timeline {
-            background: #edf2f7;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .three-columns {
-            display: flex;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .column {
-            flex: 1;
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        
-        @media print {
-            body { background: white; }
-            .slide { box-shadow: none; border: 1px solid #ccc; }
-        }
-        
-        .download-info {
-            text-align: center;
-            background: rgba(255,255,255,0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Assisted Programming Pedagogy Workshop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+
+    .slide {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      margin: 30px auto;
+      padding: 40px;
+      max-width: 900px;
+      page-break-after: always;
+      position: relative;
+    }
+
+    .slide h1 {
+      color: #4a5568;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      font-size: 2.2em;
+    }
+
+    .slide h2 {
+      color: #2d3748;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 1.8em;
+    }
+
+    .slide h3 {
+      color: #4a5568;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 1.3em;
+    }
+
+    .slide ul {
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .slide li {
+      margin-bottom: 8px;
+    }
+
+    .code-block {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      overflow-x: auto;
+    }
+
+    .highlight {
+      background: #fed7d7;
+      padding: 15px;
+      border-left: 4px solid #f56565;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+
+    .success {
+      background: #c6f6d5;
+      padding: 15px;
+      border-left: 4px solid #48bb78;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+
+    .slide-number {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      background: #667eea;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+    }
+
+    .timeline {
+      background: #edf2f7;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .three-columns {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .column {
+      flex: 1;
+      background: #f7fafc;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .slide {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+
+    .download-info {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="download-info">
+  <div class="download-info">
     <h2>AI-Assisted Programming Pedagogy Workshop Slides</h2>
     <p><strong>To download:</strong> Press Ctrl+P (Windows) or Cmd+P (Mac) and save as PDF</p>
-    <p><strong>Workshop Duration:</strong> 10:40 AM - 12:30 PM (110 minutes)</p>
-</div>
+    <p><strong>Workshop Duration:</strong> 10:40 AM - 12:00 PM (80 minutes)</p>
+  </div>
 
-<!-- Slide 1 -->
-<div class="slide">
+  <!-- Slide 1 -->
+  <div class="slide">
     <div class="slide-number">1</div>
     <h1>Programming Pedagogy Through Social Media Analysis</h1>
     <h2>Learning Computational Methods While Experiencing Teaching Strategies</h2>
-    
+
     <h3>Today's Dual Purpose:</h3>
     <ul>
-        <li>Learn social media analysis techniques</li>
-        <li>Experience pedagogical strategies you can adapt</li>
-        <li>Observe AI-assisted learning in action</li>
+      <li>Learn social media analysis techniques</li>
+      <li>Experience pedagogical strategies you can adapt</li>
+      <li>Observe AI-assisted learning in action</li>
     </ul>
-    
-    <div class="timeline">
-        <strong>Workshop Timeline:</strong><br>
-        10:40-10:50 Opening & Context Setting<br>
-        10:50-11:10 AI Scaffolding Strategies<br>
-        11:10-11:35 AI-Assisted Data Analysis Pipeline<br>
-        11:35-12:00 Visualization & AI-Assisted Interpretation<br>
-        12:00-12:30 AI Pedagogy Integration & Course Design
-    </div>
-</div>
 
-<!-- Slide 2 -->
-<div class="slide">
+    <div class="timeline">
+      <strong>Workshop Timeline:</strong><br>
+      10:40-10:50 Opening & Context Setting<br>
+      10:50-11:10 AI Scaffolding Strategies<br>
+      11:10-11:35 AI-Assisted Data Analysis Pipeline<br>
+      11:35-12:00 Visualization & AI-Assisted Interpretation<br>
+      12:00-12:30 AI Pedagogy Integration & Course Design
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide">
     <div class="slide-number">2</div>
     <h1>From Creative to Analytical Programming</h1>
-    
+
     <h2>Your Previous Experience:</h2>
     <div class="success">
-        <ul>
-            <li>✓ AI prompt engineering for code generation</li>
-            <li>✓ Iterative debugging and refinement</li>
-            <li>✓ Creative constraint implementation</li>
-            <li>✓ Text processing and manipulation</li>
-        </ul>
+      <ul>
+        <li>✓ AI prompt engineering for code generation</li>
+        <li>✓ Iterative debugging and refinement</li>
+        <li>✓ Creative constraint implementation</li>
+        <li>✓ Text processing and manipulation</li>
+      </ul>
     </div>
-    
+
     <h2>Today's Extension:</h2>
     <ul>
-        <li>Apply AI assistance to data analysis</li>
-        <li>Observe different pedagogical AI strategies</li>
-        <li>Experience structured computational thinking</li>
-        <li>Practice teaching-focused AI prompting</li>
+      <li>Apply AI assistance to data analysis</li>
+      <li>Observe different pedagogical AI strategies</li>
+      <li>Experience structured computational thinking</li>
+      <li>Practice teaching-focused AI prompting</li>
     </ul>
-    
-    <div class="highlight">
-        <strong>Pedagogical Focus:</strong> Notice how activities are structured, how AI prompts are designed, and how technical concepts connect to humanities research.
-    </div>
-</div>
 
-<!-- Slide 3 -->
-<div class="slide">
+    <div class="highlight">
+      <strong>Pedagogical Focus:</strong> Notice how activities are structured, how AI prompts are designed, and how
+      technical concepts connect to humanities research.
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide">
     <div class="slide-number">3</div>
     <h1>AI Assistance Levels for Programming Instruction</h1>
-    
-    <div class="three-columns">
-        <div class="column">
-            <h3>Level 1: Code Comprehension</h3>
-            <ul>
-                <li>"Explain this error message and how to fix it"</li>
-                <li>"Walk me through what this code block accomplishes"</li>
-                <li>"I used str.split() before. How is this different?"</li>
-            </ul>
-        </div>
-        
-        <div class="column">
-            <h3>Level 2: Conceptual Application</h3>
-            <ul>
-                <li>"How would I modify this approach for historical data?"</li>
-                <li>"What's the computational thinking behind this solution?"</li>
-                <li>"How does this connect to my research methods?"</li>
-            </ul>
-        </div>
-        
-        <div class="column">
-            <h3>Level 3: Critical Evaluation</h3>
-            <ul>
-                <li>"What are the limitations of this algorithmic approach?"</li>
-                <li>"How does this method compare to traditional practices?"</li>
-                <li>"What ethical issues should I consider?"</li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="highlight">
-        <strong>Teaching Strategy:</strong> This scaffolding accommodates different backgrounds in one classroom.
-    </div>
-</div>
 
-<!-- Slide 4 -->
-<div class="slide">
+    <div class="three-columns">
+      <div class="column">
+        <h3>Level 1: Code Comprehension</h3>
+        <ul>
+          <li>"Explain this error message and how to fix it"</li>
+          <li>"Walk me through what this code block accomplishes"</li>
+          <li>"I used str.split() before. How is this different?"</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Level 2: Conceptual Application</h3>
+        <ul>
+          <li>"How would I modify this approach for historical data?"</li>
+          <li>"What's the computational thinking behind this solution?"</li>
+          <li>"How does this connect to my research methods?"</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Level 3: Critical Evaluation</h3>
+        <ul>
+          <li>"What are the limitations of this algorithmic approach?"</li>
+          <li>"How does this method compare to traditional practices?"</li>
+          <li>"What ethical issues should I consider?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>Teaching Strategy:</strong> This scaffolding accommodates different backgrounds in one classroom.
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide">
     <div class="slide-number">4</div>
     <h1>Building on Your Text Processing Experience</h1>
-    
+
     <h2>Skills Transfer:</h2>
     <div class="code-block">
-Your Previous Skills → Today's Application:
-• Text cleaning → Data preprocessing
-• Pattern replacement → Pattern recognition
-• Creative constraints → Analytical filters
-• Output verification → Result interpretation
+      Your Previous Skills → Today's Application:
+      • Text cleaning → Data preprocessing
+      • Pattern replacement → Pattern recognition
+      • Creative constraints → Analytical filters
+      • Output verification → Result interpretation
     </div>
-    
+
     <h2>Why This Approach Works:</h2>
     <ul>
-        <li><strong>Builds confidence:</strong> Students recognize familiar concepts</li>
-        <li><strong>Reduces cognitive load:</strong> New techniques, familiar foundations</li>
-        <li><strong>Connects learning:</strong> Previous experience becomes scaffolding</li>
-        <li><strong>Maintains engagement:</strong> Success builds on success</li>
+      <li><strong>Builds confidence:</strong> Students recognize familiar concepts</li>
+      <li><strong>Reduces cognitive load:</strong> New techniques, familiar foundations</li>
+      <li><strong>Connects learning:</strong> Previous experience becomes scaffolding</li>
+      <li><strong>Maintains engagement:</strong> Success builds on success</li>
     </ul>
-    
-    <div class="success">
-        <strong>Pedagogical Observation:</strong> Notice how we start with success - everyone can connect to their previous experience immediately.
-    </div>
-</div>
 
-<!-- Slide 5 -->
-<div class="slide">
+    <div class="success">
+      <strong>Pedagogical Observation:</strong> Notice how we start with success - everyone can connect to their
+      previous experience immediately.
+    </div>
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide">
     <div class="slide-number">5</div>
     <h1>From Creative Text → Analytical Text</h1>
-    
+
     <h2>Jupyter Notebook Workflow Management:</h2>
     <div class="code-block">
-Cell Organization Strategy:
-1. Setup Cell: Libraries and authentication (run once)
-2. Data Collection Cell: API calls (modify and re-run)
-3. Processing Cell: Clean and structure data
-4. Analysis Cells: Individual analyses (iterate with AI)
-5. Visualization Cell: Final outputs
+      Cell Organization Strategy:
+      1. Setup Cell: Libraries and authentication (run once)
+      2. Data Collection Cell: API calls (modify and re-run)
+      3. Processing Cell: Clean and structure data
+      4. Analysis Cells: Individual analyses (iterate with AI)
+      5. Visualization Cell: Final outputs
     </div>
-    
+
     <h2>AI-Assisted Iteration Pattern:</h2>
     <ul>
-        <li>Keep working code in separate cells</li>
-        <li>Use AI to modify copies before replacing originals</li>
-        <li>Save successful versions before experimenting</li>
-        <li>Document AI conversations in markdown cells</li>
+      <li>Keep working code in separate cells</li>
+      <li>Use AI to modify copies before replacing originals</li>
+      <li>Save successful versions before experimenting</li>
+      <li>Document AI conversations in markdown cells</li>
     </ul>
-    
-    <div class="highlight">
-        <strong>Teaching Tip:</strong> Cell hygiene is crucial for AI-assisted programming - students need to maintain clear workflows.
-    </div>
-</div>
 
-<!-- Slide 6 -->
-<div class="slide">
+    <div class="highlight">
+      <strong>Teaching Tip:</strong> Cell hygiene is crucial for AI-assisted programming - students need to maintain
+      clear workflows.
+    </div>
+  </div>
+
+  <!-- Slide 6 -->
+  <div class="slide">
     <div class="slide-number">6</div>
     <h1>Bluesky API and Real Corpus Building</h1>
-    
+
     <h2>Authentication Setup:</h2>
     <div class="code-block">
-# Secure credential management in Colab
-from google.colab import userdata
-from atproto import Client
+      # Secure credential management in Colab
+      from google.colab import userdata
+      from atproto import Client
 
-username = userdata.get('BLUESKY_USERNAME')
-app_password = userdata.get('BLUESKY_APP_PASSWORD')
+      username = userdata.get('BLUESKY_USERNAME')
+      app_password = userdata.get('BLUESKY_APP_PASSWORD')
 
-client = Client()
-client.login(username, app_password)
+      client = Client()
+      client.login(username, app_password)
     </div>
-    
+
     <h2>Data Collection Strategy:</h2>
     <ul>
-        <li><strong>User-focused:</strong> Collect posts from specific accounts</li>
-        <li><strong>Topic-focused:</strong> Search hashtags and keywords</li>
-        <li><strong>Temporal-focused:</strong> Gather data from specific time periods</li>
-        <li><strong>Network-focused:</strong> Follow mention and reply chains</li>
+      <li><strong>User-focused:</strong> Collect posts from specific accounts</li>
+      <li><strong>Topic-focused:</strong> Search hashtags and keywords</li>
+      <li><strong>Temporal-focused:</strong> Gather data from specific time periods</li>
+      <li><strong>Network-focused:</strong> Follow mention and reply chains</li>
     </ul>
-    
-    <div class="success">
-        <strong>Research Connection:</strong> Students choose collection methods based on their research questions.
-    </div>
-</div>
 
-<!-- Slide 7 -->
-<div class="slide">
+    <div class="success">
+      <strong>Research Connection:</strong> Students choose collection methods based on their research questions.
+    </div>
+  </div>
+
+  <!-- Slide 7 -->
+  <div class="slide">
     <div class="slide-number">7</div>
     <h1>AI-Assisted Data Processing</h1>
-    
+
     <h2>Processing Pipeline:</h2>
     <div class="code-block">
-Raw API Data → Clean DataFrame → Feature Extraction → Analysis Ready
+      Raw API Data → Clean DataFrame → Feature Extraction → Analysis Ready
     </div>
-    
+
     <h2>AI Debugging Strategies:</h2>
     <ul>
-        <li><strong>Error-first prompts:</strong> "I'm getting this error: [paste error]"</li>
-        <li><strong>Expectation-based prompts:</strong> "This should return X but I'm getting Y"</li>
-        <li><strong>Improvement prompts:</strong> "This works but is slow/messy, how can I improve it?"</li>
+      <li><strong>Error-first prompts:</strong> "I'm getting this error: [paste error]"</li>
+      <li><strong>Expectation-based prompts:</strong> "This should return X but I'm getting Y"</li>
+      <li><strong>Improvement prompts:</strong> "This works but is slow/messy, how can I improve it?"</li>
     </ul>
-    
+
     <h2>Common Processing Challenges:</h2>
     <ul>
-        <li>Inconsistent API response structures</li>
-        <li>Missing or null values in data</li>
-        <li>Timezone and datetime parsing issues</li>
-        <li>Rate limiting and authentication errors</li>
+      <li>Inconsistent API response structures</li>
+      <li>Missing or null values in data</li>
+      <li>Timezone and datetime parsing issues</li>
+      <li>Rate limiting and authentication errors</li>
     </ul>
-    
-    <div class="highlight">
-        <strong>Teaching Moment:</strong> These challenges are learning opportunities, not failures.
-    </div>
-</div>
 
-<!-- Slide 8 -->
-<div class="slide">
+    <div class="highlight">
+      <strong>Teaching Moment:</strong> These challenges are learning opportunities, not failures.
+    </div>
+  </div>
+
+  <!-- Slide 8 -->
+  <div class="slide">
     <div class="slide-number">8</div>
     <h1>Jupyter Best Practices for AI Iteration</h1>
-    
+
     <h2>Cell Management Strategies:</h2>
     <ul>
-        <li><strong>Test in new cells</strong> before modifying working code</li>
-        <li><strong>Comment out</strong> previous versions instead of deleting</li>
-        <li><strong>Use markdown cells</strong> to document AI conversations</li>
-        <li><strong>Save successful iterations</strong> before experimenting further</li>
+      <li><strong>Test in new cells</strong> before modifying working code</li>
+      <li><strong>Comment out</strong> previous versions instead of deleting</li>
+      <li><strong>Use markdown cells</strong> to document AI conversations</li>
+      <li><strong>Save successful iterations</strong> before experimenting further</li>
     </ul>
-    
+
     <h2>AI Interaction Workflow:</h2>
     <div class="code-block">
-1. Copy working code to new cell
-2. Ask AI for specific modification
-3. Test AI suggestion in isolation
-4. If successful, replace original
-5. If failed, iterate with more specific prompts
-6. Document what worked in markdown
+      1. Copy working code to new cell
+      2. Ask AI for specific modification
+      3. Test AI suggestion in isolation
+      4. If successful, replace original
+      5. If failed, iterate with more specific prompts
+      6. Document what worked in markdown
     </div>
-    
-    <div class="success">
-        <strong>Student Agency:</strong> Students control the workflow, AI assists the process.
-    </div>
-</div>
 
-<!-- Slide 9 -->
-<div class="slide">
+    <div class="success">
+      <strong>Student Agency:</strong> Students control the workflow, AI assists the process.
+    </div>
+  </div>
+
+  <!-- Slide 9 -->
+  <div class="slide">
     <div class="slide-number">9</div>
     <h1>Content Analysis with AI Assistance</h1>
-    
+
     <h2>Analysis Techniques:</h2>
     <ul>
-        <li><strong>Categorization:</strong> Sort posts by content type or theme</li>
-        <li><strong>Pattern recognition:</strong> Identify linguistic and structural patterns</li>
-        <li><strong>Feature extraction:</strong> Calculate metrics like engagement, length, complexity</li>
-        <li><strong>Comparison analysis:</strong> Compare across users, time periods, or topics</li>
+      <li><strong>Categorization:</strong> Sort posts by content type or theme</li>
+      <li><strong>Pattern recognition:</strong> Identify linguistic and structural patterns</li>
+      <li><strong>Feature extraction:</strong> Calculate metrics like engagement, length, complexity</li>
+      <li><strong>Comparison analysis:</strong> Compare across users, time periods, or topics</li>
     </ul>
-    
+
     <h2>AI Prompt Progression:</h2>
     <div class="three-columns">
-        <div class="column">
-            <h4>Beginner</h4>
-            <p>"Explain what this categorization function does step by step"</p>
-        </div>
-        <div class="column">
-            <h4>Intermediate</h4>
-            <p>"How would I modify this to include sentiment analysis?"</p>
-        </div>
-        <div class="column">
-            <h4>Advanced</h4>
-            <p>"What are the theoretical problems with automated text categorization?"</p>
-        </div>
+      <div class="column">
+        <h4>Beginner</h4>
+        <p>"Explain what this categorization function does step by step"</p>
+      </div>
+      <div class="column">
+        <h4>Intermediate</h4>
+        <p>"How would I modify this to include sentiment analysis?"</p>
+      </div>
+      <div class="column">
+        <h4>Advanced</h4>
+        <p>"What are the theoretical problems with automated text categorization?"</p>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- Slide 10 -->
-<div class="slide">
+  <!-- Slide 10 -->
+  <div class="slide">
     <div class="slide-number">10</div>
     <h1>Visualization as Argument</h1>
-    
+
     <h2>From Text Outputs → Visual Analysis:</h2>
     <ul>
-        <li><strong>Exploratory visualization:</strong> Discover patterns in your data</li>
-        <li><strong>Explanatory visualization:</strong> Communicate findings to others</li>
-        <li><strong>Interactive exploration:</strong> Enable deeper investigation</li>
-        <li><strong>Critical visualization:</strong> Reveal biases and limitations</li>
+      <li><strong>Exploratory visualization:</strong> Discover patterns in your data</li>
+      <li><strong>Explanatory visualization:</strong> Communicate findings to others</li>
+      <li><strong>Interactive exploration:</strong> Enable deeper investigation</li>
+      <li><strong>Critical visualization:</strong> Reveal biases and limitations</li>
     </ul>
-    
+
     <h2>AI Visualization Assistance:</h2>
     <div class="code-block">
-• Code generation for complex plots
-• Interpretation of visual patterns
-• Suggestions for alternative visualizations
-• Debugging visualization errors
-• Style and formatting improvements
+      • Code generation for complex plots
+      • Interpretation of visual patterns
+      • Suggestions for alternative visualizations
+      • Debugging visualization errors
+      • Style and formatting improvements
     </div>
-    
-    <div class="highlight">
-        <strong>Critical Perspective:</strong> Teach students that visualizations make arguments, not just display data.
-    </div>
-</div>
 
-<!-- Slide 11 -->
-<div class="slide">
+    <div class="highlight">
+      <strong>Critical Perspective:</strong> Teach students that visualizations make arguments, not just display data.
+    </div>
+  </div>
+
+  <!-- Slide 11 -->
+  <div class="slide">
     <div class="slide-number">11</div>
     <h1>AI Interpretation Strategies</h1>
-    
+
     <h2>Beyond Code Generation → Analytical Thinking:</h2>
     <ul>
-        <li>Ask AI to explain patterns, not just create them</li>
-        <li>Request multiple interpretations of the same data</li>
-        <li>Use AI to suggest follow-up questions</li>
-        <li>Have AI identify limitations and biases</li>
+      <li>Ask AI to explain patterns, not just create them</li>
+      <li>Request multiple interpretations of the same data</li>
+      <li>Use AI to suggest follow-up questions</li>
+      <li>Have AI identify limitations and biases</li>
     </ul>
-    
-    <h2>Interpretation Prompts by Level:</h2>
-    
-    <div class="three-columns">
-        <div class="column">
-            <h4>Beginner</h4>
-            <p>"What story does this engagement chart tell?"</p>
-        </div>
-        <div class="column">
-            <h4>Intermediate</h4>
-            <p>"What cultural factors might explain this pattern?"</p>
-        </div>
-        <div class="column">
-            <h4>Advanced</h4>
-            <p>"What assumptions are embedded in these visualizations?"</p>
-        </div>
-    </div>
-    
-    <div class="success">
-        <strong>Key Insight:</strong> AI helps students move from describing what they see to analyzing what it means.
-    </div>
-</div>
 
-<!-- Slide 12 -->
-<div class="slide">
+    <h2>Interpretation Prompts by Level:</h2>
+
+    <div class="three-columns">
+      <div class="column">
+        <h4>Beginner</h4>
+        <p>"What story does this engagement chart tell?"</p>
+      </div>
+      <div class="column">
+        <h4>Intermediate</h4>
+        <p>"What cultural factors might explain this pattern?"</p>
+      </div>
+      <div class="column">
+        <h4>Advanced</h4>
+        <p>"What assumptions are embedded in these visualizations?"</p>
+      </div>
+    </div>
+
+    <div class="success">
+      <strong>Key Insight:</strong> AI helps students move from describing what they see to analyzing what it means.
+    </div>
+  </div>
+
+  <!-- Slide 12 -->
+  <div class="slide">
     <div class="slide-number">12</div>
     <h1>Designing AI-Integrated Programming Courses</h1>
-    
-    <h2>Key Principles from Today's Experience:</h2>
-    
-    <div class="success">
-        <h3>What Works ✓</h3>
-        <ul>
-            <li>Layered AI prompting for different skill levels</li>
-            <li>Building on prior computational experience</li>
-            <li>Connecting code generation to analytical thinking</li>
-            <li>Using AI to focus on concepts over syntax</li>
-        </ul>
-    </div>
-    
-    <div class="highlight">
-        <h3>What to Avoid ✗</h3>
-        <ul>
-            <li>AI as a black box students can't interrogate</li>
-            <li>Over-reliance without understanding fundamentals</li>
-            <li>One-size-fits-all AI assistance approaches</li>
-            <li>Code generation without research context</li>
-        </ul>
-    </div>
-</div>
 
-<!-- Slide 13 -->
-<div class="slide">
+    <h2>Key Principles from Today's Experience:</h2>
+
+    <div class="success">
+      <h3>What Works ✓</h3>
+      <ul>
+        <li>Layered AI prompting for different skill levels</li>
+        <li>Building on prior computational experience</li>
+        <li>Connecting code generation to analytical thinking</li>
+        <li>Using AI to focus on concepts over syntax</li>
+      </ul>
+    </div>
+
+    <div class="highlight">
+      <h3>What to Avoid ✗</h3>
+      <ul>
+        <li>AI as a black box students can't interrogate</li>
+        <li>Over-reliance without understanding fundamentals</li>
+        <li>One-size-fits-all AI assistance approaches</li>
+        <li>Code generation without research context</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 13 -->
+  <div class="slide">
     <div class="slide-number">13</div>
     <h1>3-Week Programming Unit Template</h1>
-    
-    <div class="timeline">
-        <h3>Week 1: Text Processing & Pattern Recognition</h3>
-        <ul>
-            <li><strong>AI Strategy:</strong> Code comprehension and debugging assistance</li>
-            <li><strong>Computational Concept:</strong> Loops and conditional logic</li>
-            <li><strong>Humanities Connection:</strong> Close reading → algorithmic pattern detection</li>
-        </ul>
-        
-        <h3>Week 2: Data Analysis & Visualization</h3>
-        <ul>
-            <li><strong>AI Strategy:</strong> Conceptual application and method comparison</li>
-            <li><strong>Computational Concept:</strong> Data structures and statistical thinking</li>
-            <li><strong>Humanities Connection:</strong> Quantitative analysis of cultural texts</li>
-        </ul>
-        
-        <h3>Week 3: Interpretation & Critique</h3>
-        <ul>
-            <li><strong>AI Strategy:</strong> Critical evaluation of computational approaches</li>
-            <li><strong>Computational Concept:</strong> Algorithm design and limitations</li>
-            <li><strong>Humanities Connection:</strong> Hermeneutics and computational interpretation</li>
-        </ul>
-    </div>
-</div>
 
-<!-- Slide 14 -->
-<div class="slide">
+    <div class="timeline">
+      <h3>Week 1: Text Processing & Pattern Recognition</h3>
+      <ul>
+        <li><strong>AI Strategy:</strong> Code comprehension and debugging assistance</li>
+        <li><strong>Computational Concept:</strong> Loops and conditional logic</li>
+        <li><strong>Humanities Connection:</strong> Close reading → algorithmic pattern detection</li>
+      </ul>
+
+      <h3>Week 2: Data Analysis & Visualization</h3>
+      <ul>
+        <li><strong>AI Strategy:</strong> Conceptual application and method comparison</li>
+        <li><strong>Computational Concept:</strong> Data structures and statistical thinking</li>
+        <li><strong>Humanities Connection:</strong> Quantitative analysis of cultural texts</li>
+      </ul>
+
+      <h3>Week 3: Interpretation & Critique</h3>
+      <ul>
+        <li><strong>AI Strategy:</strong> Critical evaluation of computational approaches</li>
+        <li><strong>Computational Concept:</strong> Algorithm design and limitations</li>
+        <li><strong>Humanities Connection:</strong> Hermeneutics and computational interpretation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 14 -->
+  <div class="slide">
     <div class="slide-number">14</div>
     <h1>Disciplinary Applications</h1>
-    
+
     <div class="three-columns">
-        <div class="column">
-            <h3>Historical Studies</h3>
-            <ul>
-                <li>Anniversary commemorations and collective memory</li>
-                <li>Digital political discourse analysis</li>
-                <li>Historical consciousness in social media</li>
-            </ul>
-        </div>
-        
-        <div class="column">
-            <h3>Literary Studies</h3>
-            <ul>
-                <li>Genre conventions in social media storytelling</li>
-                <li>Community formation around literary texts</li>
-                <li>Digital literary culture analysis</li>
-            </ul>
-        </div>
-        
-        <div class="column">
-            <h3>Cultural Studies</h3>
-            <ul>
-                <li>Digital identity negotiation</li>
-                <li>Platform affordances and cultural practices</li>
-                <li>Global cultural flows in digital spaces</li>
-            </ul>
-        </div>
+      <div class="column">
+        <h3>Historical Studies</h3>
+        <ul>
+          <li>Anniversary commemorations and collective memory</li>
+          <li>Digital political discourse analysis</li>
+          <li>Historical consciousness in social media</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Literary Studies</h3>
+        <ul>
+          <li>Genre conventions in social media storytelling</li>
+          <li>Community formation around literary texts</li>
+          <li>Digital literary culture analysis</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Cultural Studies</h3>
+        <ul>
+          <li>Digital identity negotiation</li>
+          <li>Platform affordances and cultural practices</li>
+          <li>Global cultural flows in digital spaces</li>
+        </ul>
+      </div>
     </div>
-    
+
     <h2>Cross-Disciplinary AI Prompts:</h2>
     <ul>
-        <li>"How can computational methods complement traditional [discipline] research?"</li>
-        <li>"What biases might be present in digital [discipline] datasets?"</li>
-        <li>"How do I validate computational results against other scholarly methods?"</li>
+      <li>"How can computational methods complement traditional [discipline] research?"</li>
+      <li>"What biases might be present in digital [discipline] datasets?"</li>
+      <li>"How do I validate computational results against other scholarly methods?"</li>
     </ul>
-</div>
+  </div>
 
-<!-- Slide 15 -->
-<div class="slide">
+  <!-- Slide 15 -->
+  <div class="slide">
     <div class="slide-number">15</div>
     <h1>Implementation Strategies</h1>
-    
+
     <h2>This Week:</h2>
     <ul>
-        <li>Try one AI-assisted coding exercise in your current course</li>
-        <li>Experiment with different prompt structures for your students</li>
-        <li>Identify one place to integrate computational thinking</li>
+      <li>Try one AI-assisted coding exercise in your current course</li>
+      <li>Experiment with different prompt structures for your students</li>
+      <li>Identify one place to integrate computational thinking</li>
     </ul>
-    
+
     <h2>This Month:</h2>
     <ul>
-        <li>Design an AI-integrated assignment for your discipline</li>
-        <li>Connect with colleagues doing similar experiments</li>
-        <li>Document what works and what doesn't</li>
+      <li>Design an AI-integrated assignment for your discipline</li>
+      <li>Connect with colleagues doing similar experiments</li>
+      <li>Document what works and what doesn't</li>
     </ul>
-    
+
     <h2>This Semester:</h2>
     <ul>
-        <li>Pilot a full unit using these AI assistance strategies</li>
-        <li>Collect student feedback on AI learning experiences</li>
-        <li>Share results with DH pedagogy community</li>
+      <li>Pilot a full unit using these AI assistance strategies</li>
+      <li>Collect student feedback on AI learning experiences</li>
+      <li>Share results with DH pedagogy community</li>
     </ul>
-    
-    <div class="success">
-        <strong>Remember:</strong> Start small, iterate based on what works, and maintain focus on learning outcomes.
-    </div>
-</div>
 
-<!-- Slide 16 -->
-<div class="slide">
+    <div class="success">
+      <strong>Remember:</strong> Start small, iterate based on what works, and maintain focus on learning outcomes.
+    </div>
+  </div>
+
+  <!-- Slide 16 -->
+  <div class="slide">
     <div class="slide-number">16</div>
     <h1>Assessment and Evaluation</h1>
-    
+
     <h2>Process-Focused Assessment:</h2>
     <ul>
-        <li><strong>AI Interaction Documentation:</strong> Students document their prompting strategies</li>
-        <li><strong>Iteration Portfolios:</strong> Show development from initial attempts to final solutions</li>
-        <li><strong>Reflection Essays:</strong> Connect technical skills to disciplinary knowledge</li>
-        <li><strong>Peer Code Review:</strong> Students explain and critique each other's approaches</li>
+      <li><strong>AI Interaction Documentation:</strong> Students document their prompting strategies</li>
+      <li><strong>Iteration Portfolios:</strong> Show development from initial attempts to final solutions</li>
+      <li><strong>Reflection Essays:</strong> Connect technical skills to disciplinary knowledge</li>
+      <li><strong>Peer Code Review:</strong> Students explain and critique each other's approaches</li>
     </ul>
-    
+
     <h2>Product-Focused Assessment:</h2>
     <ul>
-        <li><strong>Research Applications:</strong> Apply methods to student's own research interests</li>
-        <li><strong>Methodological Critiques:</strong> Evaluate existing digital humanities projects</li>
-        <li><strong>Collaborative Projects:</strong> Work across disciplines to address complex questions</li>
+      <li><strong>Research Applications:</strong> Apply methods to student's own research interests</li>
+      <li><strong>Methodological Critiques:</strong> Evaluate existing digital humanities projects</li>
+      <li><strong>Collaborative Projects:</strong> Work across disciplines to address complex questions</li>
     </ul>
-    
-    <div class="highlight">
-        <strong>Balance:</strong> Assess both technical competence and critical thinking about computational methods.
-    </div>
-</div>
 
-<!-- Slide 17 -->
-<div class="slide">
+    <div class="highlight">
+      <strong>Balance:</strong> Assess both technical competence and critical thinking about computational methods.
+    </div>
+  </div>
+
+  <!-- Slide 17 -->
+  <div class="slide">
     <div class="slide-number">17</div>
     <h1>Resources and Follow-Up</h1>
-    
+
     <h2>Workshop Materials:</h2>
     <ul>
-        <li>All code examples in shared Colab notebook</li>
-        <li>AI prompt bank for different skill levels</li>
-        <li>Sample assignment templates and rubrics</li>
-        <li>Starter Jupyter notebook for students</li>
+      <li>All code examples in shared Colab notebook</li>
+      <li>AI prompt bank for different skill levels</li>
+      <li>Sample assignment templates and rubrics</li>
+      <li>Starter Jupyter notebook for students</li>
     </ul>
-    
+
     <h2>Professional Development:</h2>
     <ul>
-        <li>Digital Humanities pedagogy networks</li>
-        <li>AI in education research communities</li>
-        <li>Programming education best practices</li>
-        <li>Computational thinking in liberal arts</li>
+      <li>Digital Humanities pedagogy networks</li>
+      <li>AI in education research communities</li>
+      <li>Programming education best practices</li>
+      <li>Computational thinking in liberal arts</li>
     </ul>
-    
+
     <h2>Continued Learning:</h2>
     <ul>
-        <li>Individual consultations for course design</li>
-        <li>Follow-up discussion groups</li>
-        <li>Collaborative resource development</li>
-        <li>Conference presentation opportunities</li>
+      <li>Individual consultations for course design</li>
+      <li>Follow-up discussion groups</li>
+      <li>Collaborative resource development</li>
+      <li>Conference presentation opportunities</li>
     </ul>
-</div>
+  </div>
 
-<!-- Slide 18 -->
-<div class="slide">
+  <!-- Slide 18 -->
+  <div class="slide">
     <div class="slide-number">18</div>
     <h1>Key Takeaways</h1>
-    
+
     <h2>For Your Teaching:</h2>
     <div class="success">
-        <ul>
-            <li><strong>Scaffold AI complexity</strong> - meet students where they are</li>
-            <li><strong>Maintain student agency</strong> - AI assists, students direct</li>
-            <li><strong>Emphasize iteration</strong> - model debugging and refinement</li>
-            <li><strong>Connect to research</strong> - always tie back to disciplinary questions</li>
-        </ul>
+      <ul>
+        <li><strong>Scaffold AI complexity</strong> - meet students where they are</li>
+        <li><strong>Maintain student agency</strong> - AI assists, students direct</li>
+        <li><strong>Emphasize iteration</strong> - model debugging and refinement</li>
+        <li><strong>Connect to research</strong> - always tie back to disciplinary questions</li>
+      </ul>
     </div>
-    
+
     <h2>For Your Students:</h2>
     <ul>
-        <li>Computational thinking enhances rather than replaces humanistic inquiry</li>
-        <li>AI tools require critical evaluation and thoughtful application</li>
-        <li>Programming skills transfer across different research contexts</li>
-        <li>Collaboration and iteration are essential parts of the learning process</li>
+      <li>Computational thinking enhances rather than replaces humanistic inquiry</li>
+      <li>AI tools require critical evaluation and thoughtful application</li>
+      <li>Programming skills transfer across different research contexts</li>
+      <li>Collaboration and iteration are essential parts of the learning process</li>
     </ul>
-    
+
     <div class="highlight">
-        <strong>Final Thought:</strong> The goal is using AI to enhance human analysis, not replace it. Maintain the balance between computational power and critical thinking.
+      <strong>Final Thought:</strong> The goal is using AI to enhance human analysis, not replace it. Maintain the
+      balance between computational power and critical thinking.
     </div>
-</div>
+  </div>
 
 </body>
+
 </html>
