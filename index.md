@@ -67,6 +67,7 @@ We will walk through the installation process of more complicated tools during t
 #### Exercise
 * [Combining in Colab](combinetext.md)
 * [Scraping and Robots](scraper.md)
+* [Getting Data: Bluesky](bluesky.md)
 
 #### Additional References
 * ["So You Want to Be a Wizard," Julia Evans](https://wizardzines.com/zines/wizard/)
