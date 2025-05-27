@@ -71,6 +71,7 @@
       font-family: 'Courier New', monospace;
       font-size: 0.9em;
       overflow-x: auto;
+      white-space: pre-wrap;
     }
 
     .highlight {
@@ -178,6 +179,68 @@
       border-radius: 10px;
       margin-bottom: 30px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .download-info.hidden {
+      display: none;
+    }
+
+    .control-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1002;
+    }
+
+    .control-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .control-btn:hover {
+      background: #5a67d8;
+    }
+
+    .fullscreen-mode {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .fullscreen-mode .slide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90vw;
+      height: 80vh;
+      max-width: none;
+      margin: 0;
+      overflow-y: auto;
+    }
+
+    .fullscreen-mode .navigation {
+      bottom: 30px;
+    }
+
+    .fullscreen-mode .control-buttons {
+      top: 30px;
+      right: 30px;
     }
 
     @media print {
@@ -223,7 +286,12 @@
 <body>
   <div class="progress-bar" id="progressBar"></div>
 
-  <div class="download-info">
+  <div class="control-buttons">
+    <button class="control-btn" id="toggleInstructions" onclick="toggleInstructions()">Hide Instructions</button>
+    <button class="control-btn" id="fullscreenBtn" onclick="toggleFullscreen()">Fullscreen</button>
+  </div>
+
+  <div class="download-info" id="downloadInfo">
     <h2>AI-Assisted Programming Pedagogy Workshop Slides</h2>
     <p><strong>Navigation:</strong> Use arrow keys, buttons below, or click/tap to advance</p>
     <p><strong>To download:</strong> Press Ctrl+P (Windows) or Cmd+P (Mac) and save as PDF</p>
@@ -784,6 +852,8 @@
     let currentSlideIndex = 0;
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
+    let isFullscreen = false;
+    let instructionsVisible = true;
 
     document.getElementById('totalSlides').textContent = totalSlides;
 
@@ -808,6 +878,60 @@
       }
     }
 
+    function toggleInstructions() {
+      const downloadInfo = document.getElementById('downloadInfo');
+      const toggleBtn = document.getElementById('toggleInstructions');
+
+      if (instructionsVisible) {
+        downloadInfo.classList.add('hidden');
+        toggleBtn.textContent = 'Show Instructions';
+        instructionsVisible = false;
+      } else {
+        downloadInfo.classList.remove('hidden');
+        toggleBtn.textContent = 'Hide Instructions';
+        instructionsVisible = true;
+      }
+    }
+
+    function toggleFullscreen() {
+      const body = document.body;
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+      if (!isFullscreen) {
+        body.classList.add('fullscreen-mode');
+        fullscreenBtn.textContent = 'Exit Fullscreen';
+        isFullscreen = true;
+
+        // Try to enter browser fullscreen if supported
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {
+            // Fullscreen API not available or denied, continue with CSS fullscreen
+          });
+        }
+      } else {
+        body.classList.remove('fullscreen-mode');
+        fullscreenBtn.textContent = 'Fullscreen';
+        isFullscreen = false;
+
+        // Exit browser fullscreen if we're in it
+        if (document.fullscreenElement && document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {
+            // Exit fullscreen failed, continue
+          });
+        }
+      }
+    }
+
+    // Listen for fullscreen changes to sync our state
+    document.addEventListener('fullscreenchange', function () {
+      if (!document.fullscreenElement && isFullscreen) {
+        // User exited fullscreen via browser controls
+        document.body.classList.remove('fullscreen-mode');
+        document.getElementById('fullscreenBtn').textContent = 'Fullscreen';
+        isFullscreen = false;
+      }
+    });
+
     // Keyboard navigation
     document.addEventListener('keydown', function (event) {
       if (event.key === 'ArrowRight' || event.key === ' ') {
@@ -824,6 +948,18 @@
         event.preventDefault();
         currentSlideIndex = totalSlides - 1;
         showSlide(currentSlideIndex);
+      } else if (event.key === 'f' || event.key === 'F') {
+        // Press 'f' for fullscreen
+        event.preventDefault();
+        toggleFullscreen();
+      } else if (event.key === 'i' || event.key === 'I') {
+        // Press 'i' to toggle instructions
+        event.preventDefault();
+        toggleInstructions();
+      } else if (event.key === 'Escape' && isFullscreen) {
+        // Escape to exit fullscreen
+        event.preventDefault();
+        toggleFullscreen();
       }
     });
 
