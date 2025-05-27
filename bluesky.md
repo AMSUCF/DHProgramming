@@ -10,6 +10,8 @@
 
 ---
 
+Starter notebook: https://colab.research.google.com/github/AMSUCF/DHProgramming/blob/main/bluesky.ipynb
+
 ## Three-Tier AI Pedagogical Framework
 
 ### **Level 1: Code Comprehension & Debugging**
