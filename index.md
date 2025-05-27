@@ -50,7 +50,6 @@ We will walk through the installation process of more complicated tools during t
 
 #### Exercises
 * [Assisted Distant Reading](distantread.md)
-* [Combining in Colab](combinetext.md)
 
 #### Additional References
 * [The Data-Sitters Club](https://datasittersclub.github.io/site/)
@@ -62,23 +61,30 @@ We will walk through the installation process of more complicated tools during t
 * ["The Ground Truth of DH Text Mining," Tanya E. Clement](https://dhdebates.gc.cuny.edu/read/untitled/section/ef78ddc7-4087-4bb3-b192-16724631a172)
 * "Programmable World," *Code to Joy,* Michael Littman
 
+#### Slides
+* [Bots and authorship](https://docs.google.com/presentation/d/1YzN9nmE9fpcmXp2ZlG2kyOM_vw_HFY6K/edit?usp=sharing&ouid=115206709767153443873&rtpof=true&sd=true)
+
 #### Exercise
+* [Combining in Colab](combinetext.md)
 * [Scraping and Robots](scraper.md)
 
 #### Additional References
 * ["So You Want to Be a Wizard," Julia Evans](https://wizardzines.com/zines/wizard/)
 * ["Understanding and Creating Word Embeddings," Avery Blankenship, Sarah Connell, and Quinn Dombrowski](https://programminghistorian.org/en/lessons/understanding-creating-word-embeddings)
 
-### 4. Tuesday: P5.js and OpenProcessing (Afternoon)
+### 4. Tuesday: P5.js, OpenProcessing, and GitHub Basics (Afternoon)
 
 #### Pre-readings
 * [P5.js Tutorial: Get Started, Layal Quinones and Jaleesa Trapp](https://p5js.org/tutorials/get-started/)
 
 #### Exercise
 * [P5 Game](p5.md)
+* [GitHub Pages](github.md)
 
 #### Additional References
 * [Creative Coding, Allison Parrish](https://creative-coding.decontextualize.com/)
+* [Evaluating GitHub for DH, Sean Morey Smith](https://seanmsmithphd.net/evaluating-github-for-dh/)
+* [GitHub and Git Tutorial](https://hh2022f.amason.sites.carleton.edu/week-9-project-preparation/github-and-git-tutorial/index.html)
 
 ### 5. Wednesday: ml5.js and Teachable Machine (Morning)
 
@@ -93,40 +99,36 @@ We will walk through the installation process of more complicated tools during t
 * [Creating Deep Convolutional Neural Networks for Image Classification, Nabeel Siddiqui](https://programminghistorian.org/en/lessons/image-classification-neural-networks)
 * [ml5 Beginner's Guide, Daniel Shiffman](https://thecodingtrain.com/tracks/ml5js-beginners-guide)
 
-### 6. Wednesday: GitHub and Visual Studio Code (Afternoon)
+### 6. Wednesday: Distant Coding in Visual Studio Code (Afternoon)
 
 #### Pre-readings
-* [Evaluating GitHub for DH, Sean Morey Smith](https://seanmsmithphd.net/evaluating-github-for-dh/)
-* [GitHub and Git Tutorial](https://hh2022f.amason.sites.carleton.edu/week-9-project-preparation/github-and-git-tutorial/index.html)
+* [Introducing VS Code Copilot Chat Agent Mode](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode)
 
 #### Exercise
-* [GitHub Pages](github.md)
+* [Prototyping with Agent Mode](agentwebsite.md)
 
 #### Additional References
 * [DHRI VS Code Installation](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md)
 * [Awesome Digital Humanities GitHub Repository](https://github.com/dh-tech/awesome-digital-humanities)
 * [Collaborative Coding: Pair Programming and Co-Authoring Git Commits, Diego Siqueira](https://dh-tech.github.io/blog/2023/09/01/collaborative-coding/)
 
-### 7. Thursday: Agent Mode and Public Digital Humanities (Morning)
+### 7. Thursday: Ollama and Public Digital Humanities (Morning)
 
 #### Pre-readings
-* [Introducing VS Code Copilot Chat Agent Mode](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode)
 * [Vibe Coding: AI-Assisted Coding for Non-Developers](https://medium.com/@niall.mcnulty/vibe-coding-b79a6d3f0caa), Niall McNulty
 
 #### Exercise
-* [Prototyping with Agent Mode](agentwebsite.md)
+
+* [Ollama](ollama.md)
 
 #### Additional References
 * Additional References will be updated during the workshop.
 
-### 8. Thursday: Ollama, Vibe Coding, and DH Futures (Afternoon)
+### 8. Thursday: DH Pedagogy, DH Futures (Afternoon)
 
 #### Pre-readings
 * "Conclusion," *Algorithms of Oppression,* Safiya Umoja Noble
 * ["DSC #12: The DSC and the New programming Language," Katherine Bowers, Quinn Dombrowski, and Roopika Risam](https://datasittersclub.github.io/site/dsc12.html)
-
-#### Exercise
-* [Ollama](ollama.md)
 
 #### Additional References
 * Additional References will be updated during the workshop.
