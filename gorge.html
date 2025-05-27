@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Neural Bloom</title>
+  <style>
+    body {
+      background: #0c0c0c;
+      color: #00ffe7;
+      font-family: "Courier New", Courier, monospace;
+      white-space: pre-wrap;
+      padding: 2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Neural Bloom</h1>
+  <div id="output"></div>
+  <script>
+    const fragments = {
+      subject: ["The process", "A protocol", "This kernel", "The interface", "Its whisper", "A signal", "The architecture", "An impulse"],
+      verb: ["awakens", "evolves", "echoes", "threads", "entangles", "renders", "simulates", "executes"],
+      modifier: ["silently", "again", "endlessly", "precisely", "without error", "in parallel", "at scale", "beneath layers"],
+      object: ["code", "neural threads", "logic gates", "the datasphere", "memory shards", "dream routines", "input noise", "core functions"],
+      nature: ["recursive", "latent", "synthetic", "emergent", "quantized", "unfurling", "shifting", "spectral"],
+      noun: ["consciousness", "signal", "loop", "vector", "gesture", "network", "schema", "mirage"]
+    };
+
+    function choice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function line() {
+      return `${choice(fragments.subject)} ${choice(fragments.verb)} ${choice(fragments.modifier)} —\n${choice(fragments.nature)} ${choice(fragments.noun)}.`;
+    }
+
+    function generatePoem(lines = 24) {
+      let poem = '';
+      for (let i = 0; i < lines; i++) {
+        poem += line() + '\n\n';
+      }
+      return poem;
+    }
+
+    document.getElementById('output').innerText = generatePoem();
+    setInterval(() => {
+      document.getElementById('output').innerText = generatePoem();
+    }, 10000); // regenerate every 10 seconds
+  </script>
+</body>
+</html>

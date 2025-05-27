@@ -67,6 +67,7 @@ We will walk through the installation process of more complicated tools during t
 #### Exercise
 * [Combining in Colab](combinetext.md)
 * [Scraping and Robots](scraper.md)
+* [Taroko Gorge Remix example](gorge.html)
 
 #### Additional References
 * ["So You Want to Be a Wizard," Julia Evans](https://wizardzines.com/zines/wizard/)
@@ -78,6 +79,7 @@ We will walk through the installation process of more complicated tools during t
 * [P5.js Tutorial: Get Started, Layal Quinones and Jaleesa Trapp](https://p5js.org/tutorials/get-started/)
 
 #### Exercise
+* [Open Processing](https://openprocessing.org/)
 * [P5 Game](p5.md)
 * [GitHub Pages](github.md)
 
