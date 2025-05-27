@@ -12,6 +12,7 @@
       padding: 20px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #333;
+      overflow-x: hidden;
     }
 
     .slide {
@@ -21,8 +22,13 @@
       margin: 30px auto;
       padding: 40px;
       max-width: 900px;
-      page-break-after: always;
       position: relative;
+      display: none;
+      min-height: 500px;
+    }
+
+    .slide.active {
+      display: block;
     }
 
     .slide h1 {
@@ -114,15 +120,55 @@
       border-radius: 8px;
     }
 
-    @media print {
-      body {
-        background: white;
-      }
+    .navigation {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 25px;
+      border-radius: 25px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 1000;
+    }
 
-      .slide {
-        box-shadow: none;
-        border: 1px solid #ccc;
-      }
+    .nav-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: #5a67d8;
+    }
+
+    .nav-btn:disabled {
+      background: #a0aec0;
+      cursor: not-allowed;
+    }
+
+    .slide-counter {
+      font-weight: bold;
+      color: #4a5568;
+      margin: 0 10px;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: #667eea;
+      transition: width 0.3s ease;
+      z-index: 1001;
     }
 
     .download-info {
@@ -133,19 +179,59 @@
       margin-bottom: 30px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .slide {
+        display: block !important;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        page-break-after: always;
+      }
+
+      .navigation,
+      .progress-bar {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .three-columns {
+        flex-direction: column;
+      }
+
+      .slide {
+        padding: 20px;
+        margin: 15px auto;
+      }
+
+      .navigation {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        transform: none;
+        padding: 10px 15px;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div class="progress-bar" id="progressBar"></div>
 
   <div class="download-info">
     <h2>AI-Assisted Programming Pedagogy Workshop Slides</h2>
+    <p><strong>Navigation:</strong> Use arrow keys, buttons below, or click/tap to advance</p>
     <p><strong>To download:</strong> Press Ctrl+P (Windows) or Cmd+P (Mac) and save as PDF</p>
     <p><strong>Workshop Duration:</strong> 10:40 AM - 12:00 PM (80 minutes)</p>
   </div>
 
   <!-- Slide 1 -->
-  <div class="slide">
+  <div class="slide active">
     <div class="slide-number">1</div>
     <h1>Programming Pedagogy Through Social Media Analysis</h1>
     <h2>Learning Computational Methods While Experiencing Teaching Strategies</h2>
@@ -166,7 +252,7 @@
     </div>
   </div>
 
-  <!-- Slide 2 -->
+  <!-- ...existing slides with active class removed... -->
   <div class="slide">
     <div class="slide-number">2</div>
     <h1>From Creative to Analytical Programming</h1>
@@ -685,6 +771,77 @@
       balance between computational power and critical thinking.
     </div>
   </div>
+
+  <div class="navigation">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+    <span class="slide-counter">
+      <span id="currentSlide">1</span> / <span id="totalSlides">18</span>
+    </span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+  </div>
+
+  <script>
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    document.getElementById('totalSlides').textContent = totalSlides;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+
+      document.getElementById('currentSlide').textContent = index + 1;
+      document.getElementById('prevBtn').disabled = index === 0;
+      document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+
+      // Update progress bar
+      const progress = ((index + 1) / totalSlides) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+    }
+
+    function changeSlide(direction) {
+      const newIndex = currentSlideIndex + direction;
+      if (newIndex >= 0 && newIndex < totalSlides) {
+        currentSlideIndex = newIndex;
+        showSlide(currentSlideIndex);
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowRight' || event.key === ' ') {
+        event.preventDefault();
+        changeSlide(1);
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        changeSlide(-1);
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        currentSlideIndex = 0;
+        showSlide(currentSlideIndex);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        currentSlideIndex = totalSlides - 1;
+        showSlide(currentSlideIndex);
+      }
+    });
+
+    // Click/touch navigation
+    slides.forEach((slide, index) => {
+      slide.addEventListener('click', function (event) {
+        // Only advance if clicking in the right half of the slide
+        if (event.clientX > slide.offsetWidth / 2) {
+          changeSlide(1);
+        } else {
+          changeSlide(-1);
+        }
+      });
+    });
+
+    // Initialize
+    showSlide(0);
+  </script>
 
 </body>
 
