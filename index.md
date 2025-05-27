@@ -82,6 +82,7 @@ We will walk through the installation process of more complicated tools during t
 #### Exercise
 * [Open Processing](https://openprocessing.org/)
 * [P5 Game](p5.md)
+* [Pelican riding a bicycle](https://simonwillison.net/tags/pelican-riding-a-bicycle/)
 
 #### Additional References
 * [Creative Coding, Allison Parrish](https://creative-coding.decontextualize.com/)
