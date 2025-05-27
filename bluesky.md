@@ -1,6 +1,10 @@
 # AI-Assisted Programming Pedagogy: Workshop Guide
 *Social Media Analysis Workshop*
 
+Starter Notebook: https://colab.research.google.com/github/AMSUCF/DHProgramming/blob/main/bluesky.ipynb
+
+[Workshop Slides](bluesky_slides.html)
+
 ## Workshop Overview
 **Building on Your Experience:** Combinatorial text generation → Social media data analysis  
 **Focus:** AI pedagogy strategies for programming instruction  
