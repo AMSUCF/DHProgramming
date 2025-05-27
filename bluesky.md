@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This tutorial demonstrates programming instruction for humanities contexts while you simultaneously learn computational analysis methods. You'll experience different AI-assisted learning approaches and observe pedagogical strategies adaptable to your own teaching contexts.
+This tutorial demonstrates programming instruction for humanities contexts while you simultaneously learn computational analysis methods. You'll experience different AI-assisted learning approaches and observe pedagogical strategies adaptable to your own contexts.
 
 ---
 
 ## AI-Assisted Learning Framework
 
-Throughout this workshop, you'll encounter prompts designed for different comfort levels with programming. Notice how each approach serves different student needs in your classes.
+Throughout this workshop, you'll encounter prompts designed for different comfort levels with programming. 
 
 ### **Comprehension-Focused Prompts**
 For students building foundational understanding:
