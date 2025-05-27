@@ -1,7 +1,6 @@
 # Programming Pedagogy Through Social Media Analysis
-*Learning Computational Methods While Experiencing Teaching Strategies*
 
-## Workshop Purpose
+## Purpose
 
 This tutorial demonstrates programming instruction for humanities contexts while you simultaneously learn computational analysis methods. You'll experience different AI-assisted learning approaches and observe pedagogical strategies adaptable to your own teaching contexts.
 
