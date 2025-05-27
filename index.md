@@ -67,6 +67,7 @@ We will walk through the installation process of more complicated tools during t
 #### Exercise
 * [Combining in Colab](combinetext.md)
 * [Scraping and Robots](scraper.md)
+* [Taroko Gorge Remix example](gorge.html)
 * [Getting Data: Bluesky](bluesky.md)
 
 #### Additional References
@@ -79,6 +80,7 @@ We will walk through the installation process of more complicated tools during t
 * [P5.js Tutorial: Get Started, Layal Quinones and Jaleesa Trapp](https://p5js.org/tutorials/get-started/)
 
 #### Exercise
+* [Open Processing](https://openprocessing.org/)
 * [P5 Game](p5.md)
 * [GitHub Pages](github.md)
 
