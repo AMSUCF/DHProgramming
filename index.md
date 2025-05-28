@@ -93,6 +93,7 @@ We will walk through the installation process of more complicated tools during t
 * [Conclusion, *Critical Making in the Age of AI,* Emily Johnson and Anastasia Salter](https://services.publishing.umich.edu/Books/C/Critical-Making-in-the-Age-of-AI3)
 
 #### Exercises
+* [Exporting OpenProcessing](sketch2661736.zip)
 * [GitHub Pages](github.md)
 * [Image Scraping and Teachable Machine](imagescraping.md)
 * [ML5](ml5.md)
