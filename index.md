@@ -123,8 +123,8 @@ We will walk through the installation process of more complicated tools during t
 * [Vibe Coding: AI-Assisted Coding for Non-Developers](https://medium.com/@niall.mcnulty/vibe-coding-b79a6d3f0caa), Niall McNulty
 
 #### Exercise
-
 * [Ollama](ollama.md)
+* Visualizations
 
 #### Additional References
 * Additional References will be updated during the workshop.
@@ -135,5 +135,12 @@ We will walk through the installation process of more complicated tools during t
 * "Conclusion," *Algorithms of Oppression,* Safiya Umoja Noble
 * ["DSC #12: The DSC and the New programming Language," Katherine Bowers, Quinn Dombrowski, and Roopika Risam](https://datasittersclub.github.io/site/dsc12.html)
 
+#### Exercise
+* [Pandoc and Markdown](markdown.md)
+
 #### Additional References
-* Additional References will be updated during the workshop.
+* [Humanities in the Age of AI Syllabus](https://anastasiasalter.net/HumanitiesAISyllabus/)
+* [Creative Coding Syllabus](https://anastasiasalter.net/Creative-Coding/)
+
+### 9. Friday: Applications (Morning)
+* TBD based on group discussion
