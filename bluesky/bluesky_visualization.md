@@ -5,7 +5,7 @@ The second part will have you create a visualization first by hand (using a note
 
 ## Workshop Slides
 
-<iframe src="bluesky/bluesky_slides.html" width="800" height="500" frameborder="0" allowfullscreen></iframe>
+<iframe src="bluesky_slides.html" width="800" height="500" frameborder="0" allowfullscreen></iframe>
 
 **Note:** If the embedded slides don't display properly, [view them directly here](bluesky/bluesky_slides.html).
 
@@ -17,9 +17,9 @@ These slides cover key concepts of AI-assisted social media analysis, including:
 
 ## Network Visualization
 
-<iframe src="bluesky/hashtag_network.html" width="800" height="500" frameborder="0" allowfullscreen></iframe>
+<iframe src="hashtag_network.html" width="800" height="500" frameborder="0" allowfullscreen></iframe>
 
-**Note:** If the embedded visualization doesn't display properly, [view it directly here](bluesky/hashtag_network.html).
+**Note:** If the embedded visualization doesn't display properly, [view it directly here](./hashtag_network.html).
 
 This visualization shows the network connections between hashtags in the analyzed Bluesky posts, revealing patterns in how topics are related and clustered in the social media discourse.
 
