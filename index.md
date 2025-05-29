@@ -127,7 +127,8 @@ We will walk through the installation process of more complicated tools during t
 * Visualizations
 
 #### Additional References
-* Additional References will be updated during the workshop.
+* [Configuring RAG](https://docs.openwebui.com/tutorials/tips/rag-tutorial/)
+* [Local models in VSC](https://code.visualstudio.com/docs/copilot/language-models)
 
 ### 8. Thursday: DH Pedagogy, DH Futures (Afternoon)
 
