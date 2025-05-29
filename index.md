@@ -140,7 +140,7 @@ We will walk through the installation process of more complicated tools during t
 * [DH, AI, Futures](https://docs.google.com/presentation/d/11nCgbHEIuMjI_fVxyN2I-UwDsYQegLgw/edit?usp=sharing&ouid=115206709767153443873&rtpof=true&sd=true)
 
 #### Exercise
-* [Pandoc and Markdown](markdown.md)
+* [Pandoc and Markdown](pandoc.md)
 
 #### Additional References
 * [Humanities in the Age of AI Syllabus](https://anastasiasalter.net/HumanitiesAISyllabus/)
