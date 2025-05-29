@@ -7,4 +7,4 @@
 - If the Markdown file is going to be the foundation of the project, rename it **index.md**
 - Select a base theme from [GitHub Pages Themes](https://pages.github.com/themes/)
 - Create a new file, **_config.yml**, with the information for the remote theme you've selected and the project info. For example, here's the [_config.yml](https://github.com/AMSUCF/DHProgramming/blob/main/_config.yml) file for this project.
-- Copy the directions from the theme's repository for adding a stylesheet when prompting CoPilot to create a theme for the project.
+- Copy the directions from the theme's repository for adding a stylesheet when prompting Copilot to create a theme for the project.
