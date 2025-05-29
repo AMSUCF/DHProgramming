@@ -135,6 +135,9 @@ We will walk through the installation process of more complicated tools during t
 * "Conclusion," *Algorithms of Oppression,* Safiya Umoja Noble
 * ["DSC #12: The DSC and the New programming Language," Katherine Bowers, Quinn Dombrowski, and Roopika Risam](https://datasittersclub.github.io/site/dsc12.html)
 
+#### Slides
+* [DH, AI, Futures](https://docs.google.com/presentation/d/11nCgbHEIuMjI_fVxyN2I-UwDsYQegLgw/edit?usp=sharing&ouid=115206709767153443873&rtpof=true&sd=true)
+
 #### Exercise
 * [Pandoc and Markdown](markdown.md)
 
