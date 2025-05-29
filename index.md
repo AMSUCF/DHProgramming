@@ -68,7 +68,7 @@ We will walk through the installation process of more complicated tools during t
 * [Combining in Colab](combinetext.md)
 * [Scraping and Robots](scraper.md)
 * [Taroko Gorge Remix example](gorge.html)
-* [Getting Data: Bluesky](bluesky.md)
+* [Getting Data: Bluesky](bluesky/bluesky.md)
 
 #### Additional References
 * ["So You Want to Be a Wizard," Julia Evans](https://wizardzines.com/zines/wizard/)
@@ -124,8 +124,7 @@ We will walk through the installation process of more complicated tools during t
 
 #### Exercise
 * [Ollama](ollama.md)
-* Visualizations
-- [Bluesky Part 2: Visualizations](https://github.com/AMSUCF/DHProgramming/blob/main/Bluesky_Visualization.ipynb)
+- [Bluesky Part 2: Visualizations](bluesky/bluesky_visualization.md)
 
 #### Additional References
 * [Configuring RAG](https://docs.openwebui.com/tutorials/tips/rag-tutorial/)
