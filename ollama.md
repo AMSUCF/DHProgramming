@@ -9,3 +9,11 @@
 - Under Workspace, go to Models and select a model. Scroll down, and add the knowlege set you created earlier.
 - Run a chat and query this new, Retrieval-Augmented Generation (RAG) model.
 - Docker is now running in your system tray - to pause, stop, and restart this application, use the Docker desktop interface.
+
+Using a model in Copilot requires a more hefty system: however, it uses the same basic tools. Once you've installed a model with Ollama:
+
+- Open Copilot in Visual Studio Code
+- Select the current model you are using at the bottom of the chat
+- In the menu, click "Manage Models."
+- Type "Ollama" as the provider and select
+- Select one of the models you have installed - most models will only work in chat mode at this stage, but that is changing fast
