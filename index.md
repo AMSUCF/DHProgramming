@@ -123,12 +123,13 @@ We will walk through the installation process of more complicated tools during t
 * [Vibe Coding: AI-Assisted Coding for Non-Developers](https://medium.com/@niall.mcnulty/vibe-coding-b79a6d3f0caa), Niall McNulty
 
 #### Exercise
-
 * [Ollama](ollama.md)
+* Visualizations
 - [Bluesky Part 2: Visualizations](https://github.com/AMSUCF/DHProgramming/blob/main/Bluesky_Visualization.ipynb)
 
 #### Additional References
-* Additional References will be updated during the workshop.
+* [Configuring RAG](https://docs.openwebui.com/tutorials/tips/rag-tutorial/)
+* [Local models in VSC](https://code.visualstudio.com/docs/copilot/language-models)
 
 ### 8. Thursday: DH Pedagogy, DH Futures (Afternoon)
 
@@ -136,5 +137,15 @@ We will walk through the installation process of more complicated tools during t
 * "Conclusion," *Algorithms of Oppression,* Safiya Umoja Noble
 * ["DSC #12: The DSC and the New programming Language," Katherine Bowers, Quinn Dombrowski, and Roopika Risam](https://datasittersclub.github.io/site/dsc12.html)
 
+#### Slides
+* [DH, AI, Futures](https://docs.google.com/presentation/d/11nCgbHEIuMjI_fVxyN2I-UwDsYQegLgw/edit?usp=sharing&ouid=115206709767153443873&rtpof=true&sd=true)
+
+#### Exercise
+* [Pandoc and Markdown](markdown.md)
+
 #### Additional References
-* Additional References will be updated during the workshop.
+* [Humanities in the Age of AI Syllabus](https://anastasiasalter.net/HumanitiesAISyllabus/)
+* [Creative Coding Syllabus](https://anastasiasalter.net/Creative-Coding/)
+
+### 9. Friday: Applications (Morning)
+* TBD based on group discussion
