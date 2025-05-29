@@ -125,6 +125,7 @@ We will walk through the installation process of more complicated tools during t
 #### Exercise
 
 * [Ollama](ollama.md)
+- [Bluesky Part 2: Visualizations](https://github.com/AMSUCF/DHProgramming/blob/main/Bluesky_Visualization.ipynb)
 
 #### Additional References
 * Additional References will be updated during the workshop.
