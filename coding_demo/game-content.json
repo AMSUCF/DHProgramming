@@ -11,8 +11,8 @@
       "story": "Dr. Elena Rodriguez has discovered fragments of an ancient manuscript in the digital archives of the Alexandria Library. The fragments contain references to a lost civilization, but they're scattered and encoded.\n\nYou've been called in as a digital archaeologist to help piece together this mystery using computational analysis.\n\n<strong>🔍 Python Concepts: Variables and Print Statements</strong>\n\nIn Python, we store information in <em>variables</em>. Think of variables as labeled boxes that hold data:\n• Text (strings) must be in quotes: <code>name = \"Alexandria\"</code>\n• Numbers don't need quotes: <code>count = 23</code>\n• Use <code>print()</code> to display information\n\nPractice using variables and print statements with the manuscript data provided below.",
       "challenge": "Your task: Complete the code to store the fragment count as a variable, then display both pieces of information using print statements.",
       "data": "Manuscript ID: \"MS-ALEX-2847\"\nFragment Count: 23",
-      "starterCode": "# Store the manuscript data as variables and display them\n# We've started with the catalog number - you complete the fragment count\n\ncatalog_number = \"MS-ALEX-2847\"\n# Create a variable called fragment_count and set it to 23\n\n# Print both variables using print statements\nprint(\"Manuscript Catalog:\" + catalog_number)\n# Add your print statement for fragment_count here\n",
-      "solution": "catalog_number = \"MS-ALEX-2847\"\nfragment_count = 23\nprint(\"Manuscript Catalog:\", catalog_number)\nprint(\"Fragments Found:\", fragment_count)",
+      "starterCode": "# Store the manuscript data as variables and display them\n# We've started with the catalog number - you complete the fragment count\n\ncatalog_number = \"MS-ALEX-2847\"\n# TODO: Create a variable called fragment_count and set it to 23\n\n# Print both variables using print statements\nprint(\"Manuscript Catalog: \" + catalog_number)\n# TODO: Add your print statement for fragment_count here using string concatenation",
+      "solution": "catalog_number = \"MS-ALEX-2847\"\nfragment_count = 23\nprint(\"Manuscript Catalog: \" + catalog_number)\nprint(\"Fragments Found: \" + str(fragment_count))",
       "validation": {
         "codePatterns": [
           "fragment_count\\s*=\\s*23",
@@ -34,76 +34,132 @@
     {
       "id": 2,
       "title": "Analyzing Fragment Lengths",
-      "story": "The manuscript fragments vary greatly in length. Some are mere words, others are complete sentences. Understanding the distribution of fragment sizes might reveal patterns about how the original text was structured.\n\n<strong>🔍 Python Concepts: Lists, For Loops, and Conditional Statements</strong>\n\n<em>Lists</em> store multiple values in a single variable:\n• Create lists with square brackets: <code>numbers = [1, 2, 3, 4]</code>\n• <em>For loops</em> let you process each item: <code>for item in my_list:</code>\n• <code>len()</code> returns how many items are in a list\n\n<em>Conditional statements</em> let your program make decisions:\n• <code>if</code> checks a condition: <code>if length < 30:</code>\n• <code>elif</code> checks additional conditions: <code>elif length <= 60:</code>\n• <code>else</code> handles all other cases: <code>else:</code>\n• Use comparison operators: <code><</code> (less than), <code><=</code> (less than or equal), <code>></code> (greater than)\n• Remember to indent code inside if/elif/else blocks!\n\n<strong>Example:</strong>\n<code>\nage = 25\nif age < 18:\n    print(\"Child\")\nelif age <= 65:\n    print(\"Adult\") \nelse:\n    print(\"Senior\")\n</code>\n\nPractice combining lists, loops, and conditionals to analyze the fragment data below.",
+      "story": "The manuscript fragments vary greatly in length. Some are mere words, others are complete sentences. Understanding the distribution of fragment sizes might reveal patterns about how the original text was structured.\n\n<strong>🔍 Python Concepts: Lists, For Loops, Conditional Statements, and Functions</strong>\n\n<em>Lists</em> store multiple values in a single variable:\n• Create lists with square brackets: <code>numbers = [1, 2, 3, 4]</code>\n• <em>For loops</em> let you process each item: <code>for item in my_list:</code>\n• <code>len()</code> returns how many items are in a list\n\n<em>Conditional statements</em> let your program make decisions:\n• <code>if</code> checks a condition: <code>if length < 30:</code>\n• <code>elif</code> checks additional conditions: <code>elif length <= 60:</code>\n• <code>else</code> handles all other cases: <code>else:</code>\n• Use comparison operators: <code><</code> (less than), <code><=</code> (less than or equal), <code>></code> (greater than)\n• Remember to indent code inside if/elif/else blocks!\n\n<em>Functions</em> let you organize and reuse code:\n• Define with <code>def function_name(parameters):</code>\n• Return values with <code>return value1, value2</code>\n• Call functions to get results: <code>result = my_function(data)</code>\n• Functions make code more organized and testable\n\n<strong>Example:</strong>\n<code>\ndef categorize_age(age):\n    if age < 18:\n        return \"Child\"\n    elif age <= 65:\n        return \"Adult\"\n    else:\n        return \"Senior\"\n\nresult = categorize_age(25)\nprint(result)  # Prints \"Adult\"\n</code>\n\nPractice combining lists, loops, conditionals, and functions to analyze the fragment data below.",
       "challenge": "Using the provided fragment lengths list, calculate statistics and count fragments by size categories to understand the distribution.",
       "data": "Fragment lengths (characters): [45, 23, 67, 12, 89, 34, 56, 78, 21, 43]\n\nCategories for analysis:\n• Short fragments:     less than 30 characters\n• Medium fragments:    30-60 characters  \n• Long fragments:      more than 60 characters",
       "cells": [
         {
           "title": "Task 1: Count Total Fragments",
           "instruction": "Use the len() function to count how many fragments we have",
-          "starterCode": "# Task 1: Count the total number of fragments\nfragment_lengths = [45, 23, 67, 12, 89, 34, 56, 78, 21, 43]\n\n# Use len() to count total fragments\ntotal_fragments = len(fragment_lengths)\nprint(\"Total fragments found:\", total_fragments)",
+          "starterCode": "# Task 1: Count the total number of fragments\nfragment_lengths = [45, 23, 67, 12, 89, 34, 56, 78, 21, 43]\n\n# Use len() to count total fragments\n# TODO: Create a variable called total_fragments and set it to the length of fragment_lengths\n# TODO: Print the result using: \"Total fragments found: \" + str(total_fragments)",
           "expectedOutput": [
             "Total fragments found: 10"
           ],
+          "validation": {
+            "requiredNumbers": [
+              10
+            ],
+            "requiredText": [
+              "Total fragments found",
+              "10"
+            ],
+            "outputPatterns": [
+              "(Total fragments found.*10|10.*fragments found)",
+              "Total fragments.*:.*10"
+            ]
+          },
           "hints": [
             "len() returns the number of items in a list",
-            "Use len(fragment_lengths) to count the fragments"
+            "Use len(fragment_lengths) to count the fragments",
+            "Use str() to convert numbers to strings for concatenation",
+            "Remember: \"text\" + str(number) for string concatenation"
           ]
         },
         {
           "title": "Task 2: Calculate Total Characters",
           "instruction": "Use a for loop to add up all the fragment lengths",
-          "starterCode": "# Task 2: Calculate total characters using a for loop\n# Note: fragment_lengths is already available from Task 1\n\ntotal_characters = 0\n# Write your for loop here to add up all the lengths\nfor length in fragment_lengths:\n    total_characters = total_characters + length\n\nprint(\"Total characters:\", total_characters)",
+          "starterCode": "# Task 2: Calculate total characters using a for loop\n# Note: fragment_lengths is already available from Task 1\n\ntotal_characters = 0\n# TODO: Write a for loop to go through each length in fragment_lengths\n# TODO: In the loop, add each length to total_characters\n# TODO: Print the result using: \"Total characters: \" + str(total_characters)",
           "expectedOutput": [
             "Total characters: 468"
           ],
+          "validation": {
+            "requiredNumbers": [
+              468
+            ],
+            "requiredText": [
+              "Total characters",
+              "468"
+            ],
+            "outputPatterns": [
+              "(Total characters.*468|468.*Total characters)",
+              "Total characters.*:.*468"
+            ]
+          },
           "hints": [
             "Use 'for length in fragment_lengths:' to loop through each length",
             "Add each length to total_characters inside the loop",
-            "Use: total_characters = total_characters + length"
+            "Use: total_characters = total_characters + length",
+            "Use str() to convert the number to a string for concatenation"
           ]
         },
         {
           "title": "Task 3: Categorize Fragments",
-          "instruction": "Count fragments by size category using if/elif/else statements",
-          "starterCode": "# Task 3: Count fragments by size category\n# Note: fragment_lengths is still available from previous tasks\n\nshort_count = 0    # less than 30 characters\nmedium_count = 0   # 30-60 characters  \nlong_count = 0     # more than 60 characters\n\n# Write your for loop here to categorize and count each fragment\nfor length in fragment_lengths:\n    if length < 30:\n        short_count = short_count + 1\n    elif length >= 30 and length <= 60:\n        medium_count = medium_count + 1\n    else:\n        long_count = long_count + 1\n\nprint(\"Fragment distribution:\")\nprint(\"Short fragments (< 30 chars):\", short_count)\nprint(\"Medium fragments (30-60 chars):\", medium_count) \nprint(\"Long fragments (> 60 chars):\", long_count)",
+          "instruction": "Create a function that categorizes fragments by size and returns the counts",
+          "starterCode": "# Task 3: Create a function to categorize fragments by size\n# Note: fragment_lengths is still available from previous tasks\n\ndef categorize_fragments(lengths):\n    \"\"\"Categorize fragments by size and return counts.\n    \n    Args:\n        lengths: List of fragment lengths\n        \n    Returns:\n        tuple: (short_count, medium_count, long_count)\n            - short_count: fragments < 30 characters\n            - medium_count: fragments 30-60 characters  \n            - long_count: fragments > 60 characters\n    \"\"\"\n    short_count = 0\n    medium_count = 0\n    long_count = 0\n    \n    # TODO: Write a for loop to go through each length in the lengths parameter\n    # TODO: Use if/elif/else to check the length and increment the right counter\n    # TODO: Return the three counts as a tuple\n    \n    return short_count, medium_count, long_count\n\n# Test your function and display results\nshort, medium, long = categorize_fragments(fragment_lengths)\nprint(f\"Short fragments (< 30 chars): {short}\")\nprint(f\"Medium fragments (30-60 chars): {medium}\")\nprint(f\"Long fragments (> 60 chars): {long}\")",
           "expectedOutput": [
             "Short fragments (< 30 chars): 3",
             "Medium fragments (30-60 chars): 5",
             "Long fragments (> 60 chars): 2"
           ],
+          "validation": {
+            "requiredNumbers": [
+              3,
+              5,
+              2
+            ],
+            "requiredText": [
+              "Short fragments",
+              "Medium fragments",
+              "Long fragments"
+            ],
+            "outputPatterns": [
+              "Short fragments.*3",
+              "Medium fragments.*5",
+              "Long fragments.*2"
+            ],
+            "codePatterns": [
+              "def\\s+categorize_fragments\\s*\\(",
+              "return\\s+.*short_count.*medium_count.*long_count",
+              "for\\s+\\w+\\s+in\\s+lengths"
+            ]
+          },
           "hints": [
-            "Use if/elif/else inside the for loop",
+            "Define a function with def categorize_fragments(lengths):",
+            "Use if/elif/else inside the for loop to categorize each length",
             "if length < 30: for short fragments",
             "elif length >= 30 and length <= 60: for medium fragments",
             "else: for long fragments",
-            "Remember to indent code inside if/elif/else blocks"
+            "Return all three counts: return short_count, medium_count, long_count",
+            "The function call is already provided - just complete the function body"
           ]
         }
       ],
-      "solution": "fragment_lengths = [45, 23, 67, 12, 89, 34, 56, 78, 21, 43]\n\n# Task 1: Use len() to count total fragments\ntotal_fragments = len(fragment_lengths)\nprint(\"Total fragments found:\", total_fragments)\n\n# Task 2: Calculate total characters using a for loop\ntotal_characters = 0\nfor length in fragment_lengths:\n    total_characters = total_characters + length\nprint(\"Total characters:\", total_characters)\n\n# Task 3: Count fragments by size category\nshort_count = 0    # less than 30 characters\nmedium_count = 0   # 30-60 characters  \nlong_count = 0     # more than 60 characters\n\nfor length in fragment_lengths:\n    if length < 30:\n        short_count = short_count + 1\n    elif length >= 30 and length <= 60:\n        medium_count = medium_count + 1\n    else:\n        long_count = long_count + 1\n\nprint(\"Fragment distribution:\")\nprint(\"Short fragments (< 30 chars):\", short_count)\nprint(\"Medium fragments (30-60 chars):\", medium_count) \nprint(\"Long fragments (> 60 chars):\", long_count)\n\n# Bonus: Calculate average length\naverage_length = total_characters / total_fragments\nprint(\"Average fragment length:\", round(average_length, 1), \"characters\")",
+      "solution": "fragment_lengths = [45, 23, 67, 12, 89, 34, 56, 78, 21, 43]\n\n# Task 1: Use len() to count total fragments\ntotal_fragments = len(fragment_lengths)\nprint(\"Total fragments found: \" + str(total_fragments))\n\n# Task 2: Calculate total characters using a for loop\ntotal_characters = 0\nfor length in fragment_lengths:\n    total_characters = total_characters + length\nprint(\"Total characters: \" + str(total_characters))\n\n# Task 3: Create a function to categorize fragments\ndef categorize_fragments(lengths):\n    \"\"\"Categorize fragments by size and return counts.\"\"\"\n    short_count = 0\n    medium_count = 0\n    long_count = 0\n    \n    for length in lengths:\n        if length < 30:\n            short_count += 1\n        elif length >= 30 and length <= 60:\n            medium_count += 1\n        else:\n            long_count += 1\n    \n    return short_count, medium_count, long_count\n\n# Test the function and display results\nshort, medium, long = categorize_fragments(fragment_lengths)\nprint(f\"Short fragments (< 30 chars): {short}\")\nprint(f\"Medium fragments (30-60 chars): {medium}\")\nprint(f\"Long fragments (> 60 chars): {long}\")\n\n# Bonus: Calculate average length\naverage_length = total_characters / total_fragments\nprint(f\"Average fragment length: {round(average_length, 1)} characters\")",
       "hints": [
         "Use len(fragment_lengths) to count how many items are in the list",
         "For loops iterate through each item: for length in fragment_lengths:",
         "Inside the loop, add each length to your total: total_characters = total_characters + length",
-        "Use if/elif/else inside the loop: if length < 30: ... elif length <= 60: ... else:",
-        "Remember to indent code inside if/elif/else blocks (4 spaces)",
+        "Functions are defined with def function_name(parameters):",
+        "Use if/elif/else inside loops: if length < 30: ... elif length <= 60: ... else:",
+        "Functions should return values: return value1, value2, value3",
+        "Remember to indent code inside function definitions, loops, and if/elif/else blocks (4 spaces)",
         "Comparison operators: < (less than), <= (less than or equal), > (greater than)"
       ]
     },
     {
       "id": 3,
       "title": "Decoding Fragment Languages",
-      "story": "Some fragments appear to be in Latin, others in ancient Greek, and some are too damaged to identify. Understanding the language distribution might help us understand the cultural context.\n\n<strong>🔍 Python Concepts: Conditional Statements (if/elif)</strong>\n\n<em>Conditional statements</em> let your program make decisions:\n• <code>if</code> checks a condition: <code>if age >= 18:</code>\n• <code>elif</code> checks additional conditions: <code>elif age >= 13:</code>\n• <code>==</code> compares values (different from <code>=</code> which assigns)\n• Remember to indent code inside if/elif blocks!\n\nPractice using conditional statements to categorize the language codes below.",
-      "challenge": "Analyze the language codes and count how many fragments we have for each language type.",
+      "story": "Some fragments appear to be in Latin, others in ancient Greek, and some are too damaged to identify. Understanding the language distribution might help us understand the cultural context.\n\n<strong>🔍 Python Concepts: Conditional Statements and Functions</strong>\n\n<em>Conditional statements</em> let your program make decisions:\n• <code>if</code> checks a condition: <code>if age >= 18:</code>\n• <code>elif</code> checks additional conditions: <code>elif age >= 13:</code>\n• <code>==</code> compares values (different from <code>=</code> which assigns)\n• Remember to indent code inside if/elif blocks!\n\n<em>Functions</em> organize and structure your code:\n• Define with <code>def function_name(parameters):</code>\n• Return multiple values: <code>return value1, value2, value3</code>\n• Call functions to get results: <code>latin, greek, unknown = count_languages(codes)</code>\n\nPractice using conditionals within functions to analyze language distribution.",
+      "challenge": "Create a function that analyzes language codes and returns counts for each language type.",
       "data": "Language codes: [\"LAT\", \"GRK\", \"UNK\", \"LAT\", \"UNK\", \"LAT\", \"GRK\", \"LAT\", \"UNK\", \"GRK\", \"LAT\", \"UNK\"]",
-      "starterCode": "# Count language types using conditional statements\n# Language codes: [\"LAT\", \"GRK\", \"UNK\", \"LAT\", \"UNK\", \"LAT\", \"GRK\", \"LAT\", \"UNK\", \"GRK\", \"LAT\", \"UNK\"]\n# LAT = Latin, GRK = Greek, UNK = Unknown\n\n# Your code here:\n",
-      "solution": "languages = [\"LAT\", \"GRK\", \"UNK\", \"LAT\", \"UNK\", \"LAT\", \"GRK\", \"LAT\", \"UNK\", \"GRK\", \"LAT\", \"UNK\"]\nlatin_count = 0\ngreek_count = 0\nunknown_count = 0\nfor lang in languages:\n    if lang == \"LAT\":\n        latin_count = latin_count + 1\n    elif lang == \"GRK\":\n        greek_count = greek_count + 1\n    elif lang == \"UNK\":\n        unknown_count = unknown_count + 1\nprint(\"Latin fragments:\", latin_count)\nprint(\"Greek fragments:\", greek_count)\nprint(\"Unknown fragments:\", unknown_count)",
+      "starterCode": "# Create a function to count language types\n# Language codes: [\"LAT\", \"GRK\", \"UNK\", \"LAT\", \"UNK\", \"LAT\", \"GRK\", \"LAT\", \"UNK\", \"GRK\", \"LAT\", \"UNK\"]\n# LAT = Latin, GRK = Greek, UNK = Unknown\n\ndef count_languages(language_codes):\n    \"\"\"Count fragments by language type.\n    \n    Args:\n        language_codes: List of language codes (LAT, GRK, UNK)\n        \n    Returns:\n        tuple: (latin_count, greek_count, unknown_count)\n    \"\"\"\n    latin_count = 0\n    greek_count = 0\n    unknown_count = 0\n    \n    # TODO: Write a for loop to go through each code in language_codes\n    # TODO: Use if/elif/else to check the code and increment the right counter\n    # TODO: Return the three counts as a tuple\n    \n    return latin_count, greek_count, unknown_count\n\n# Test your function\nlanguages = [\"LAT\", \"GRK\", \"UNK\", \"LAT\", \"UNK\", \"LAT\", \"GRK\", \"LAT\", \"UNK\", \"GRK\", \"LAT\", \"UNK\"]\nlatin, greek, unknown = count_languages(languages)\n\nprint(f\"Latin fragments: {latin}\")\nprint(f\"Greek fragments: {greek}\")\nprint(f\"Unknown fragments: {unknown}\")",
+      "solution": "def count_languages(language_codes):\n    \"\"\"Count fragments by language type.\"\"\"\n    latin_count = 0\n    greek_count = 0\n    unknown_count = 0\n    \n    for lang in language_codes:\n        if lang == \"LAT\":\n            latin_count += 1\n        elif lang == \"GRK\":\n            greek_count += 1\n        elif lang == \"UNK\":\n            unknown_count += 1\n    \n    return latin_count, greek_count, unknown_count\n\n# Test the function\nlanguages = [\"LAT\", \"GRK\", \"UNK\", \"LAT\", \"UNK\", \"LAT\", \"GRK\", \"LAT\", \"UNK\", \"GRK\", \"LAT\", \"UNK\"]\nlatin, greek, unknown = count_languages(languages)\n\nprint(f\"Latin fragments: {latin}\")\nprint(f\"Greek fragments: {greek}\")\nprint(f\"Unknown fragments: {unknown}\")",
       "validation": {
         "codePatterns": [
-          "languages\\s*=\\s*\\[.*\\]",
-          "(latin_count|greek_count|unknown_count).*=.*0",
-          "for\\s+\\w+\\s+in\\s+languages",
+          "def\\s+count_languages\\s*\\(",
+          "language_codes",
+          "return\\s+.*latin_count.*greek_count.*unknown_count",
+          "for\\s+\\w+\\s+in\\s+language_codes",
           "if\\s+.*==.*['\"]LAT['\"]",
           "elif\\s+.*==.*['\"]GRK['\"]"
         ],
@@ -112,82 +168,90 @@
           "(Greek fragments.*3|3.*Greek)",
           "(Unknown fragments.*4|4.*Unknown)"
         ],
-        "description": "Must count each language type using conditionals and loops"
+        "description": "Must create a function that counts language types and returns the counts"
       },
       "hints": [
-        "Create a list variable: languages = [\"LAT\", \"GRK\", \"UNK\", ...]",
-        "Initialize counters: latin_count = 0, greek_count = 0, unknown_count = 0",
-        "Use a for loop: for lang in languages:",
-        "Use == to compare strings: if lang == \"LAT\":",
-        "Don't forget to increment counters: latin_count = latin_count + 1"
+        "Define the function with def count_languages(language_codes):",
+        "Use a for loop inside the function: for lang in language_codes:",
+        "Use if/elif/else to categorize: if lang == \"LAT\":",
+        "Increment counters: latin_count += 1",
+        "Return all three counts: return latin_count, greek_count, unknown_count",
+        "The function call is already provided - just complete the function body"
       ]
     },
     {
       "id": 4,
       "title": "Dating the Fragments",
-      "story": "Carbon dating and paleographic analysis have provided approximate dates for each fragment. Understanding the temporal distribution might reveal when this civilization flourished.\n\n<strong>🔍 Python Concepts: Finding Min/Max and Range Checking</strong>\n\nFinding the smallest and largest values in data:\n• Access list items by index: <code>my_list[0]</code> gets the first item\n• Compare numbers: <code>if date < oldest_date:</code>\n• Combine conditions: <code>if date >= 100 and date < 200:</code>\n• Update tracking variables inside loops\n\nPractice finding minimum and maximum values in the dating data below.",
-      "challenge": "Find the oldest and newest fragments, and count how many fragments belong to each century.",
+      "story": "Carbon dating and paleographic analysis have provided approximate dates for each fragment. Understanding the temporal distribution might reveal when this civilization flourished.\n\n<strong>🔍 Python Concepts: Functions, Min/Max Finding, and Range Analysis</strong>\n\n<em>Functions</em> help organize complex analysis tasks:\n• Define with <code>def function_name(parameters):</code>\n• Return multiple values: <code>return value1, value2</code>\n• Functions make code reusable and testable\n\n<em>Finding minimum and maximum values:</em>\n• Start with first item: <code>oldest = dates[0]</code>\n• Compare in loops: <code>if date < oldest:</code>\n• Update when finding new extremes: <code>oldest = date</code>\n\n<em>Range checking with conditions:</em>\n• Combine conditions: <code>if date >= 100 and date < 200:</code>\n• Use elif for multiple ranges\n• Count items that meet criteria\n\n<strong>Example:</strong>\n<code>\ndef analyze_scores(scores):\n    highest = scores[0]\n    lowest = scores[0]\n    \n    for score in scores:\n        if score > highest:\n            highest = score\n        if score < lowest:\n            lowest = score\n    \n    return lowest, highest\n\nmin_score, max_score = analyze_scores([85, 92, 78, 96, 88])\nprint(f\"Range: {min_score} to {max_score}\")\n</code>\n\nPractice creating functions to analyze temporal data and calculate date ranges.",
+      "challenge": "Create functions to analyze fragment dating data and determine temporal distribution patterns.",
       "data": "Fragment dates (CE): [150, 230, 180, 340, 290, 160, 380, 200, 220, 310]",
-      "starterCode": "# Analyze fragment dates to find oldest, newest, and century distribution\n# Dates (CE): [150, 230, 180, 340, 290, 160, 380, 200, 220, 310]\n\n# Your code here:\n",
-      "solution": "dates = [150, 230, 180, 340, 290, 160, 380, 200, 220, 310]\noldest_date = dates[0]\nnewest_date = dates[0]\nfor date in dates:\n    if date < oldest_date:\n        oldest_date = date\n    if date > newest_date:\n        newest_date = date\nprint(\"Oldest fragment:\", oldest_date, \"CE\")\nprint(\"Newest fragment:\", newest_date, \"CE\")\nsecond_century = 0\nthird_century = 0\nfourth_century = 0\nfor date in dates:\n    if date >= 100 and date < 200:\n        second_century = second_century + 1\n    elif date >= 200 and date < 300:\n        third_century = third_century + 1\n    elif date >= 300 and date < 400:\n        fourth_century = fourth_century + 1\nprint(\"2nd century fragments:\", second_century)\nprint(\"3rd century fragments:\", third_century)\nprint(\"4th century fragments:\", fourth_century)",
+      "starterCode": "# Create functions to analyze fragment dating patterns\n# Dates (CE): [150, 230, 180, 340, 290, 160, 380, 200, 220, 310]\n\ndef find_date_range(dates):\n    \"\"\"Find the oldest and newest dates in the collection.\n    \n    Args:\n        dates: List of dates (integers)\n        \n    Returns:\n        tuple: (oldest_date, newest_date)\n    \"\"\"\n    # TODO: Initialize oldest and newest with the first date\n    # TODO: Loop through all dates to find min and max\n    # TODO: Return both values as a tuple\n    \n    return oldest_date, newest_date\n\ndef count_by_century(dates):\n    \"\"\"Count fragments by century periods.\n    \n    Args:\n        dates: List of dates (integers)\n        \n    Returns:\n        tuple: (second_century_count, third_century_count, fourth_century_count)\n    \"\"\"\n    second_century = 0  # 100-199 CE\n    third_century = 0   # 200-299 CE\n    fourth_century = 0  # 300-399 CE\n    \n    # TODO: Loop through dates and categorize by century\n    # TODO: Use if/elif/else to count each century\n    # TODO: Return all three counts\n    \n    return second_century, third_century, fourth_century\n\n# Test your functions\ndates = [150, 230, 180, 340, 290, 160, 380, 200, 220, 310]\n\n# Analyze date range\noldest, newest = find_date_range(dates)\nprint(f\"Date range: {oldest} CE to {newest} CE\")\nprint(f\"Time span: {newest - oldest} years\")\n\n# Analyze by century\nsecond, third, fourth = count_by_century(dates)\nprint(f\"2nd century (100-199 CE): {second} fragments\")\nprint(f\"3rd century (200-299 CE): {third} fragments\")\nprint(f\"4th century (300-399 CE): {fourth} fragments\")",
+      "solution": "def find_date_range(dates):\n    \"\"\"Find the oldest and newest dates in the collection.\"\"\"\n    oldest_date = dates[0]\n    newest_date = dates[0]\n    \n    for date in dates:\n        if date < oldest_date:\n            oldest_date = date\n        if date > newest_date:\n            newest_date = date\n    \n    return oldest_date, newest_date\n\ndef count_by_century(dates):\n    \"\"\"Count fragments by century periods.\"\"\"\n    second_century = 0  # 100-199 CE\n    third_century = 0   # 200-299 CE\n    fourth_century = 0  # 300-399 CE\n    \n    for date in dates:\n        if date >= 100 and date < 200:\n            second_century += 1\n        elif date >= 200 and date < 300:\n            third_century += 1\n        elif date >= 300 and date < 400:\n            fourth_century += 1\n    \n    return second_century, third_century, fourth_century\n\n# Test the functions\ndates = [150, 230, 180, 340, 290, 160, 380, 200, 220, 310]\n\n# Analyze date range\noldest, newest = find_date_range(dates)\nprint(f\"Date range: {oldest} CE to {newest} CE\")\nprint(f\"Time span: {newest - oldest} years\")\n\n# Analyze by century\nsecond, third, fourth = count_by_century(dates)\nprint(f\"2nd century (100-199 CE): {second} fragments\")\nprint(f\"3rd century (200-299 CE): {third} fragments\")\nprint(f\"4th century (300-399 CE): {fourth} fragments\")",
       "validation": {
         "codePatterns": [
-          "dates\\s*=\\s*\\[.*\\]",
-          "oldest_date\\s*=\\s*dates\\[0\\]",
-          "newest_date\\s*=\\s*dates\\[0\\]",
+          "def\\s+find_date_range\\s*\\(",
+          "def\\s+count_by_century\\s*\\(",
+          "return\\s+.*oldest_date.*newest_date",
+          "return\\s+.*second_century.*third_century.*fourth_century",
           "for\\s+\\w+\\s+in\\s+dates",
-          "if\\s+.*<.*oldest_date",
-          "if\\s+.*>.*newest_date"
+          "if\\s+date\\s+<\\s+oldest_date",
+          "if\\s+date\\s+>\\s+newest_date",
+          "if\\s+date\\s+>=\\s+100\\s+and\\s+date\\s+<\\s+200"
         ],
         "outputPatterns": [
-          "(Oldest fragment.*150|150.*oldest)",
-          "(Newest fragment.*380|380.*newest)",
-          "(2nd century.*2|2.*2nd)",
-          "(3rd century.*4|4.*3rd)",
-          "(4th century.*4|4.*4th)"
+          "Date range.*150.*380.*CE",
+          "Time span.*230.*years",
+          "2nd century.*100-199.*2.*fragments",
+          "3rd century.*200-299.*4.*fragments",
+          "4th century.*300-399.*4.*fragments"
         ],
-        "description": "Must find min/max dates and count by century using loops and conditionals"
+        "description": "Must create functions for date range analysis and century counting"
       },
       "hints": [
-        "Start with oldest_date = dates[0] and newest_date = dates[0]",
-        "In a loop, compare each date: if date < oldest_date:",
-        "Update the tracking variable: oldest_date = date",
-        "For centuries, use ranges: if date >= 100 and date < 200:",
-        "2nd century = 100-199 CE, 3rd century = 200-299 CE, etc."
+        "Define functions with def function_name(parameters):",
+        "Start min/max with first item: oldest_date = dates[0]",
+        "Compare in loops: if date < oldest_date: oldest_date = date",
+        "For century ranges: if date >= 100 and date < 200:",
+        "Return multiple values: return value1, value2, value3",
+        "The function calls are provided - complete the function bodies"
       ]
     },
     {
       "id": 5,
       "title": "Word Frequency Analysis",
-      "story": "You've transcribed some key words from the legible fragments. Analyzing word frequency might reveal important themes or repeated concepts in this ancient text.\n\n<strong>🔍 Python Concepts: String Comparison and Finding Maximum Values</strong>\n\nWorking with text data:\n• Strings can be compared with ==: <code>if word == \"temple\":</code>\n• Keep track of the highest value seen so far\n• Update both the value and associated data when you find a new maximum\n\nPractice analyzing word frequency data to find patterns in the ancient text.",
-      "challenge": "Count word frequencies and identify the most common word in the fragments.",
+      "story": "You've transcribed some key words from the legible fragments. Analyzing word frequency might reveal important themes or repeated concepts in this ancient text.\n\n<strong>🔍 Python Concepts: Dictionary-like Counting and Functions</strong>\n\n<em>Functions</em> help organize data analysis tasks:\n• Define with <code>def function_name(parameters):</code>\n• Return structured data: <code>return counts_dict</code>\n• Functions make analysis reusable and clear\n\n<em>Counting with variables (simulating dictionary behavior):</em>\n• Use separate variables for each category\n• Compare strings with <code>==</code>: <code>if word == \"temple\":</code>\n• Increment counters: <code>temple_count += 1</code>\n• Track maximum values for analysis\n\n<em>Finding the maximum frequency:</em>\n• Start with first category as highest\n• Compare each count: <code>if gold_count > highest_count:</code>\n• Update both the word and count when finding new maximum\n\n<strong>Example:</strong>\n<code>\ndef count_colors(colors):\n    red_count = 0\n    blue_count = 0\n    green_count = 0\n    \n    for color in colors:\n        if color == \"red\":\n            red_count += 1\n        elif color == \"blue\":\n            blue_count += 1\n        elif color == \"green\":\n            green_count += 1\n    \n    return red_count, blue_count, green_count\n\nred, blue, green = count_colors([\"red\", \"blue\", \"red\", \"green\"])\nprint(f\"Red: {red}, Blue: {blue}, Green: {green}\")\n</code>\n\nPractice creating functions to analyze word frequency patterns in ancient texts.",
+      "challenge": "Create a function to analyze word frequencies and identify the most common themes in the fragments.",
       "data": "Words found: [\"temple\", \"gold\", \"sacred\", \"temple\", \"ritual\", \"gold\", \"temple\", \"sacred\", \"gold\", \"temple\", \"ritual\", \"sacred\"]",
-      "starterCode": "# Count word frequencies and find the most common word\n# Words: [\"temple\", \"gold\", \"sacred\", \"temple\", \"ritual\", \"gold\", \"temple\", \"sacred\", \"gold\", \"temple\", \"ritual\", \"sacred\"]\n\n# Your code here:\n",
-      "solution": "words = [\"temple\", \"gold\", \"sacred\", \"temple\", \"ritual\", \"gold\", \"temple\", \"sacred\", \"gold\", \"temple\", \"ritual\", \"sacred\"]\ntemple_count = 0\ngold_count = 0\nsacred_count = 0\nritual_count = 0\nfor word in words:\n    if word == \"temple\":\n        temple_count = temple_count + 1\n    elif word == \"gold\":\n        gold_count = gold_count + 1\n    elif word == \"sacred\":\n        sacred_count = sacred_count + 1\n    elif word == \"ritual\":\n        ritual_count = ritual_count + 1\nprint(\"Word frequencies:\")\nprint(\"temple:\", temple_count)\nprint(\"gold:\", gold_count)\nprint(\"sacred:\", sacred_count)\nprint(\"ritual:\", ritual_count)\n\n# Find most common word\nmost_common_word = \"temple\"\nhighest_count = temple_count\nif gold_count > highest_count:\n    most_common_word = \"gold\"\n    highest_count = gold_count\nif sacred_count > highest_count:\n    most_common_word = \"sacred\"\n    highest_count = sacred_count\nif ritual_count > highest_count:\n    most_common_word = \"ritual\"\n    highest_count = ritual_count\nprint(\"Most common word:\", most_common_word, \"(appears\", highest_count, \"times)\")",
+      "starterCode": "# Create a function to analyze word frequency patterns\n# Words: [\"temple\", \"gold\", \"sacred\", \"temple\", \"ritual\", \"gold\", \"temple\", \"sacred\", \"gold\", \"temple\", \"ritual\", \"sacred\"]\n\ndef analyze_word_frequency(words):\n    \"\"\"Count frequency of key words in the fragments.\n    \n    Args:\n        words: List of words found in fragments\n        \n    Returns:\n        tuple: (temple_count, gold_count, sacred_count, ritual_count)\n    \"\"\"\n    temple_count = 0\n    gold_count = 0\n    sacred_count = 0\n    ritual_count = 0\n    \n    # TODO: Loop through words and count each type\n    # TODO: Use if/elif statements to categorize words\n    # TODO: Return all four counts as a tuple\n    \n    return temple_count, gold_count, sacred_count, ritual_count\n\ndef find_most_common_word(temple_count, gold_count, sacred_count, ritual_count):\n    \"\"\"Find the word with the highest frequency.\n    \n    Args:\n        temple_count, gold_count, sacred_count, ritual_count: Word frequencies\n        \n    Returns:\n        tuple: (most_common_word, highest_count)\n    \"\"\"\n    # TODO: Start with temple as the most common\n    # TODO: Compare each count and update if higher\n    # TODO: Return the word and its count\n    \n    return most_common_word, highest_count\n\n# Test your functions\nwords = [\"temple\", \"gold\", \"sacred\", \"temple\", \"ritual\", \"gold\", \"temple\", \"sacred\", \"gold\", \"temple\", \"ritual\", \"sacred\"]\n\n# Analyze frequencies\ntemple, gold, sacred, ritual = analyze_word_frequency(words)\nprint(\"Word frequencies:\")\nprint(f\"temple: {temple}\")\nprint(f\"gold: {gold}\")\nprint(f\"sacred: {sacred}\")\nprint(f\"ritual: {ritual}\")\n\n# Find most common\nmost_common, highest = find_most_common_word(temple, gold, sacred, ritual)\nprint(f\"\\nMost common word: {most_common} (appears {highest} times)\")",
+      "solution": "def analyze_word_frequency(words):\n    \"\"\"Count frequency of key words in the fragments.\"\"\"\n    temple_count = 0\n    gold_count = 0\n    sacred_count = 0\n    ritual_count = 0\n    \n    for word in words:\n        if word == \"temple\":\n            temple_count += 1\n        elif word == \"gold\":\n            gold_count += 1\n        elif word == \"sacred\":\n            sacred_count += 1\n        elif word == \"ritual\":\n            ritual_count += 1\n    \n    return temple_count, gold_count, sacred_count, ritual_count\n\ndef find_most_common_word(temple_count, gold_count, sacred_count, ritual_count):\n    \"\"\"Find the word with the highest frequency.\"\"\"\n    most_common_word = \"temple\"\n    highest_count = temple_count\n    \n    if gold_count > highest_count:\n        most_common_word = \"gold\"\n        highest_count = gold_count\n    if sacred_count > highest_count:\n        most_common_word = \"sacred\"\n        highest_count = sacred_count\n    if ritual_count > highest_count:\n        most_common_word = \"ritual\"\n        highest_count = ritual_count\n    \n    return most_common_word, highest_count\n\n# Test the functions\nwords = [\"temple\", \"gold\", \"sacred\", \"temple\", \"ritual\", \"gold\", \"temple\", \"sacred\", \"gold\", \"temple\", \"ritual\", \"sacred\"]\n\n# Analyze frequencies\ntemple, gold, sacred, ritual = analyze_word_frequency(words)\nprint(\"Word frequencies:\")\nprint(f\"temple: {temple}\")\nprint(f\"gold: {gold}\")\nprint(f\"sacred: {sacred}\")\nprint(f\"ritual: {ritual}\")\n\n# Find most common\nmost_common, highest = find_most_common_word(temple, gold, sacred, ritual)\nprint(f\"\\nMost common word: {most_common} (appears {highest} times)\")",
       "validation": {
         "codePatterns": [
-          "words\\s*=\\s*\\[.*\\]",
-          "(temple_count|gold_count|sacred_count|ritual_count).*=.*0",
+          "def\\s+analyze_word_frequency\\s*\\(",
+          "def\\s+find_most_common_word\\s*\\(",
+          "return\\s+.*temple_count.*gold_count.*sacred_count.*ritual_count",
+          "return\\s+.*most_common_word.*highest_count",
           "for\\s+\\w+\\s+in\\s+words",
-          "if\\s+.*==.*['\"]temple['\"]",
-          "most_common_word",
-          "highest_count"
+          "if\\s+word\\s+==\\s+['\"]temple['\"]",
+          "if\\s+.*_count\\s+>\\s+highest_count"
         ],
         "outputPatterns": [
-          "(temple.*4|4.*temple)",
-          "(gold.*3|3.*gold)",
-          "(sacred.*3|3.*sacred)",
-          "(ritual.*2|2.*ritual)",
+          "Word frequencies",
+          "temple.*4",
+          "gold.*3",
+          "sacred.*3",
+          "ritual.*2",
           "Most common word.*temple.*4"
         ],
-        "description": "Must count word frequencies and find the most common word"
+        "description": "Must create functions for word frequency analysis and finding maximum"
       },
       "hints": [
-        "Count each word type with separate counters",
-        "Use if/elif statements to categorize each word",
-        "To find the maximum, start with the first word as most common",
+        "Define functions with def function_name(parameters):",
+        "Use if/elif to categorize words: if word == \"temple\":",
+        "Increment counters: temple_count += 1",
+        "For finding max, start with first as highest",
         "Compare each count: if gold_count > highest_count:",
-        "Update both the word and count when you find a higher value"
+        "Update both word and count when finding new maximum",
+        "Return multiple values: return value1, value2, value3, value4"
       ]
     },
     {
@@ -227,72 +291,89 @@
     {
       "id": 7,
       "title": "Geographic Distribution",
-      "story": "The fragments were found at different archaeological sites. Understanding their geographic distribution might reveal trade routes or cultural connections.\n\n<strong>🔍 Python Concepts: Working with Multiple Lists and Indices</strong>\n\nProcessing parallel data:\n• Use the same index to access related data: <code>sites[i]</code> and <code>counts[i]</code>\n• <code>range(len(list))</code> creates indices: <code>for i in range(len(sites)):</code>\n• Calculate percentages: <code>percentage = (count / total) * 100</code>\n• Use <code>round()</code> to format decimal numbers: <code>round(percentage, 1)</code>\n\nPractice working with multiple lists that contain related information.",
-      "challenge": "Analyze the geographic distribution of fragments and calculate percentages for each site.",
+      "story": "The fragments were found at different archaeological sites. Understanding their geographic distribution might reveal trade routes or cultural connections.\n\n<strong>🔍 Python Concepts: Functions, Parallel Lists, and Statistical Analysis</strong>\n\n<em>Functions</em> organize complex data analysis:\n• Define with <code>def function_name(parameters):</code>\n• Process multiple related lists together\n• Return organized results: <code>return statistics_dict</code>\n• Functions make statistical analysis clear and reusable\n\n<em>Working with parallel lists:</em>\n• Use same index for related data: <code>sites[i]</code> and <code>counts[i]</code>\n• <code>range(len(list))</code> creates indices: <code>for i in range(len(sites)):</code>\n• Access corresponding elements together\n\n<em>Statistical calculations:</em>\n• Total: <code>sum(counts)</code> or manual addition\n• Percentages: <code>(count / total) * 100</code>\n• Use <code>round()</code> for clean formatting: <code>round(percentage, 1)</code>\n• Find maximum with comparisons\n\n<strong>Example:</strong>\n<code>\ndef analyze_sales(stores, sales):\n    total_sales = sum(sales)\n    max_sales = 0\n    top_store = \"\"\n    \n    for i in range(len(stores)):\n        if sales[i] > max_sales:\n            max_sales = sales[i]\n            top_store = stores[i]\n    \n    return total_sales, top_store, max_sales\n\ntotal, store, amount = analyze_sales([\"A\", \"B\", \"C\"], [100, 150, 120])\nprint(f\"Total: {total}, Top: {store} with {amount}\")\n</code>\n\nPractice creating functions to analyze geographic distribution with statistical calculations.",
+      "challenge": "Create functions to analyze geographic distribution and calculate site statistics.",
       "data": "Sites: [\"Alexandria\", \"Memphis\", \"Thebes\", \"Aswan\"]\nFragment counts: [15, 8, 12, 5]",
-      "starterCode": "# Analyze geographic distribution of fragments\n# Sites: [\"Alexandria\", \"Memphis\", \"Thebes\", \"Aswan\"]\n# Counts: [15, 8, 12, 5]\n\n# Your code here:\n",
-      "solution": "sites = [\"Alexandria\", \"Memphis\", \"Thebes\", \"Aswan\"]\ncounts = [15, 8, 12, 5]\n\n# Calculate total fragments\ntotal_fragments = 0\nfor count in counts:\n    total_fragments = total_fragments + count\n\nprint(\"Geographic Distribution of Fragments:\")\nprint(\"Total fragments:\", total_fragments)\nprint()\n\n# Show distribution for each site\nfor i in range(len(sites)):\n    site = sites[i]\n    count = counts[i]\n    percentage = (count / total_fragments) * 100\n    print(f\"{site}: {count} fragments ({round(percentage, 1)}%)\")\n\n# Find site with most fragments\nmax_count = counts[0]\nmax_site = sites[0]\nfor i in range(len(sites)):\n    if counts[i] > max_count:\n        max_count = counts[i]\n        max_site = sites[i]\n\nprint()\nprint(f\"Most fragments found at: {max_site} ({max_count} fragments)\")\n\n# Find sites with more than 10 fragments\nprint(\"\\nMajor sites (>10 fragments):\")\nfor i in range(len(sites)):\n    if counts[i] > 10:\n        print(f\"- {sites[i]} ({counts[i]} fragments)\")",
+      "starterCode": "# Create functions to analyze geographic distribution of fragments\n# Sites: [\"Alexandria\", \"Memphis\", \"Thebes\", \"Aswan\"]\n# Counts: [15, 8, 12, 5]\n\ndef calculate_site_statistics(sites, counts):\n    \"\"\"Calculate total fragments and site percentages.\n    \n    Args:\n        sites: List of site names\n        counts: List of fragment counts for each site\n        \n    Returns:\n        tuple: (total_fragments, site_percentages)\n        where site_percentages is a list of (site, count, percentage) tuples\n    \"\"\"\n    # TODO: Calculate total fragments\n    # TODO: Create list of site statistics with percentages\n    # TODO: Return total and statistics list\n    \n    return total_fragments, site_statistics\n\ndef find_major_sites(sites, counts, threshold=10):\n    \"\"\"Find sites with fragment counts above threshold.\n    \n    Args:\n        sites: List of site names\n        counts: List of fragment counts\n        threshold: Minimum fragments to be considered major\n        \n    Returns:\n        tuple: (top_site, top_count, major_sites_list)\n    \"\"\"\n    # TODO: Find site with most fragments\n    # TODO: Create list of major sites (>= threshold)\n    # TODO: Return top site info and major sites list\n    \n    return top_site, top_count, major_sites\n\n# Test your functions\nsites = [\"Alexandria\", \"Memphis\", \"Thebes\", \"Aswan\"]\ncounts = [15, 8, 12, 5]\n\n# Calculate statistics\ntotal, statistics = calculate_site_statistics(sites, counts)\nprint(\"Geographic Distribution of Fragments:\")\nprint(f\"Total fragments: {total}\")\nprint()\n\nfor site, count, percentage in statistics:\n    print(f\"{site}: {count} fragments ({percentage}%)\")\n\n# Find major sites\ntop_site, top_count, major_sites = find_major_sites(sites, counts)\nprint(f\"\\nMost fragments found at: {top_site} ({top_count} fragments)\")\nprint(f\"Major sites (≥10 fragments): {len(major_sites)} sites\")\nfor site in major_sites:\n    print(f\"- {site}\")",
+      "solution": "def calculate_site_statistics(sites, counts):\n    \"\"\"Calculate total fragments and site percentages.\"\"\"\n    total_fragments = sum(counts)\n    site_statistics = []\n    \n    for i in range(len(sites)):\n        site = sites[i]\n        count = counts[i]\n        percentage = round((count / total_fragments) * 100, 1)\n        site_statistics.append((site, count, percentage))\n    \n    return total_fragments, site_statistics\n\ndef find_major_sites(sites, counts, threshold=10):\n    \"\"\"Find sites with fragment counts above threshold.\"\"\"\n    # Find top site\n    top_site = sites[0]\n    top_count = counts[0]\n    \n    for i in range(len(sites)):\n        if counts[i] > top_count:\n            top_count = counts[i]\n            top_site = sites[i]\n    \n    # Find major sites\n    major_sites = []\n    for i in range(len(sites)):\n        if counts[i] >= threshold:\n            major_sites.append(sites[i])\n    \n    return top_site, top_count, major_sites\n\n# Test the functions\nsites = [\"Alexandria\", \"Memphis\", \"Thebes\", \"Aswan\"]\ncounts = [15, 8, 12, 5]\n\n# Calculate statistics\ntotal, statistics = calculate_site_statistics(sites, counts)\nprint(\"Geographic Distribution of Fragments:\")\nprint(f\"Total fragments: {total}\")\nprint()\n\nfor site, count, percentage in statistics:\n    print(f\"{site}: {count} fragments ({percentage}%)\")\n\n# Find major sites\ntop_site, top_count, major_sites = find_major_sites(sites, counts)\nprint(f\"\\nMost fragments found at: {top_site} ({top_count} fragments)\")\nprint(f\"Major sites (≥10 fragments): {len(major_sites)} sites\")\nfor site in major_sites:\n    print(f\"- {site}\")",
       "validation": {
         "codePatterns": [
-          "sites\\s*=\\s*\\[.*\\]",
-          "counts\\s*=\\s*\\[.*\\]",
-          "for\\s+i\\s+in\\s+range\\(len\\(sites\\)\\)",
+          "def\\s+calculate_site_statistics\\s*\\(",
+          "def\\s+find_major_sites\\s*\\(",
+          "return\\s+.*total_fragments.*site_statistics",
+          "return\\s+.*top_site.*top_count.*major_sites",
+          "sum\\(counts\\)",
+          "range\\(len\\(sites\\)\\)",
           "sites\\[i\\]",
           "counts\\[i\\]",
-          "percentage\\s*=.*\\*\\s*100",
-          "round\\("
+          "round\\(.*\\*\\s*100.*\\)"
         ],
         "outputPatterns": [
           "Total fragments.*40",
           "Alexandria.*15.*37\\.5",
-          "Memphis.*8.*20",
-          "Thebes.*12.*30",
+          "Memphis.*8.*20\\.0",
+          "Thebes.*12.*30\\.0",
           "Aswan.*5.*12\\.5",
-          "Most fragments found at.*Alexandria.*15"
+          "Most fragments found at.*Alexandria.*15",
+          "Major sites.*≥10.*2.*sites",
+          "- Alexandria",
+          "- Thebes"
         ],
-        "description": "Must use parallel lists with indices and calculate percentages"
+        "description": "Must create functions for geographic analysis with parallel lists and statistics"
       },
       "hints": [
-        "Use range(len(sites)) to loop through indices: for i in range(len(sites)):",
-        "Access related data with the same index: sites[i] and counts[i]",
+        "Define functions with def function_name(parameters):",
+        "Use sum(counts) to calculate total",
+        "Use range(len(sites)) to loop through indices",
+        "Access parallel data: sites[i] and counts[i]",
         "Calculate percentage: (count / total) * 100",
-        "Use round(percentage, 1) to show one decimal place",
-        "Compare values to find maximum: if counts[i] > max_count:"
+        "Use round(percentage, 1) for formatting",
+        "Find max by comparing: if counts[i] > top_count:",
+        "Create lists with .append(): major_sites.append(site)"
       ]
     },
     {
       "id": 8,
       "title": "Digital Restoration",
-      "story": "Using digital imaging techniques, you've recovered some damaged text. The restoration process involves analyzing character patterns and filling in gaps based on context.\n\n<strong>🔍 Python Concepts: String Manipulation and Functions</strong>\n\nWorking with text processing:\n• <code>.replace()</code> substitutes text: <code>text.replace(\"?\", \"a\")</code>\n• <code>.upper()</code> converts to uppercase: <code>text.upper()</code>\n• <code>.lower()</code> converts to lowercase: <code>text.lower()</code>\n• <code>.count()</code> counts occurrences: <code>text.count(\"?\")</code>\n• Functions organize code: <code>def restore_text(damaged_text):</code>\n\nPractice text restoration using string manipulation methods.",
-      "challenge": "Restore damaged text by replacing missing characters and standardizing the format.",
+      "story": "Using digital imaging techniques, you've recovered some damaged text. The restoration process involves analyzing character patterns and filling in gaps based on context.\n\n<strong>🔍 Python Concepts: Functions and String Processing</strong>\n\n<em>Functions</em> organize text processing workflows:\n• Define with <code>def function_name(parameters):</code>\n• Process text systematically\n• Return processed results and statistics\n• Functions make text analysis modular and testable\n\n<em>String manipulation methods:</em>\n• <code>.replace()</code> substitutes text: <code>text.replace(\"?\", \"a\")</code>\n• <code>.count()</code> counts occurrences: <code>text.count(\"?\")</code>\n• <code>.capitalize()</code> formats text: <code>text.capitalize()</code>\n• <code>len()</code> measures length: <code>len(text)</code>\n• Chain operations for complex processing\n\n<em>Text restoration workflow:</em>\n• Analyze damage patterns\n• Apply systematic replacements\n• Calculate restoration statistics\n• Format final output\n\n<strong>Example:</strong>\n<code>\ndef clean_text(messy_text):\n    # Remove unwanted characters\n    step1 = messy_text.replace(\"*\", \"\")\n    step2 = step1.replace(\"#\", \"\")\n    \n    # Format properly\n    clean = step2.capitalize()\n    \n    return clean, len(messy_text), len(clean)\n\nresult, original_len, clean_len = clean_text(\"h*ell#o w*orld\")\nprint(f\"'{result}' (reduced from {original_len} to {clean_len} chars)\")\n</code>\n\nPractice creating functions to restore and analyze damaged ancient texts.",
+      "challenge": "Create functions to systematically restore damaged text and calculate restoration statistics.",
       "data": "Damaged text: \"th? s?cr?d t?mpl? w?s b??lt ?n ?nc??nt t?m?s\"",
-      "starterCode": "# Restore damaged text by replacing missing characters\n# Damaged: \"th? s?cr?d t?mpl? w?s b??lt ?n ?nc??nt t?m?s\"\n# Pattern: ? represents missing vowels (usually 'e' in this context)\n\n# Your code here:\n",
-      "solution": "damaged_text = \"th? s?cr?d t?mpl? w?s b??lt ?n ?nc??nt t?m?s\"\n\nprint(\"Original damaged text:\")\nprint(damaged_text)\nprint()\n\n# Count damaged characters\ndamaged_count = damaged_text.count(\"?\")\nprint(f\"Number of damaged characters: {damaged_count}\")\nprint()\n\n# Basic restoration - replace ? with common vowel 'e'\nrestored_text = damaged_text.replace(\"?\", \"e\")\nprint(\"Basic restoration (replacing ? with 'e'):\")\nprint(restored_text)\nprint()\n\n# Improved restoration with specific replacements\n# Let's make educated guesses based on common English words\nstep1 = damaged_text.replace(\"th?\", \"the\")\nstep2 = step1.replace(\"s?cr?d\", \"sacred\")\nstep3 = step2.replace(\"t?mpl?\", \"temple\")\nstep4 = step3.replace(\"w?s\", \"was\")\nstep5 = step4.replace(\"b??lt\", \"built\")\nstep6 = step5.replace(\"?n\", \"in\")\nstep7 = step6.replace(\"?nc??nt\", \"ancient\")\nfinal_text = step7.replace(\"t?m?s\", \"times\")\n\nprint(\"Improved restoration:\")\nprint(final_text)\nprint()\n\n# Capitalize the first letter\nfinal_text = final_text.capitalize()\nprint(\"Final restored text:\")\nprint(final_text)\n\n# Verify restoration quality\noriginal_length = len(damaged_text)\nrestored_length = len(final_text)\nprint(f\"\\nRestoration stats:\")\nprint(f\"Original length: {original_length} characters\")\nprint(f\"Restored length: {restored_length} characters\")\nprint(f\"Characters restored: {damaged_count}\")",
+      "starterCode": "# Create functions to restore damaged text and analyze results\n# Damaged: \"th? s?cr?d t?mpl? w?s b??lt ?n ?nc??nt t?m?s\"\n# Pattern: ? represents missing vowels\n\ndef analyze_damage(text):\n    \"\"\"Analyze the extent of damage in the text.\n    \n    Args:\n        text: The damaged text string\n        \n    Returns:\n        tuple: (total_chars, damaged_chars, damage_percentage)\n    \"\"\"\n    # TODO: Count total characters and damaged characters (?)\n    # TODO: Calculate damage percentage\n    # TODO: Return statistics\n    \n    return total_chars, damaged_chars, damage_percentage\n\ndef restore_text(damaged_text):\n    \"\"\"Restore damaged text using pattern matching.\n    \n    Args:\n        damaged_text: Text with ? representing missing characters\n        \n    Returns:\n        tuple: (restored_text, restoration_steps)\n        where restoration_steps is the number of replacements made\n    \"\"\"\n    # TODO: Apply systematic replacements for common words\n    # TODO: Count how many replacements were made\n    # TODO: Capitalize the final result\n    # TODO: Return restored text and step count\n    \n    return final_text, total_steps\n\n# Test your functions\ndamaged = \"th? s?cr?d t?mpl? w?s b??lt ?n ?nc??nt t?m?s\"\n\nprint(\"=== DIGITAL RESTORATION ANALYSIS ===\")\nprint(f\"Original damaged text: {damaged}\")\nprint()\n\n# Analyze damage\ntotal, damaged_count, percentage = analyze_damage(damaged)\nprint(f\"Damage analysis:\")\nprint(f\"- Total characters: {total}\")\nprint(f\"- Damaged characters: {damaged_count}\")\nprint(f\"- Damage level: {percentage}%\")\nprint()\n\n# Restore text\nrestored, steps = restore_text(damaged)\nprint(f\"Restoration complete in {steps} steps\")\nprint(f\"Final restored text: {restored}\")\nprint()\n\n# Compare results\nprint(f\"Text length: {len(damaged)} → {len(restored)} characters\")\nprint(f\"Characters restored: {damaged_count}\")",
+      "solution": "def analyze_damage(text):\n    \"\"\"Analyze the extent of damage in the text.\"\"\"\n    total_chars = len(text)\n    damaged_chars = text.count(\"?\")\n    damage_percentage = round((damaged_chars / total_chars) * 100, 1)\n    \n    return total_chars, damaged_chars, damage_percentage\n\ndef restore_text(damaged_text):\n    \"\"\"Restore damaged text using pattern matching.\"\"\"\n    original_damaged = damaged_text.count(\"?\")\n    \n    # Apply systematic replacements\n    step1 = damaged_text.replace(\"th?\", \"the\")\n    step2 = step1.replace(\"s?cr?d\", \"sacred\")\n    step3 = step2.replace(\"t?mpl?\", \"temple\")\n    step4 = step3.replace(\"w?s\", \"was\")\n    step5 = step4.replace(\"b??lt\", \"built\")\n    step6 = step5.replace(\"?n\", \"in\")\n    step7 = step6.replace(\"?nc??nt\", \"ancient\")\n    step8 = step7.replace(\"t?m?s\", \"times\")\n    \n    # Final formatting\n    final_text = step8.capitalize()\n    \n    # Count total replacement operations\n    total_steps = 8\n    \n    return final_text, total_steps\n\n# Test the functions\ndamaged = \"th? s?cr?d t?mpl? w?s b??lt ?n ?nc??nt t?m?s\"\n\nprint(\"=== DIGITAL RESTORATION ANALYSIS ===\")\nprint(f\"Original damaged text: {damaged}\")\nprint()\n\n# Analyze damage\ntotal, damaged_count, percentage = analyze_damage(damaged)\nprint(f\"Damage analysis:\")\nprint(f\"- Total characters: {total}\")\nprint(f\"- Damaged characters: {damaged_count}\")\nprint(f\"- Damage level: {percentage}%\")\nprint()\n\n# Restore text\nrestored, steps = restore_text(damaged)\nprint(f\"Restoration complete in {steps} steps\")\nprint(f\"Final restored text: {restored}\")\nprint()\n\n# Compare results\nprint(f\"Text length: {len(damaged)} → {len(restored)} characters\")\nprint(f\"Characters restored: {damaged_count}\")",
       "validation": {
         "codePatterns": [
-          "damaged_text\\s*=.*th\\?.*t\\?m\\?s",
+          "def\\s+analyze_damage\\s*\\(",
+          "def\\s+restore_text\\s*\\(",
+          "return\\s+.*total_chars.*damaged_chars.*damage_percentage",
+          "return\\s+.*final_text.*total_steps",
           "\\.count\\(['\"]\\?['\"]\\)",
+          "len\\(.*\\)",
           "\\.replace\\(",
-          "damaged_count",
           "\\.capitalize\\(\\)",
-          "len\\("
+          "round\\(.*\\*\\s*100.*\\)"
         ],
         "outputPatterns": [
+          "=== DIGITAL RESTORATION ANALYSIS ===",
           "Original damaged text.*th\\?.*t\\?m\\?s",
-          "Number of damaged characters.*13",
-          "Basic restoration.*the secret temple was built in ancient times",
-          "Improved restoration.*the sacred temple was built in ancient times",
+          "Total characters.*42",
+          "Damaged characters.*13",
+          "Damage level.*30\\.9",
+          "Restoration complete.*8.*steps",
           "Final restored text.*The sacred temple was built in ancient times",
+          "Text length.*42.*→.*46",
           "Characters restored.*13"
         ],
-        "description": "Must use string methods to count, replace, and restore damaged text"
+        "description": "Must create functions for text restoration with damage analysis and systematic replacement"
       },
       "hints": [
-        "Use .count(\"?\") to count missing characters",
-        "Use .replace(\"?\", \"e\") for basic replacement",
-        "Make specific replacements: text.replace(\"th?\", \"the\")",
-        "Use .capitalize() to fix capitalization",
-        "Chain replacements: step1 = text.replace(...), step2 = step1.replace(...)"
+        "Define functions with def function_name(parameters):",
+        "Use .count(\"?\") to count damaged characters",
+        "Use len(text) to get total character count",
+        "Calculate percentage: (damaged / total) * 100",
+        "Chain replacements: step1 = text.replace(...), step2 = step1.replace(...)",
+        "Use .capitalize() for final formatting",
+        "Return multiple values: return value1, value2, value3",
+        "Track the number of replacement operations performed"
       ]
     },
     {
@@ -309,7 +390,7 @@
           "languages\\s*=\\s*\\[.*Latin.*Greek.*Unknown.*\\]",
           "language_counts\\s*=\\s*\\[.*18.*15.*7.*\\]",
           "date_range\\s*=\\s*\\[.*150.*380.*\\]",
-          "for\\s+i\\s+in\\s+range\\(len\\(",
+          "for\\s+i\\s+in\\s+range\\(",
           "percentage\\s*=.*sum\\(",
           "round\\(",
           "print\\(f.*\\{.*\\}.*\\)"

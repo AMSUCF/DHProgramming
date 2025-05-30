@@ -7,6 +7,7 @@ let completedStages = []
 let skulptReady = false
 let skulptLoadPromise = null
 let skulptEnvironment = null // Persistent Skulpt environment for multi-cell stages
+let successfulCellExecutions = {} // Track which cells have executed successfully by stage
 
 // Create a promise that resolves when Skulpt is ready
 function createSkulptLoadPromise () {
@@ -84,9 +85,7 @@ async function initializeGame () {
       gameContent.gameInfo.subtitle
 
     // Create developer navigation
-    createDevNav()
-
-    // Load the first stage
+    createDevNav() // Load the first stage
     loadStage(1)
 
     console.log('Game initialized successfully')
@@ -99,6 +98,11 @@ async function initializeGame () {
       .catch(error => {
         console.warn('Skulpt initialization failed:', error)
       })
+
+    // Initialize LLM integration
+    console.log('Initializing LLM integration...')
+    ollamaLLM = new OllamaLLMIntegration()
+    console.log('LLM integration initialized')
   } catch (error) {
     console.error('Error initializing game:', error)
     const storyElement = document.getElementById('story-content')
@@ -125,15 +129,20 @@ function loadStage (stageId) {
   }
 
   currentStage = stageId
-
-  // Update UI elements with stage content
-  document.getElementById('story-content').innerHTML = stage.story
+  // Update UI elements with stage content (convert \n to <br> for proper line breaks)
+  document.getElementById('story-content').innerHTML = stage.story.replace(
+    /\n/g,
+    '<br>'
+  )
   document.getElementById(
     'challenge-content'
-  ).innerHTML = `<strong>Challenge:</strong> ${stage.challenge}`
+  ).innerHTML = `<strong>Challenge:</strong> ${stage.challenge.replace(
+    /\n/g,
+    '<br>'
+  )}`
   document.getElementById(
     'data-content'
-  ).innerHTML = `<strong>Data:</strong><br>${stage.data}`
+  ).innerHTML = `<strong>Data:</strong><br>${stage.data.replace(/\n/g, '<br>')}`
 
   // Update progress bar
   const progressPercent = (stageId / gameContent.gameInfo.totalStages) * 100
@@ -141,10 +150,11 @@ function loadStage (stageId) {
 
   // Update dev navigation
   updateDevNav()
-
   // Handle single vs multi-cell stages
   if (stage.cells) {
     setupMultiCellStage(stage)
+    // Initialize successful execution tracking for this stage
+    successfulCellExecutions[stageId] = new Set()
   } else {
     setupSingleCellStage(stage)
   }
@@ -176,12 +186,19 @@ function setupSingleCellStage (stage) {
   // Create cell header
   const cellHeader = document.createElement('div')
   cellHeader.className = 'cell-header'
-
-  // Execution counter (starts empty)
+  // Execution counter (starts empty) with embedded play/stop icons
   const cellNumber = document.createElement('span')
   cellNumber.className = 'cell-number'
-  cellNumber.textContent = '[ ]'
   cellNumber.id = 'single-cell-number'
+  cellNumber.innerHTML = `
+    [ ]
+    <svg class="play-icon" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
+      <rect x="6" y="6" width="12" height="12"/>
+    </svg>
+  `
 
   const cellTitle = document.createElement('span')
   cellTitle.className = 'cell-title'
@@ -196,24 +213,9 @@ function setupSingleCellStage (stage) {
   cellHeader.appendChild(cellTitle)
   cellHeader.appendChild(cellStatus)
   cellContainer.appendChild(cellHeader)
-
-  // Create code editor container with run button
+  // Create code editor container
   const editorContainer = document.createElement('div')
   editorContainer.className = 'code-editor-container'
-
-  // Create run/stop button (Colab style)
-  const runButton = document.createElement('button')
-  runButton.className = 'cell-run-button'
-  runButton.id = 'single-run-button'
-  runButton.innerHTML = `
-    <svg class="play-icon" viewBox="0 0 24 24">
-      <path d="M8 5v14l11-7z"/>
-    </svg>
-    <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
-      <rect x="6" y="6" width="12" height="12"/>
-    </svg>
-  `
-  editorContainer.appendChild(runButton)
 
   // Create code editor
   const editorElement = document.createElement('div')
@@ -249,12 +251,18 @@ function setupSingleCellStage (stage) {
 
   cellContainer.appendChild(outputContainer)
   container.appendChild(cellContainer)
-
   // Initialize or reset code editor
   if (editor) {
-    editor.toTextArea() // Clean up existing editor
+    try {
+      editor.toTextArea() // Clean up existing editor
+    } catch (e) {
+      console.log(
+        'Editor cleanup error (expected when switching stage types):',
+        e
+      )
+    }
+    editor = null
   }
-
   editor = CodeMirror(document.getElementById('single-code-editor'), {
     value: stage.starterCode || '# Your code here\n',
     mode: 'python',
@@ -263,11 +271,16 @@ function setupSingleCellStage (stage) {
     indentUnit: 4,
     matchBrackets: true,
     autoCloseBrackets: true,
-    viewportMargin: Infinity // Auto-resize height
+    viewportMargin: Infinity, // Auto-resize height
+    extraKeys: {
+      'Ctrl-Enter': function () {
+        runPythonCode(editor.getValue(), stage.solution)
+      }
+    }
   })
 
-  // Set up run button
-  document.getElementById('single-run-button').onclick = function () {
+  // Set up cell number click to run code (replacing separate run button)
+  cellNumber.onclick = function () {
     runPythonCode(editor.getValue(), stage.solution)
   }
 
@@ -298,6 +311,32 @@ function setupMultiCellStage (stage) {
   document.getElementById('single-cell-container').style.display = 'none'
   document.getElementById('cells-container').style.display = 'block'
 
+  // Clean up existing single-cell editor if it exists
+  if (editor) {
+    try {
+      editor.toTextArea()
+    } catch (e) {
+      console.log(
+        'Editor cleanup error (expected when switching stage types):',
+        e
+      )
+    }
+    editor = null
+  }
+
+  // Clean up existing cell editors
+  if (cellEditors.length > 0) {
+    cellEditors.forEach(cellEditor => {
+      try {
+        if (cellEditor && cellEditor.toTextArea) {
+          cellEditor.toTextArea()
+        }
+      } catch (e) {
+        console.log('Cell editor cleanup error:', e)
+      }
+    })
+  }
+
   // Clear existing cells
   document.getElementById('cells-container').innerHTML = ''
   cellEditors = []
@@ -320,12 +359,22 @@ function createCodeCell (cell, index, totalCells) {
   // Create cell header
   const cellHeader = document.createElement('div')
   cellHeader.className = 'cell-header'
-
-  // Execution counter (starts empty)
+  // Execution counter (starts empty) with embedded play/stop icons
   const cellNumber = document.createElement('span')
   cellNumber.className = 'cell-number'
   cellNumber.textContent = '[ ]'
   cellNumber.id = `cell-number-${index}`
+
+  // Add play and stop icons
+  cellNumber.innerHTML = `
+    [ ]
+    <svg class="play-icon" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
+      <rect x="6" y="6" width="12" height="12"/>
+    </svg>
+  `
 
   const cellTitle = document.createElement('span')
   cellTitle.className = 'cell-title'
@@ -348,24 +397,16 @@ function createCodeCell (cell, index, totalCells) {
     instruction.innerHTML = cell.instruction
     cellContainer.appendChild(instruction)
   }
-
-  // Create code editor container with run button
+  // Create code editor container
   const editorContainer = document.createElement('div')
   editorContainer.className = 'code-editor-container'
 
-  // Create run/stop button (Colab style - circular, top-left)
-  const runButton = document.createElement('button')
-  runButton.className = 'cell-run-button'
-  runButton.id = `run-button-${index}`
-  runButton.innerHTML = `
-    <svg class="play-icon" viewBox="0 0 24 24">
-      <path d="M8 5v14l11-7z"/>
-    </svg>
-    <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
-      <rect x="6" y="6" width="12" height="12"/>
-    </svg>
-  `
-  editorContainer.appendChild(runButton)
+  // Create execution indicator (top-right corner)
+  const executionIndicator = document.createElement('div')
+  executionIndicator.className = 'cell-execution-indicator'
+  executionIndicator.id = `execution-indicator-${index}`
+  executionIndicator.style.display = 'none' // Initially hidden
+  editorContainer.appendChild(executionIndicator)
 
   // Create code editor
   const editorElement = document.createElement('div')
@@ -403,7 +444,6 @@ function createCodeCell (cell, index, totalCells) {
 
   // Add cell to container
   document.getElementById('cells-container').appendChild(cellContainer)
-
   // Initialize CodeMirror editor for this cell
   const cellEditor = CodeMirror(
     document.getElementById(`code-editor-${index}`),
@@ -415,14 +455,23 @@ function createCodeCell (cell, index, totalCells) {
       indentUnit: 4,
       matchBrackets: true,
       autoCloseBrackets: true,
-      viewportMargin: Infinity // Auto-resize height
+      viewportMargin: Infinity, // Auto-resize height
+      extraKeys: {
+        'Ctrl-Enter': function () {
+          runCellCode(
+            cellEditor.getValue(),
+            cell.expectedOutput,
+            index,
+            totalCells
+          )
+        }
+      }
     }
   )
-
   cellEditors.push(cellEditor)
 
-  // Set up run button for this cell
-  document.getElementById(`run-button-${index}`).onclick = function () {
+  // Set up cell number click to run code (replacing separate run button)
+  cellNumber.onclick = function () {
     runCellCode(cellEditor.getValue(), cell.expectedOutput, index, totalCells)
   }
 
@@ -448,6 +497,55 @@ function toggleOutputCollapse (cellIndex) {
   }
 }
 
+// Update visual indicators for successful cell execution tracking
+function updateCellExecutionIndicators () {
+  const successfulCells = successfulCellExecutions[currentStage] || new Set()
+
+  // Update all cell containers to show execution status
+  document
+    .querySelectorAll('.cell-container')
+    .forEach((cellContainer, index) => {
+      const executionIndicator = cellContainer.querySelector(
+        `#execution-indicator-${index}`
+      )
+
+      if (!executionIndicator) return
+
+      if (successfulCells.has(index)) {
+        // Cell executed successfully
+        executionIndicator.style.display = 'block'
+        executionIndicator.textContent = '✓ OK'
+        executionIndicator.className =
+          'cell-execution-indicator successfully-executed'
+        cellContainer.classList.add('successfully-executed')
+        cellContainer.classList.remove('execution-failed')
+      } else {
+        // Check if cell has been executed but failed
+        const cellStatus = cellContainer.querySelector('.cell-status')
+        if (cellStatus && cellStatus.classList.contains('error')) {
+          executionIndicator.style.display = 'block'
+          executionIndicator.textContent = '✗ ERR'
+          executionIndicator.className =
+            'cell-execution-indicator execution-failed'
+          cellContainer.classList.add('execution-failed')
+          cellContainer.classList.remove('successfully-executed')
+        } else {
+          // Cell not executed or no status yet
+          executionIndicator.style.display = 'none'
+          cellContainer.classList.remove(
+            'successfully-executed',
+            'execution-failed'
+          )
+        }
+      }
+    })
+
+  console.log(
+    'Updated execution indicators. Successful cells:',
+    Array.from(successfulCells)
+  )
+}
+
 // Set up hint buttons and text
 function setupHints (stage) {
   const hintsContainer = document.getElementById('hints-container')
@@ -457,6 +555,15 @@ function setupHints (stage) {
   hintsContainer.innerHTML = ''
   hintTextContainer.innerHTML = ''
 
+  // Check if LLM mode is enabled
+  if (ollamaLLM && ollamaLLM.isEnabled) {
+    // LLM mode - show query buttons instead of traditional hints
+    ollamaLLM.updateHintSystem()
+    document.querySelector('.hint-section').style.display = 'block'
+    return
+  }
+
+  // Traditional hint mode
   // If no hints, hide the section
   if (!stage.hints || stage.hints.length === 0) {
     document.querySelector('.hint-section').style.display = 'none'
@@ -502,13 +609,20 @@ async function runPythonCode (code, solution) {
   const outputContainer = document.getElementById('single-output-container')
   const outputArea = document.getElementById('single-output-area')
   const outputCounter = document.getElementById('single-output-counter')
-  const runButton = document.getElementById('single-run-button')
   const cellStatus = document.getElementById('single-cell-status')
   const cellNumber = document.getElementById('single-cell-number')
 
   // Increment execution counter and update display
   executionCounter++
-  cellNumber.textContent = `[${executionCounter}]`
+  cellNumber.innerHTML = `
+    [${executionCounter}]
+    <svg class="play-icon" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
+      <rect x="6" y="6" width="12" height="12"/>
+    </svg>
+  `
   cellNumber.classList.add('executed')
 
   // Show output container and set running state
@@ -517,10 +631,8 @@ async function runPythonCode (code, solution) {
   outputArea.classList.add('success')
   outputArea.textContent = 'Running code...'
 
-  // Switch to stop button with rotating border
-  runButton.classList.add('running')
-  runButton.querySelector('.play-icon').style.display = 'none'
-  runButton.querySelector('.stop-icon').style.display = 'block'
+  // Switch to running state with rotating border
+  cellNumber.classList.add('running')
 
   cellStatus.textContent = 'Running'
   cellStatus.className = 'cell-status current'
@@ -542,9 +654,7 @@ async function runPythonCode (code, solution) {
         'Error: Python engine failed to load. Please refresh the page.'
       outputArea.classList.remove('success')
       outputArea.classList.add('error')
-      runButton.classList.remove('running')
-      runButton.querySelector('.play-icon').style.display = 'block'
-      runButton.querySelector('.stop-icon').style.display = 'none'
+      cellNumber.classList.remove('running')
       cellStatus.textContent = 'Error'
       cellStatus.className = 'cell-status error'
       console.error('Skulpt loading error:', error)
@@ -576,19 +686,15 @@ async function runPythonCode (code, solution) {
     })
 
     // Clear output area
-    outputArea.textContent = ''
-
-    // Run the code using the correct API
+    outputArea.textContent = '' // Run the code using the correct API
     const promise = Sk.misceval.asyncToPromise(function () {
       return Sk.importMainWithBody('<stdin>', false, code, true)
     })
 
     promise
       .then(() => {
-        // Reset button to play state
-        runButton.classList.remove('running')
-        runButton.querySelector('.play-icon').style.display = 'block'
-        runButton.querySelector('.stop-icon').style.display = 'none'
+        // Reset cell number to normal state
+        cellNumber.classList.remove('running')
 
         // Pass the captured output to validation
         checkCompletion(code, solution, capturedOutput.trim())
@@ -598,10 +704,8 @@ async function runPythonCode (code, solution) {
         outputArea.classList.remove('success')
         outputArea.classList.add('error')
 
-        // Reset button to play state
-        runButton.classList.remove('running')
-        runButton.querySelector('.play-icon').style.display = 'block'
-        runButton.querySelector('.stop-icon').style.display = 'none'
+        // Reset cell number to normal state
+        cellNumber.classList.remove('running')
 
         cellStatus.textContent = 'Error'
         cellStatus.className = 'cell-status error'
@@ -611,10 +715,8 @@ async function runPythonCode (code, solution) {
     outputArea.classList.remove('success')
     outputArea.classList.add('error')
 
-    // Reset button to play state
-    runButton.classList.remove('running')
-    runButton.querySelector('.play-icon').style.display = 'block'
-    runButton.querySelector('.stop-icon').style.display = 'none'
+    // Reset cell number to normal state
+    cellNumber.classList.remove('running')
 
     cellStatus.textContent = 'Error'
     cellStatus.className = 'cell-status error'
@@ -628,12 +730,20 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
   )
   const outputArea = document.getElementById(`output-area-${cellIndex}`)
   const outputCounter = document.getElementById(`output-counter-${cellIndex}`)
-  const runButton = document.getElementById(`run-button-${cellIndex}`)
   const cellStatus = document.getElementById(`cell-status-${cellIndex}`)
   const cellNumber = document.getElementById(`cell-number-${cellIndex}`)
+
   // Increment execution counter and update display
   executionCounter++
-  cellNumber.textContent = `[${executionCounter}]`
+  cellNumber.innerHTML = `
+    [${executionCounter}]
+    <svg class="play-icon" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
+      <rect x="6" y="6" width="12" height="12"/>
+    </svg>
+  `
   cellNumber.classList.add('executed')
 
   // Show output container and set running state
@@ -642,10 +752,8 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
   outputArea.classList.add('success')
   outputArea.textContent = 'Running code...'
 
-  // Switch to stop button with rotating border
-  runButton.classList.add('running')
-  runButton.querySelector('.play-icon').style.display = 'none'
-  runButton.querySelector('.stop-icon').style.display = 'block'
+  // Switch to running state with rotating border
+  cellNumber.classList.add('running')
 
   cellStatus.textContent = 'Running'
   cellStatus.className = 'cell-status current'
@@ -667,9 +775,7 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
         'Error: Python engine failed to load. Please refresh the page.'
       outputArea.classList.remove('success')
       outputArea.classList.add('error')
-      runButton.classList.remove('running')
-      runButton.querySelector('.play-icon').style.display = 'block'
-      runButton.querySelector('.stop-icon').style.display = 'none'
+      cellNumber.classList.remove('running')
       cellStatus.textContent = 'Error'
       cellStatus.className = 'cell-status error'
       console.error('Skulpt loading error:', error)
@@ -695,54 +801,129 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
         return Sk.builtinFiles['files'][x]
       },
       execLimit: 10000
-    })
-
-    // Clear output area for this cell
+    }) // Clear output area for this cell
     outputArea.textContent = ''
     outputText = '' // Execute code in the persistent environment to maintain variables between cells
     try {
       // For multi-cell stages, we need to maintain the Python namespace between executions
-      // The key insight is that Skulpt's module system persists variables if we don't reset it
+      // Build accumulated code from successfully executed cells plus the current cell
+      let accumulatedCode = ''
+
+      // Get current stage to access all cells
+      const stage = gameContent.stages.find(s => s.id === currentStage)
+      if (stage && stage.cells) {
+        // Add code from all successfully executed cells first
+        const successfulCells =
+          successfulCellExecutions[currentStage] || new Set()
+        for (let i = 0; i < cellIndex; i++) {
+          if (successfulCells.has(i)) {
+            const cellCode = cellEditors[i].getValue()
+            if (cellCode.trim()) {
+              accumulatedCode += cellCode + '\n'
+            }
+          }
+        }
+
+        // Add the current cell's code (always include it for execution)
+        const currentCellCode = cellEditors[cellIndex].getValue()
+        if (currentCellCode.trim()) {
+          accumulatedCode += currentCellCode + '\n'
+        }
+      } // Execute the accumulated code to maintain variable persistence
+      console.log(`Cell ${cellIndex}: Executing accumulated code`)
+      console.log(
+        'Successful cells included:',
+        Array.from(successfulCellExecutions[currentStage] || [])
+      )
+      console.log('Current cell being executed:', cellIndex)
+      console.log('Accumulated code:', accumulatedCode)
       const promise = Sk.misceval.asyncToPromise(function () {
-        return Sk.importMainWithBody('<stdin>', false, code, true)
+        return Sk.importMainWithBody('<stdin>', false, accumulatedCode, true)
       })
 
       promise
         .then(() => {
-          // Reset button to play state
-          runButton.classList.remove('running')
-          runButton.querySelector('.play-icon').style.display = 'block'
-          runButton.querySelector('.stop-icon').style.display = 'none'
+          // Execution was successful - mark this cell as successfully executed
+          if (!successfulCellExecutions[currentStage]) {
+            successfulCellExecutions[currentStage] = new Set()
+          }
+          successfulCellExecutions[currentStage].add(cellIndex)
 
-          // Check if output matches expected
-          if (checkCellOutput(outputText, expectedOutput)) {
+          // Reset cell number to normal state
+          cellNumber.classList.remove('running')
+
+          // Get cell data for enhanced validation
+          const stage = gameContent.stages.find(s => s.id === currentStage)
+          const cellData = stage && stage.cells ? stage.cells[cellIndex] : null
+
+          // Check if output matches expected with enhanced validation
+          if (checkCellOutput(outputText, expectedOutput, cellData)) {
             cellStatus.textContent = 'Completed'
             cellStatus.className = 'cell-status completed'
             outputArea.classList.remove('error')
-            outputArea.classList.add('success')
-
-            // Check if all cells are completed
+            outputArea.classList.add('success') // Check if all cells are completed
             checkAllCellsCompleted(totalCells)
+
+            // Update visual indicators
+            updateCellExecutionIndicators()
           } else {
-            cellStatus.textContent = 'Incorrect'
+            // Validation failed - remove this cell from successful executions
+            if (successfulCellExecutions[currentStage]) {
+              successfulCellExecutions[currentStage].delete(cellIndex)
+            }
+
+            // Provide specific, helpful error feedback
+            const specificFeedback = generateSpecificCellFeedback(
+              outputText,
+              expectedOutput,
+              cellData,
+              cellIndex
+            )
+            cellStatus.textContent = specificFeedback.statusText
             cellStatus.className = 'cell-status error'
             outputArea.classList.remove('success')
             outputArea.classList.add('error')
+
+            // Add helpful feedback to the output area
+            const feedbackDiv = document.createElement('div')
+            feedbackDiv.className = 'cell-feedback'
+            feedbackDiv.innerHTML = specificFeedback.detailedMessage
+            outputArea.appendChild(feedbackDiv)
+
+            // Automatically show relevant hints if validation fails
+            if (specificFeedback.suggestedHints.length > 0) {
+              showSpecificHints(specificFeedback.suggestedHints)
+            }
+
+            // Enhanced feedback for debugging
+            console.log('Cell validation failed:')
+            console.log('Expected:', expectedOutput)
+            console.log('Actual output:', outputText)
+            console.log('Cell data:', cellData)
+            console.log('Feedback:', specificFeedback)
+
+            // Update visual indicators
+            updateCellExecutionIndicators()
           }
         })
         .catch(e => {
+          // Execution failed - remove this cell from successful executions if it was there
+          if (successfulCellExecutions[currentStage]) {
+            successfulCellExecutions[currentStage].delete(cellIndex)
+          }
           console.error('Error executing code:', e)
           outputArea.textContent += '\nError: ' + e.toString()
           outputArea.classList.remove('success')
           outputArea.classList.add('error')
 
-          // Reset button to play state
-          runButton.classList.remove('running')
-          runButton.querySelector('.play-icon').style.display = 'block'
-          runButton.querySelector('.stop-icon').style.display = 'none'
+          // Reset cell number to normal state
+          cellNumber.classList.remove('running')
 
           cellStatus.textContent = 'Error'
           cellStatus.className = 'cell-status error'
+
+          // Update visual indicators
+          updateCellExecutionIndicators()
         })
     } catch (e) {
       console.error('Error in code execution setup:', e)
@@ -750,10 +931,8 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
       outputArea.classList.remove('success')
       outputArea.classList.add('error')
 
-      // Reset button to play state
-      runButton.classList.remove('running')
-      runButton.querySelector('.play-icon').style.display = 'block'
-      runButton.querySelector('.stop-icon').style.display = 'none'
+      // Reset cell number to normal state
+      cellNumber.classList.remove('running')
 
       cellStatus.textContent = 'Error'
       cellStatus.className = 'cell-status error'
@@ -764,10 +943,8 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
     outputArea.classList.remove('success')
     outputArea.classList.add('error')
 
-    // Reset button to play state
-    runButton.classList.remove('running')
-    runButton.querySelector('.play-icon').style.display = 'block'
-    runButton.querySelector('.stop-icon').style.display = 'none'
+    // Reset cell number to normal state
+    cellNumber.classList.remove('running')
 
     cellStatus.textContent = 'Error'
     cellStatus.className = 'cell-status error'
@@ -775,45 +952,437 @@ async function runCellCode (code, expectedOutput, cellIndex, totalCells) {
 }
 
 // Check if cell output matches expected output with flexible validation
-function checkCellOutput (output, expectedOutput) {
+function checkCellOutput (output, expectedOutput, cellData = null) {
   if (!expectedOutput) return true
 
-  // If expectedOutput is an array of strings, check if all are present
+  // Enhanced validation for multi-cell stages with cell-specific validation
+  if (cellData && cellData.validation) {
+    return validateCellWithPatterns(output, cellData.validation)
+  }
+
+  // If expectedOutput is an array of strings, check if all are present with flexible matching
   if (Array.isArray(expectedOutput)) {
     return expectedOutput.every(expected => {
-      // Normalize both strings for comparison
-      const normalizedOutput = output.toLowerCase().replace(/\s+/g, ' ').trim()
-      const normalizedExpected = expected
-        .toLowerCase()
-        .replace(/\s+/g, ' ')
-        .trim()
-
-      // Check if the expected text appears anywhere in the output
-      return normalizedOutput.includes(normalizedExpected)
+      return flexibleOutputMatch(output, expected)
     })
   }
 
-  // For single expected output, do normalized comparison
-  const normalizedOutput = output.toLowerCase().replace(/\s+/g, ' ').trim()
-  const normalizedExpected = expectedOutput
-    .toLowerCase()
-    .replace(/\s+/g, ' ')
-    .trim()
+  // For single expected output, do flexible comparison
+  return flexibleOutputMatch(output, expectedOutput)
+}
 
-  return normalizedOutput.includes(normalizedExpected)
+// Flexible output matching with multiple strategies
+function flexibleOutputMatch (output, expected) {
+  const normalizedOutput = output.toLowerCase().replace(/\s+/g, ' ').trim()
+  const normalizedExpected = expected.toLowerCase().replace(/\s+/g, ' ').trim()
+
+  // Strategy 1: Direct substring match
+  if (normalizedOutput.includes(normalizedExpected)) {
+    return true
+  }
+
+  // Strategy 2: Extract numbers and key words for numeric comparisons
+  const outputNumbers = extractNumbers(output)
+  const expectedNumbers = extractNumbers(expected)
+
+  if (expectedNumbers.length > 0 && outputNumbers.length > 0) {
+    // Check if expected numbers appear in output
+    const hasAllNumbers = expectedNumbers.every(num =>
+      outputNumbers.some(outNum => Math.abs(outNum - num) < 0.001)
+    )
+
+    if (hasAllNumbers) {
+      // Also check for key contextual words
+      const expectedWords = normalizedExpected
+        .split(/\s+/)
+        .filter(word => word.length > 3 && !isNumber(word))
+      const hasContextWords =
+        expectedWords.length === 0 ||
+        expectedWords.some(word => normalizedOutput.includes(word))
+
+      return hasContextWords
+    }
+  }
+
+  // Strategy 3: Pattern-based matching for common output formats
+  return patternBasedMatch(normalizedOutput, normalizedExpected)
+}
+
+// Extract numbers from text
+function extractNumbers (text) {
+  const matches = text.match(/\d+\.?\d*/g)
+  return matches ? matches.map(Number) : []
+}
+
+// Check if string represents a number
+function isNumber (str) {
+  return !isNaN(parseFloat(str)) && isFinite(str)
+}
+
+// Pattern-based matching for common output patterns
+function patternBasedMatch (output, expected) {
+  // Handle common patterns like "X: Y" or "X = Y"
+  const expectedPattern = expected
+    .replace(/\d+/g, '\\d+')
+    .replace(/:/g, '\\s*:\\s*')
+  try {
+    const regex = new RegExp(expectedPattern, 'i')
+    return regex.test(output)
+  } catch (e) {
+    return false
+  }
+}
+
+// Validate cell output using pattern-based validation rules
+function validateCellWithPatterns (output, validation) {
+  if (!validation) return true
+
+  const normalizedOutput = output.toLowerCase().replace(/\s+/g, ' ').trim()
+
+  // Check required output patterns
+  if (validation.outputPatterns) {
+    const patterns = validation.outputPatterns.map(p => new RegExp(p, 'i'))
+    const passed = patterns.every(pattern => pattern.test(normalizedOutput))
+    if (!passed) return false
+  }
+
+  // Check required numbers in output
+  if (validation.requiredNumbers) {
+    const outputNumbers = extractNumbers(output)
+    const hasAllNumbers = validation.requiredNumbers.every(num =>
+      outputNumbers.some(outNum => Math.abs(outNum - num) < 0.001)
+    )
+    if (!hasAllNumbers) return false
+  }
+
+  // Check required text phrases
+  if (validation.requiredText) {
+    const hasAllText = validation.requiredText.every(text =>
+      normalizedOutput.includes(text.toLowerCase())
+    )
+    if (!hasAllText) return false
+  }
+
+  return true
+}
+
+// Generate specific feedback for cell validation failures
+function generateSpecificCellFeedback (
+  actualOutput,
+  expectedOutput,
+  cellData,
+  cellIndex
+) {
+  const feedback = {
+    statusText: 'Validation Failed',
+    detailedMessage: '',
+    suggestedHints: []
+  }
+
+  // Get current stage for context
+  const stage = gameContent.stages.find(s => s.id === currentStage)
+  const availableHints = stage ? stage.hints || [] : []
+
+  // Analyze the type of validation failure
+  if (!actualOutput || actualOutput.trim() === '') {
+    feedback.statusText = 'No Output'
+    feedback.detailedMessage = `
+      <strong>🚫 No output detected</strong><br>
+      Your code ran but didn't produce any output. Make sure to:
+      <ul>
+        <li>Use <code>print()</code> statements to display results</li>
+        <li>Check that your code is properly indented</li>
+        <li>Verify your code actually executes the calculation</li>
+      </ul>
+    `
+    // Suggest hints related to printing or basic syntax
+    feedback.suggestedHints = availableHints.slice(0, 1) // First hint usually covers basics
+  } else if (cellData && cellData.validation) {
+    // Cell has specific validation rules - analyze what failed
+    const validation = cellData.validation
+
+    if (validation.requiredNumbers) {
+      const actualNumbers = extractNumbers(actualOutput)
+      const missingNumbers = validation.requiredNumbers.filter(
+        num =>
+          !actualNumbers.some(actualNum => Math.abs(actualNum - num) < 0.001)
+      )
+
+      if (missingNumbers.length > 0) {
+        feedback.statusText = 'Wrong Numbers'
+        feedback.detailedMessage = `
+          <strong>🔢 Calculation error detected</strong><br>
+          Expected numbers: <code>${validation.requiredNumbers.join(
+            ', '
+          )}</code><br>
+          Your output contains: <code>${actualNumbers.join(', ')}</code><br>
+          Missing: <code>${missingNumbers.join(', ')}</code><br>
+          <em>Double-check your mathematical calculations and variable assignments.</em>
+        `
+        // Suggest calculation-related hints
+        feedback.suggestedHints = availableHints
+          .filter(
+            hint =>
+              hint.toLowerCase().includes('calculat') ||
+              hint.toLowerCase().includes('math') ||
+              hint.toLowerCase().includes('number')
+          )
+          .slice(0, 2)
+      }
+    }
+
+    if (validation.requiredText) {
+      const normalizedOutput = actualOutput.toLowerCase()
+      const missingText = validation.requiredText.filter(
+        text => !normalizedOutput.includes(text.toLowerCase())
+      )
+
+      if (missingText.length > 0) {
+        feedback.statusText = 'Missing Text'
+        feedback.detailedMessage = `
+          <strong>📝 Output format issue</strong><br>
+          Missing required text: <code>${missingText.join(', ')}</code><br>
+          <em>Check that your print statements include all the required labels and formatting.</em>
+        `
+        // Suggest formatting-related hints
+        feedback.suggestedHints = availableHints
+          .filter(
+            hint =>
+              hint.toLowerCase().includes('format') ||
+              hint.toLowerCase().includes('print') ||
+              hint.toLowerCase().includes('output')
+          )
+          .slice(0, 2)
+      }
+    }
+
+    if (validation.outputPatterns) {
+      const failedPatterns = validation.outputPatterns.filter(
+        pattern => !new RegExp(pattern, 'i').test(actualOutput)
+      )
+
+      if (failedPatterns.length > 0) {
+        feedback.statusText = 'Pattern Mismatch'
+        feedback.detailedMessage = `
+          <strong>📋 Output pattern doesn't match</strong><br>
+          Your output format doesn't match the expected pattern.<br>
+          <em>Review the instruction carefully and check your output format.</em>
+        `
+        // Suggest format-related hints
+        feedback.suggestedHints = availableHints
+          .filter(
+            hint =>
+              hint.toLowerCase().includes('format') ||
+              hint.toLowerCase().includes('structure')
+          )
+          .slice(0, 2)
+      }
+    }
+  } else if (Array.isArray(expectedOutput)) {
+    // Multiple expected outputs - check which are missing
+    const missingOutputs = expectedOutput.filter(
+      expected => !flexibleOutputMatch(actualOutput, expected)
+    )
+
+    if (missingOutputs.length > 0) {
+      feedback.statusText = 'Incomplete Output'
+      feedback.detailedMessage = `
+        <strong>📋 Incomplete results</strong><br>
+        Missing expected outputs:
+        <ul>
+          ${missingOutputs
+            .map(output => `<li><code>${output}</code></li>`)
+            .join('')}
+        </ul>
+        <em>Make sure your code produces all the required output lines.</em>
+      `
+      // Suggest comprehensive hints
+      feedback.suggestedHints = availableHints.slice(0, 2)
+    }
+  } else {
+    // Single expected output doesn't match
+    feedback.statusText = 'Output Mismatch'
+    feedback.detailedMessage = `
+      <strong>🎯 Output doesn't match expected result</strong><br>
+      Expected: <code>${expectedOutput}</code><br>
+      Your output: <code>${actualOutput.slice(0, 200)}${
+      actualOutput.length > 200 ? '...' : ''
+    }</code><br>
+      <em>Compare your output carefully with what's expected.</em>
+    `
+    // Suggest general hints
+    feedback.suggestedHints = availableHints.slice(0, 2)
+  }
+
+  // If we still have a generic message, provide more specific guidance
+  if (feedback.detailedMessage === '') {
+    feedback.detailedMessage = `
+      <strong>❌ Cell ${cellIndex + 1} validation failed</strong><br>
+      <em>Review your code logic and expected output format. Use the hints below for guidance.</em>
+    `
+    feedback.suggestedHints = availableHints.slice(0, 1)
+  }
+
+  return feedback
+}
+
+// Generate specific feedback for single-cell validation failures
+function generateSpecificSingleCellFeedback (
+  actualOutput,
+  solution,
+  stage,
+  validationResult
+) {
+  const feedback = {
+    statusText: 'Validation Failed',
+    detailedMessage: '',
+    suggestedHints: []
+  }
+
+  const availableHints = stage ? stage.hints || [] : []
+
+  // Analyze validation failure type
+  if (!actualOutput || actualOutput.trim() === '') {
+    feedback.statusText = 'No Output'
+    feedback.detailedMessage = `
+      <strong>🚫 No output detected</strong><br>
+      Your code ran but didn't produce any output. Make sure to:
+      <ul>
+        <li>Use <code>print()</code> statements to display results</li>
+        <li>Check that your code is properly indented</li>
+        <li>Verify your code actually executes the calculation</li>
+      </ul>
+    `
+    feedback.suggestedHints = availableHints.slice(0, 1)
+  } else if (validationResult && validationResult.reason) {
+    // Use specific validation failure reason
+    const reason = validationResult.reason.toLowerCase()
+
+    if (reason.includes('pattern') || reason.includes('format')) {
+      feedback.statusText = 'Format Issue'
+      feedback.detailedMessage = `
+        <strong>📋 Output format doesn't match expected pattern</strong><br>
+        ${validationResult.reason}<br>
+        <em>Check your output format and make sure it matches the expected structure.</em>
+      `
+      feedback.suggestedHints = availableHints
+        .filter(
+          hint =>
+            hint.toLowerCase().includes('format') ||
+            hint.toLowerCase().includes('output') ||
+            hint.toLowerCase().includes('print')
+        )
+        .slice(0, 2)
+    } else if (reason.includes('number') || reason.includes('calculation')) {
+      feedback.statusText = 'Calculation Error'
+      feedback.detailedMessage = `
+        <strong>🔢 Mathematical calculation issue</strong><br>
+        ${validationResult.reason}<br>
+        <em>Double-check your calculations and variable assignments.</em>
+      `
+      feedback.suggestedHints = availableHints
+        .filter(
+          hint =>
+            hint.toLowerCase().includes('calculat') ||
+            hint.toLowerCase().includes('math') ||
+            hint.toLowerCase().includes('number')
+        )
+        .slice(0, 2)
+    } else if (reason.includes('code') || reason.includes('syntax')) {
+      feedback.statusText = 'Code Issue'
+      feedback.detailedMessage = `
+        <strong>⚙️ Code structure issue</strong><br>
+        ${validationResult.reason}<br>
+        <em>Review your code logic and syntax.</em>
+      `
+      feedback.suggestedHints = availableHints
+        .filter(
+          hint =>
+            hint.toLowerCase().includes('code') ||
+            hint.toLowerCase().includes('syntax') ||
+            hint.toLowerCase().includes('structure')
+        )
+        .slice(0, 2)
+    } else {
+      feedback.statusText = 'Validation Failed'
+      feedback.detailedMessage = `
+        <strong>❌ Solution doesn't meet requirements</strong><br>
+        ${validationResult.reason}<br>
+        <em>Review the challenge requirements and try again.</em>
+      `
+      feedback.suggestedHints = availableHints.slice(0, 2)
+    }
+  } else {
+    // Generic validation failure
+    feedback.statusText = 'Solution Incorrect'
+    feedback.detailedMessage = `
+      <strong>❌ Solution doesn't meet the challenge requirements</strong><br>
+      <em>Review your code logic and the expected output. Use the hints below for guidance.</em>
+    `
+    feedback.suggestedHints = availableHints.slice(0, 1)
+  }
+
+  // Ensure we have some hints to suggest
+  if (feedback.suggestedHints.length === 0 && availableHints.length > 0) {
+    feedback.suggestedHints = availableHints.slice(0, 1)
+  }
+
+  return feedback
+}
+
+// Automatically show specific hints when validation fails
+function showSpecificHints (suggestedHints) {
+  if (!suggestedHints || suggestedHints.length === 0) return
+
+  const hintTextContainer = document.getElementById('hint-text-container')
+  if (!hintTextContainer) return
+
+  // Clear existing auto-shown hints
+  const existingAutoHints = hintTextContainer.querySelectorAll('.auto-hint')
+  existingAutoHints.forEach(hint => hint.remove())
+
+  // Show suggested hints automatically
+  suggestedHints.forEach((hintText, index) => {
+    const autoHintDiv = document.createElement('div')
+    autoHintDiv.className = 'hint-text active auto-hint'
+    autoHintDiv.innerHTML = `
+      <div style="background: rgba(255, 193, 7, 0.1); border: 1px solid #ffc107; border-radius: 4px; padding: 8px; margin: 4px 0;">
+        <strong>💡 Suggested Hint:</strong> ${hintText}
+      </div>
+    `
+    hintTextContainer.appendChild(autoHintDiv)
+  })
+
+  // Scroll to hints if they were added
+  if (suggestedHints.length > 0) {
+    hintTextContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }
 }
 
 // Check if all cells in a multi-cell stage are completed
 function checkAllCellsCompleted (totalCells) {
-  const completedCells = document.querySelectorAll(
+  // Count only completed cells in the current stage's cells container
+  const cellsContainer = document.getElementById('cells-container')
+  if (!cellsContainer) return
+
+  const completedCells = cellsContainer.querySelectorAll(
     '.cell-status.completed'
   ).length
+
+  console.log(
+    `Stage ${currentStage}: ${completedCells} of ${totalCells} cells completed`
+  )
 
   if (completedCells === totalCells) {
     // All cells completed, show next button
     document.getElementById('next-button').classList.add('active')
-    completedStages.push(currentStage)
-    updateDevNav()
+    if (!completedStages.includes(currentStage)) {
+      completedStages.push(currentStage)
+      updateDevNav()
+    }
+    console.log(
+      `Stage ${currentStage} completed! All ${totalCells} cells done.`
+    )
   }
 }
 
@@ -982,15 +1551,44 @@ async function checkCompletion (code, solution, actualOutput) {
         updateDevNav()
       }
     } else {
-      // Solution is incorrect
-      cellStatus.textContent = validationResult.feedback || 'Incorrect'
+      // Solution is incorrect - provide specific feedback
+      const outputArea = document.getElementById('single-cell-output')
+
+      // Generate specific feedback for single-cell validation failure
+      const specificFeedback = generateSpecificSingleCellFeedback(
+        actualOutput,
+        solution,
+        stage,
+        validationResult
+      )
+      cellStatus.textContent = specificFeedback.statusText
       cellStatus.className = 'cell-status error'
+
+      // Clear previous feedback and add new specific feedback
+      if (outputArea) {
+        const existingFeedback = outputArea.querySelector('.cell-feedback')
+        if (existingFeedback) {
+          existingFeedback.remove()
+        }
+
+        // Add helpful feedback to the output area
+        const feedbackDiv = document.createElement('div')
+        feedbackDiv.className = 'cell-feedback'
+        feedbackDiv.innerHTML = specificFeedback.detailedMessage
+        outputArea.appendChild(feedbackDiv)
+
+        // Automatically show relevant hints if validation fails
+        if (specificFeedback.suggestedHints.length > 0) {
+          showSpecificHints(specificFeedback.suggestedHints)
+        }
+      }
 
       // Show debug info in console
       console.log('Validation failed:', validationResult.reason)
       console.log('Expected patterns:', validationResult.expectedPatterns)
       console.log('User code:', code)
       console.log('Actual output:', actualOutput)
+      console.log('Single-cell feedback:', specificFeedback)
 
       // Don't show next button for incorrect solutions
       document.getElementById('next-button').classList.remove('active')
@@ -1105,8 +1703,137 @@ document.getElementById('next-button').addEventListener('click', function () {
   }
 })
 
-// Initialize the game when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', initializeGame)
+// Restart runtime functionality - clears all cell outputs and resets execution state
+function restartRuntime () {
+  console.log(
+    'Restarting runtime - clearing all cell outputs and execution state'
+  )
+
+  // Reset execution counter
+  executionCounter = 0
+
+  // Clear successful cell executions for current stage
+  if (successfulCellExecutions[currentStage]) {
+    successfulCellExecutions[currentStage].clear()
+  }
+
+  // Reset Skulpt environment by reinitializing it
+  skulptEnvironment = null
+
+  // Get current stage to determine whether it's single-cell or multi-cell
+  const stage = gameContent.stages.find(s => s.id === currentStage)
+
+  if (stage && stage.cells) {
+    // Multi-cell stage: clear all cell outputs and reset states
+    stage.cells.forEach((cell, index) => {
+      // Reset cell number display
+      const cellNumber = document.getElementById(`cell-number-${index}`)
+      if (cellNumber) {
+        cellNumber.innerHTML = `
+          [ ]
+          <svg class="play-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
+            <rect x="6" y="6" width="12" height="12"/>
+          </svg>
+        `
+        cellNumber.classList.remove('executed', 'running')
+      }
+
+      // Reset cell status
+      const cellStatus = document.getElementById(`cell-status-${index}`)
+      if (cellStatus) {
+        cellStatus.textContent = 'Pending'
+        cellStatus.className = 'cell-status pending'
+      }
+
+      // Clear output area
+      const outputArea = document.getElementById(`output-area-${index}`)
+      if (outputArea) {
+        outputArea.textContent = ''
+        outputArea.classList.remove('success', 'error')
+        outputArea.classList.add('empty')
+      }
+
+      // Hide output container
+      const outputContainer = document.getElementById(
+        `output-container-${index}`
+      )
+      if (outputContainer) {
+        outputContainer.style.display = 'none'
+      }
+
+      // Clear execution counter
+      const outputCounter = document.getElementById(`output-counter-${index}`)
+      if (outputCounter) {
+        outputCounter.textContent = ''
+      }
+    })
+  } else {
+    // Single-cell stage: clear output and reset state
+    const cellNumber = document.getElementById('single-cell-number')
+    if (cellNumber) {
+      cellNumber.innerHTML = `
+        [ ]
+        <svg class="play-icon" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg class="stop-icon" viewBox="0 0 24 24" style="display: none;">
+          <rect x="6" y="6" width="12" height="12"/>
+        </svg>
+      `
+      cellNumber.classList.remove('executed', 'running')
+    }
+
+    const cellStatus = document.getElementById('single-cell-status')
+    if (cellStatus) {
+      cellStatus.textContent = 'Pending'
+      cellStatus.className = 'cell-status pending'
+    }
+
+    const outputArea = document.getElementById('single-output-area')
+    if (outputArea) {
+      outputArea.textContent = ''
+      outputArea.classList.remove('success', 'error')
+      outputArea.classList.add('empty')
+    }
+
+    const outputContainer = document.getElementById('single-output-container')
+    if (outputContainer) {
+      outputContainer.style.display = 'none'
+    }
+  }
+
+  // Update execution indicators
+  updateCellExecutionIndicators()
+
+  // Show confirmation message
+  console.log('Runtime restart complete - all cells cleared')
+
+  // Brief visual feedback
+  const restartButton = document.getElementById('restart-runtime-button')
+  if (restartButton) {
+    const originalText = restartButton.innerHTML
+    restartButton.innerHTML = '✓ Runtime Restarted'
+    restartButton.style.background = '#34a853'
+    setTimeout(() => {
+      restartButton.innerHTML = originalText
+      restartButton.style.background = '#ea4335'
+    }, 1500)
+  }
+}
+
+// Set up restart runtime button event listener
+document.addEventListener('DOMContentLoaded', () => {
+  initializeGame()
+
+  // Set up restart runtime button
+  const restartButton = document.getElementById('restart-runtime-button')
+  if (restartButton) {
+    restartButton.addEventListener('click', restartRuntime)
+  }
+})
 
 // Additional verification that Skulpt is working
 window.addEventListener('load', () => {
@@ -1139,3 +1866,543 @@ window.addEventListener('load', () => {
     }
   }, 3000)
 })
+
+// LLM Integration with Ollama
+class OllamaLLMIntegration {
+  constructor () {
+    this.selectedModel = null
+    this.models = []
+    this.setupEventListeners()
+
+    // Show the footer by default (remove hidden class)
+    const footer = document.querySelector('.llm-footer')
+    if (footer) {
+      footer.classList.remove('hidden')
+    }
+  }
+  init () {
+    // Hide footer by default
+    const footer = document.querySelector('.llm-footer')
+    // if (footer) footer.classList.add('hidden')
+
+    this.setupEventListeners()
+    this.loadModels()
+  }
+  setupEventListeners () {
+    const toggle = document.getElementById('llm-enabled')
+    const modelSelect = document.getElementById('model-select')
+    const refreshBtn = document.getElementById('refresh-models')
+    const changeModelBtn = document.getElementById('change-model')
+
+    toggle.addEventListener('change', e => {
+      this.toggleLLM(e.target.checked)
+    })
+
+    modelSelect.addEventListener('change', e => {
+      this.selectedModel = e.target.value
+      if (this.selectedModel) {
+        this.updateModelInfo()
+        this.updateStatus('connected', `Connected to ${this.selectedModel}`)
+        this.updateQueryButtonStates()
+        this.hideModelSelection()
+      }
+    })
+
+    refreshBtn.addEventListener('click', () => {
+      this.loadModels()
+    })
+
+    changeModelBtn.addEventListener('click', () => {
+      this.showModelSelection()
+    })
+  }
+  toggleLLM (enabled) {
+    this.isEnabled = enabled
+    const settings = document.getElementById('llm-settings')
+    const footer = document.querySelector('.llm-footer')
+
+    if (enabled) {
+      settings.style.display = 'block'
+      // if (footer) footer.classList.remove('hidden')
+      this.loadModels()
+      this.updateHintSystem()
+      // Hide model selection initially, just show the selected model info
+      this.hideModelSelection()
+    } else {
+      settings.style.display = 'none'
+      // if (footer) footer.classList.add('hidden')
+      this.updateStatus('disconnected', 'LLM Assistant disabled')
+      this.restoreOriginalHints()
+    }
+  }
+  async loadModels () {
+    this.updateStatus('connecting', 'Loading models...')
+
+    try {
+      const response = await fetch(`http://localhost:11434/api/tags`)
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
+      }
+
+      const data = await response.json()
+      this.populateModelSelect(data.models || [])
+      this.isConnected = true
+
+      if (data.models && data.models.length > 0) {
+        // Auto-select the first available model
+        this.selectedModel = data.models[0].name
+        document.getElementById('model-select').value = this.selectedModel
+        this.updateModelInfo()
+        this.updateStatus('connected', `Connected to ${this.selectedModel}`)
+        this.updateQueryButtonStates()
+      } else {
+        this.updateStatus('error', 'No models available')
+      }
+    } catch (error) {
+      console.error('Failed to load Ollama models:', error)
+      this.isConnected = false
+      this.updateStatus(
+        'error',
+        "Ollama not available - check if it's running on localhost:11434"
+      )
+      this.populateModelSelect([])
+    }
+  }
+
+  populateModelSelect (models) {
+    const select = document.getElementById('model-select')
+    select.innerHTML = '<option value="">Select a model...</option>'
+
+    models.forEach(model => {
+      const option = document.createElement('option')
+      option.value = model.name
+      option.textContent = `${model.name} (${this.formatSize(model.size)})`
+      select.appendChild(option)
+    })
+  }
+
+  formatSize (bytes) {
+    if (bytes === 0) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+  }
+  updateStatus (type, message) {
+    const status = document.getElementById('llm-status')
+    status.className = `llm-status ${type}`
+    status.textContent = message
+  }
+
+  updateModelInfo () {
+    const modelInfo = document.getElementById('llm-model-info')
+    if (this.selectedModel) {
+      modelInfo.textContent = this.selectedModel
+      modelInfo.style.display = 'inline-block'
+    } else {
+      modelInfo.textContent = 'No model selected'
+      modelInfo.style.display = 'none'
+    }
+  }
+
+  showModelSelection () {
+    const modelSelection = document.getElementById('model-selection')
+    if (modelSelection) {
+      modelSelection.style.display = 'flex'
+    }
+  }
+
+  hideModelSelection () {
+    const modelSelection = document.getElementById('model-selection')
+    if (modelSelection) {
+      modelSelection.style.display = 'none'
+    }
+  }
+  updateHintSystem () {
+    // Replace traditional hint buttons with LLM query options
+    const hintsContainer = document.getElementById('hints-container')
+    if (!hintsContainer) return
+
+    // Clear existing hints
+    hintsContainer.innerHTML = ''
+
+    // Add LLM query buttons
+    const queryButtons = [
+      { text: '🤔 I need guidance', type: 'general' },
+      { text: '🐛 Help me debug', type: 'debug' },
+      { text: '📚 Explain concepts', type: 'concepts' },
+      { text: '💡 Give me a hint', type: 'hint' }
+    ]
+
+    queryButtons.forEach(button => {
+      const btn = document.createElement('button')
+      btn.className = 'llm-query-button'
+      btn.textContent = button.text
+      btn.onclick = () => this.queryLLM(button.type)
+      btn.disabled = !this.selectedModel
+      hintsContainer.appendChild(btn)
+    })
+  }
+
+  updateQueryButtonStates () {
+    // Update the disabled state of query buttons based on model selection
+    const queryButtons = document.querySelectorAll('.llm-query-button')
+    queryButtons.forEach(btn => {
+      btn.disabled = !this.selectedModel
+    })
+  }
+
+  restoreOriginalHints () {
+    // Restore the original hint system
+    const stage = gameContent.stages.find(s => s.id === currentStage)
+    if (stage) {
+      setupHints(stage)
+    }
+  }
+
+  async queryLLM (queryType) {
+    if (!this.selectedModel || !this.isConnected) {
+      this.showLLMResponse('error', 'Please select a model first')
+      return
+    }
+
+    const stage = gameContent.stages.find(s => s.id === currentStage)
+    if (!stage) return
+
+    const query = this.buildQuery(queryType, stage)
+
+    // Show loading state
+    this.showLLMResponse('loading', 'Thinking... 🤔')
+
+    try {
+      const response = await this.sendOllamaRequest(query)
+      this.showLLMResponse('success', response)
+    } catch (error) {
+      console.error('LLM query failed:', error)
+      this.showLLMResponse(
+        'error',
+        'Failed to get response from LLM. Please try again.'
+      )
+    }
+  }
+  buildQuery (queryType, stage) {
+    const currentCode = this.getCurrentCode()
+    const stageContext = {
+      title: stage.title,
+      story: stage.story,
+      challenge: stage.challenge,
+      instruction: stage.instruction
+    }
+
+    const baseContext = `
+You are an AI coding tutor helping someone learn Python programming through an archaeological adventure game.
+
+Current Stage: "${stageContext.title}"
+Story Context: ${stageContext.story}
+Challenge: ${stageContext.challenge}
+Instruction: ${stageContext.instruction}
+
+Current Code:
+\`\`\`python
+${currentCode || '# No code written yet'}
+\`\`\`
+
+CRITICAL RULES:
+1. NEVER provide complete working code solutions
+2. NEVER write the full answer for them
+3. Address the user directly (use "you" not "the student")
+4. Guide them step-by-step with educational hints
+5. Ask guiding questions to help them think
+6. Focus on teaching concepts, not solving problems
+7. Keep responses concise and actionable
+8. Do NOT use thinking tags like <think>, <thinking>, or any internal reasoning markers
+9. Start your response immediately with helpful guidance - no preamble or meta-commentary
+10. Provide direct, actionable educational content only
+`
+
+    const queryTypes = {
+      general: `${baseContext}
+
+You're asking for general help with this challenge. I'll guide you with questions and hints:
+
+First, let me help you break this down:
+- What do you think the main goal of this challenge is?
+- What Python concepts might be useful here? (Think about: variables, loops, conditionals, functions, etc.)
+- Can you identify the key steps you need to take?
+
+Based on your current code, I'll give you some guidance on the right direction to explore, but you'll need to figure out the specific implementation.`,
+
+      debug: `${baseContext}
+
+Let me help you debug your approach by asking some guiding questions:
+
+Looking at your current code, I want you to think about:
+- What do you expect each line to do?
+- Are there any error messages you're seeing?
+- What happens when you run it vs. what you expected?
+
+I'll point out potential issues I notice and suggest debugging strategies, but you'll need to identify and fix the specific problems.`,
+
+      concepts: `${baseContext}
+
+Let me explain the key programming concepts you'll need for this challenge:
+
+I'll break down the relevant Python concepts and explain how they work in general terms. Then I'll ask you to think about how these concepts might apply to your specific challenge.
+
+The goal is for you to understand the "why" behind the code, not just the "what".`,
+
+      hint: `${baseContext}
+
+Here's a focused hint for your next step:
+
+I'll look at where you are now and suggest what you should try next. I'll give you just enough guidance to move forward, but you'll need to figure out the specific implementation.
+
+Think about it step by step, and don't hesitate to ask for clarification if you need it!`
+    }
+
+    return queryTypes[queryType] || queryTypes.general
+  }
+
+  getCurrentCode () {
+    // Get current code from either single-cell or multi-cell editor
+    if (
+      document.getElementById('single-cell-container').style.display !== 'none'
+    ) {
+      // Single-cell stage
+      return editor ? editor.getValue() : ''
+    } else {
+      // Multi-cell stage - get code from all cells
+      const allCode = cellEditors
+        .map((cellEditor, index) => {
+          const code = cellEditor.getValue()
+          return code ? `# Cell ${index + 1}\n${code}` : ''
+        })
+        .filter(code => code)
+        .join('\n\n')
+      return allCode
+    }
+  }
+  async sendOllamaRequest (prompt) {
+    const response = await fetch(`http://localhost:11434/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: this.selectedModel,
+        prompt: prompt,
+        stream: false,
+        options: {
+          temperature: 0.7,
+          num_predict: 500, // Increased slightly for better responses
+          top_p: 0.9,
+          stop: [
+            '```python',
+            'def ',
+            'print(',
+            '# Solution:',
+            'The complete code is:',
+            "Here's the solution:",
+            'The answer is:',
+            'Solution:'
+          ] // Enhanced stop tokens to prevent thinking tags and solutions
+        }
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+    const data = await response.json()
+    return this.processLLMResponse(data.response)
+  }
+  processLLMResponse (rawResponse) {
+    console.log('Raw LLM response:', rawResponse)
+    // Remove thinking tags and content - handle multiple variations and incomplete tags
+    let cleanedResponse = rawResponse
+
+    // Remove complete thinking tag pairs
+    cleanedResponse = cleanedResponse.replace(/<think>[\s\S]*?<\/think>/gi, '')
+    cleanedResponse = cleanedResponse.replace(
+      /<thinking>[\s\S]*?<\/thinking>/gi,
+      ''
+    )
+
+    // Remove incomplete thinking tags (just opening tags with content after)
+    cleanedResponse = cleanedResponse.replace(/<think>[\s\S]*/gi, '')
+    cleanedResponse = cleanedResponse.replace(/<thinking>[\s\S]*/gi, '')
+
+    // Remove any remaining orphaned closing tags
+    cleanedResponse = cleanedResponse.replace(/<\/think>/gi, '')
+    cleanedResponse = cleanedResponse.replace(/<\/thinking>/gi, '')
+
+    // If the response is now empty or very short, provide a fallback
+    if (cleanedResponse.trim().length < 10) {
+      cleanedResponse =
+        "I'd be happy to help you with this challenge! Let me know what specific part you're struggling with and I'll guide you through it step by step."
+    }
+
+    // Filter out potential code solutions that might slip through
+    const codeBlockRegex = /```python[\s\S]*?```/gi
+    const hasCodeBlock = codeBlockRegex.test(cleanedResponse)
+
+    if (hasCodeBlock) {
+      // If there's a Python code block, replace it with a guidance message
+      cleanedResponse = cleanedResponse.replace(
+        codeBlockRegex,
+        '*(I notice you need to write some code here - try thinking through the logic step by step!)*'
+      )
+    }
+
+    // Only filter out lines that are clearly complete solutions, not educational content
+    const lines = cleanedResponse.split('\n')
+    const filteredLines = lines.filter(line => {
+      const trimmed = line.trim()
+
+      // Only skip lines that are clearly complete Python code solutions
+      // Be more selective to avoid removing educational content
+      if (
+        (trimmed.startsWith('def ') && trimmed.includes('():')) ||
+        trimmed.match(/^\s*\w+\s*=\s*input\(.*\)\s*$/) ||
+        trimmed.match(/^\s*for\s+\w+\s+in\s+.*:\s*$/) ||
+        (trimmed.match(/^\s*if\s+.*:\s*$/) && line.length > 50) ||
+        trimmed.match(/^\s*print\([^)]*\)\s*$/)
+      ) {
+        return false
+      }
+      return true
+    })
+
+    cleanedResponse = filteredLines.join('\n')
+
+    // Clean up any extra whitespace
+    cleanedResponse = cleanedResponse.trim()
+
+    // Final check for empty response after all filtering
+    if (cleanedResponse.length === 0) {
+      cleanedResponse =
+        "I'm here to help! Could you tell me more about what you're trying to accomplish with this challenge?"
+    }
+
+    // Convert markdown to HTML
+    return this.markdownToHtml(cleanedResponse)
+  }
+  markdownToHtml (markdown) {
+    // Simple markdown to HTML converter for common formatting
+    let html = markdown
+      // Headers
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+
+      // Bold and italic
+      .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+
+      // Code blocks
+      .replace(
+        /```python\n([\s\S]*?)\n```/g,
+        '<pre><code class="language-python">$1</code></pre>'
+      )
+      .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+      .replace(/`(.*?)`/g, '<code>$1</code>')
+
+    // Handle lists more carefully
+    const lines = html.split('\n')
+    const processedLines = []
+    let inList = false
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      const isListItem = line.match(/^[*-]\s+(.*)/)
+
+      if (isListItem) {
+        if (!inList) {
+          processedLines.push('<ul>')
+          inList = true
+        }
+        processedLines.push(`<li>${isListItem[1]}</li>`)
+      } else {
+        if (inList) {
+          processedLines.push('</ul>')
+          inList = false
+        }
+        if (line) {
+          processedLines.push(line)
+        }
+      }
+    }
+
+    // Close any remaining list
+    if (inList) {
+      processedLines.push('</ul>')
+    }
+
+    html = processedLines.join('\n')
+
+    // Convert line breaks to paragraphs and <br> tags
+    html = html
+      .replace(/\n\n+/g, '</p><p>') // Double line breaks become paragraph breaks
+      .replace(/\n/g, '<br>') // Single line breaks become <br>    // Wrap content in paragraphs if not already wrapped in block elements
+    if (
+      !html.includes('<p>') &&
+      !html.includes('<h') &&
+      !html.includes('<ul>') &&
+      !html.includes('<pre>')
+    ) {
+      html = '<p>' + html + '</p>'
+    } else if (html.includes('</p><p>')) {
+      // Properly wrap the content that has paragraph breaks
+      html = '<p>' + html + '</p>'
+    }
+
+    return html
+  }
+  showLLMResponse (type, content) {
+    const hintTextContainer = document.getElementById('hint-text-container')
+    if (!hintTextContainer) {
+      console.error('hint-text-container not found!')
+      return
+    }
+
+    // Clear existing LLM responses
+    const existingLLMHints = hintTextContainer.querySelectorAll('.llm-hint')
+    existingLLMHints.forEach(hint => hint.remove())
+
+    // Create new LLM response
+    const llmHint = document.createElement('div')
+    llmHint.className = `llm-hint ${type === 'success' ? '' : type}`
+
+    const header = document.createElement('div')
+    header.className = 'llm-header'
+
+    if (type === 'loading') {
+      header.innerHTML = '🤖 AI Assistant (thinking...)'
+    } else if (type === 'error') {
+      header.innerHTML = '🤖 AI Assistant (error)'
+    } else {
+      header.innerHTML = `🤖 AI Assistant (${this.selectedModel})`
+    }
+
+    const contentDiv = document.createElement('div')
+    contentDiv.className = 'llm-content'
+
+    // Use innerHTML for formatted content, textContent for plain text/errors
+    if (type === 'success') {
+      contentDiv.innerHTML = content
+    } else {
+      contentDiv.textContent = content
+    }
+
+    llmHint.appendChild(header)
+    llmHint.appendChild(contentDiv)
+    hintTextContainer.appendChild(llmHint)
+
+    // Scroll to the response
+    llmHint.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }
+}
+
+// Initialize LLM integration when DOM is loaded
+let ollamaLLM = null
