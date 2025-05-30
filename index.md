@@ -147,5 +147,25 @@ We will walk through the installation process of more complicated tools during t
 * [Humanities in the Age of AI Syllabus](https://anastasiasalter.net/HumanitiesAISyllabus/)
 * [Creative Coding Syllabus](https://anastasiasalter.net/Creative-Coding/)
 
-### 9. Friday: Applications (Morning)
-* TBD based on group discussion
+### 9. Friday: Applications and Assignments (Morning)
+
+#### Demo: Grading Workflow
+
+#### Additional Resources and Discussion
+* [The Professors are Using ChatGPT... New York Times](https://www.nytimes.com/2025/05/14/technology/chatgpt-college-professors.html)
+* [Vibe Coding - MIT Technology Review](https://www.technologyreview.com/2025/04/16/1115135/what-is-vibe-coding-exactly/)
+* ["How I learned to stop worrying and love AI," Leonardo Flores](https://leonardoflores.net/blog/presentations-2/invited-lecture-dr-cyberleo-or-how-i-learned-to-stop-worrying-and-love-ai/)
+* [Generative AI In the Real World](https://www.oreilly.com/radar/podcast/generative-ai-in-the-real-world-vibe-coding-with-steve-yegge/)
+* [Future of Computer Science (K-12)](https://www.teachai.org/media/guidance-on-the-future-of-computer-science-education-in-an-age-of-ai)
+
+#### On Policy
+* [ACM on Authorship](https://www.acm.org/publications/policies/frequently-asked-questions)
+* [Citing Generative AI - MLA](https://style.mla.org/citing-generative-ai/)
+* [Citing ChatGPT - APA](https://apastyle.apa.org/blog/how-to-cite-chatgpt)
+* [Generative AI and Policy Development](https://aiandwriting.hcommons.org/working-paper-2/)
+
+#### For Learning More
+* [Programming Historian](https://programminghistorian.org/en/lessons/)
+* [Datasitters' Club](https://datasittersclub.github.io/site/)
+* [Terminus (learning the Terminal)](https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html)
+* [Humanities Data Analysis](https://www.humanitiesdataanalysis.org/)
