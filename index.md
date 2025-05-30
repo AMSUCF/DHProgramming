@@ -148,6 +148,8 @@ We will walk through the installation process of more complicated tools during t
 
 ### 9. Friday: Applications and Assignments (Morning)
 
+#### [Don't Forget: Give us links!](https://docs.google.com/document/d/1nnPk8u2mdV8liQ8A8DJqbldoBc6mAhuI7ORex43nLBw/edit?usp=sharing)
+
 #### Demo: Coding Education with AI
 - [Coding Archaeology Mystery](./coding_demo/)
 
