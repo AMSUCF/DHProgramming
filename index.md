@@ -148,6 +148,8 @@ We will walk through the installation process of more complicated tools during t
 
 ### 9. Friday: Applications and Assignments (Morning)
 
+#### Demo: Coding Education with AI
+- [Coding Archaeology Mystery](./coding_demo/)
 #### Demo: Grading Workflow
 
 #### Additional Resources and Discussion
@@ -169,3 +171,4 @@ We will walk through the installation process of more complicated tools during t
 * [Datasitters' Club](https://datasittersclub.github.io/site/)
 * [Terminus (learning the Terminal)](https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html)
 * [Humanities Data Analysis](https://www.humanitiesdataanalysis.org/)
+- [Communities Guide](communities.md)
