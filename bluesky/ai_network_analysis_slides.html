@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Social Network Analysis</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --primary-color: #0052cc;
+      --primary-dark: #003d99;
+      --secondary-color: #5b21b6;
+      --accent-color: #0891b2;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --text-dark: #0f172a;
+      --text-medium: #334155;
+      --text-light: #475569;
+      --surface-light: #f8fafc;
+      --surface-dark: #0f172a;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    .reveal {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+    }
+
+    .reveal .slides section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 18px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: left;
+      width: 90vw;
+      max-width: 1100px;
+      max-height: 82vh;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .reveal .slides section.title-slide {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    .reveal h1 {
+      color: var(--text-dark);
+      font-weight: 700;
+      font-size: 1.7em;
+      margin-bottom: 0.1em;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background: var(--bg-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 0.9;
+    }
+
+    .reveal h2 {
+      color: var(--primary-color);
+      font-weight: 600;
+      font-size: 1.25em;
+      margin-bottom: 0.25em;
+      padding-bottom: 0.05em;
+      border-bottom: 3px solid var(--accent-color);
+      line-height: 0.95;
+    }
+
+    .reveal h3 {
+      color: var(--secondary-color);
+      font-weight: 500;
+      font-size: 0.95em;
+      margin-bottom: 0.2em;
+      line-height: 1.0;
+    }
+
+    .reveal h4 {
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 0.9em;
+      margin-bottom: 0.15em;
+    }
+
+    .reveal p,
+    .reveal li {
+      font-size: 0.75em;
+      line-height: 1.25;
+      color: var(--text-dark);
+      font-weight: 400;
+    }
+
+    .reveal .progress {
+      color: var(--accent-color);
+      height: 4px;
+    }
+
+    .reveal .controls {
+      color: var(--primary-color);
+    }
+
+    .reveal .controls button {
+      color: var(--primary-color);
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .reveal .controls button:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .concept-box,
+    .ai-prompt,
+    .highlight-box {
+      margin: 5px 0;
+      padding: 8px 10px;
+    }
+
+    .highlight-box {
+      background: var(--bg-gradient);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 15px;
+      margin: 6px 0;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .concept-box {
+      background: var(--surface-light);
+      border-left: 5px solid var(--accent-color);
+      padding: 8px 12px;
+      margin: 6px 0;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .concept-box:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .concept-box::before {
+      content: '💡';
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.5em;
+      opacity: 0.3;
+    }
+
+    .ai-prompt {
+      background: var(--surface-dark);
+      color: #e2e8f0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      margin: 6px 0;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #334155;
+      position: relative;
+      overflow: hidden;
+      font-size: 0.65em;
+      line-height: 1.2;
+    }
+
+    .ai-prompt::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-color);
+    }
+
+    .ai-prompt strong {
+      color: var(--accent-color);
+      font-weight: 500;
+    }
+
+    .two-column {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .two-column>div {
+      flex: 1;
+      padding: 10px;
+      background: rgba(248, 250, 252, 0.8);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .two-column br {
+      line-height: 0.5em;
+    }
+
+    .two-column>div:hover {
+      background: rgba(248, 250, 252, 0.95);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+    }
+
+    .fragment.highlight-current-blue {
+      color: var(--primary-color);
+    }
+
+    .emoji {
+      font-size: 1.2em;
+      display: inline-block;
+      margin-left: 8px;
+    }
+
+    .small-text {
+      font-size: 0.85em;
+      color: var(--text-medium);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .network-viz {
+      text-align: center;
+      padding: 10px;
+      background: rgba(6, 182, 212, 0.05);
+      border-radius: 15px;
+      border: 2px dashed var(--accent-color);
+      margin: 8px 0;
+    }
+
+    .reveal ul,
+    .reveal ol {
+      margin-left: 1em;
+    }
+
+    .reveal li {
+      margin-bottom: 0.15em;
+      padding-left: 0.25em;
+    }
+
+    .reveal ul li::marker {
+      color: var(--accent-color);
+    }
+
+    .reveal pre {
+      background: var(--surface-dark);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #334155;
+      font-size: 0.8em;
+    }
+
+    .reveal code {
+      background: rgba(15, 23, 42, 0.1);
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--primary-dark);
+      font-size: 0.85em;
+    }
+
+    .reveal pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+    }
+
+    .reveal strong {
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .reveal .slides section {
+        padding: 12px 10px;
+        margin: 3px;
+      }
+
+      .two-column {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .reveal h1 {
+        font-size: 1.5em;
+      }
+
+      .reveal h2 {
+        font-size: 1.15em;
+      }
+
+      .reveal h3 {
+        font-size: 0.9em;
+      }
+
+      .reveal h4 {
+        font-size: 0.85em;
+      }
+    }
+
+    @media (max-height: 700px) {
+      .reveal .slides section {
+        padding: 10px 15px;
+        max-height: 78vh;
+      }
+
+      .reveal h1 {
+        font-size: 1.5em;
+      }
+
+      .reveal h2 {
+        font-size: 1.05em;
+      }
+
+      .concept-box,
+      .ai-prompt,
+      .highlight-box {
+        margin: 4px 0;
+        padding: 6px 10px;
+      }
+    }
+
+    /* Enhanced animations and transitions */
+    .reveal .fragment {
+      transition: all 0.4s ease;
+    }
+
+    .reveal .fragment.visible {
+      animation: slideInUp 0.6s ease-out;
+    }
+
+    .reveal .fragment.fade-in-then-out {
+      animation: fadeInOut 2s ease-in-out;
+    }
+
+    .reveal .fragment.highlight-current-blue.visible {
+      animation: highlightPulse 1s ease-in-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInOut {
+
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes highlightPulse {
+
+      0%,
+      100% {
+        color: var(--primary-color);
+        transform: scale(1);
+      }
+
+      50% {
+        color: var(--accent-color);
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes emojiPulse {
+
+      0%,
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+
+      25% {
+        transform: scale(1.1) rotate(-5deg);
+      }
+
+      75% {
+        transform: scale(1.1) rotate(5deg);
+      }
+    }
+
+    .emoji {
+      font-size: 1.1em;
+      display: inline-block;
+      margin-left: 8px;
+      animation: emojiPulse 3s infinite ease-in-out;
+      animation-delay: var(--emoji-delay, 0s);
+    }
+
+    /* Slide transition effects */
+    .reveal .slides section {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal .slides section.future {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+
+    .reveal .slides section.past {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+
+    .reveal .slides section.present {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Enhanced hover effects */
+    .concept-box:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      border-left-width: 6px;
+    }
+
+    .two-column>div:hover {
+      background: rgba(248, 250, 252, 0.95);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .highlight-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+
+    /* Force proper positioning and eliminate scrollbars */
+    body,
+    html {
+      overflow: hidden !important;
+      height: 100vh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .reveal .slides section {
+      max-height: 90vh !important;
+      overflow: hidden !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Title Slide -->
+      <section class="title-slide">
+        <h1>AI-Powered Social Network Analysis</h1>
+        <h3>Using LLMs to Explore Bluesky Networks</h3>
+        <div class="highlight-box">
+          <p><strong>Workshop Philosophy:</strong> AI as your collaborative research partner</p>
+        </div>
+        <p class="small-text">Focus on concepts, iterate with AI, build lasting analytical skills</p>
+      </section>
+
+      <!-- Overview -->
+      <section>
+        <h2>Why AI-Assisted Analysis? <span class="emoji">🤖</span></h2>
+        <div class="two-column">
+          <div>
+            <h4>Traditional Approach</h4>
+            <ul>
+              <li>Memorize code syntax</li>
+              <li>Copy-paste examples</li>
+              <li>Get stuck on technical details</li>
+              <li>Limited to known methods</li>
+            </ul>
+          </div>
+          <div>
+            <h4>AI-Collaborative Approach</h4>
+            <ul class="fragment">
+              <li>Focus on research questions</li>
+              <li>Iterate through conversation</li>
+              <li>Understand concepts deeply</li>
+              <li>Explore novel approaches</li>
+            </ul>
+          </div>
+        </div>
+        <div class="concept-box fragment">
+          <strong>Key Insight:</strong> The goal is to become a thoughtful analyst who uses AI tools effectively, not a
+          programmer who memorizes syntax.
+        </div>
+      </section>
+
+      <!-- Network Fundamentals -->
+      <section>
+        <h2>Social Networks: Core Concepts <span class="emoji">🌐</span></h2>
+        <div class="network-viz">
+          <h4>What is a Social Network?</h4>
+          <p>A mathematical representation of relationships</p>
+        </div>
+        <div class="two-column">
+          <div>
+            <h4>Components</h4>
+            <ul>
+              <li><strong>Nodes:</strong> People, concepts (users, hashtags)</li>
+              <li><strong>Edges:</strong> Relationships (mentions, co-occurrences)</li>
+              <li><strong>Weights:</strong> Relationship strength (frequency)</li>
+            </ul>
+          </div>
+          <div class="fragment">
+            <h4>Two Network Types</h4>
+            <ul>
+              <li><strong>Mention Networks:</strong> Who talks to whom?</li>
+              <li><strong>Hashtag Networks:</strong> Which topics cluster together?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Collaboration Basics -->
+      <section>
+        <h2>AI as Research Partner <span class="emoji">💬</span></h2>
+        <div class="ai-prompt">
+          <strong>Sample AI Conversation:</strong><br>
+          You: "I have social media data about AI discussions. What should I analyze first?"<br><br>
+          AI: "Let's start with understanding your research goals. Are you interested in:<br>
+          - Influence patterns (who shapes conversations)?<br>
+          - Topic evolution (how discussions change)?<br>
+          - Community structure (how groups form)?"
+        </div>
+        <div class="concept-box fragment">
+          <strong>Best Practice:</strong> Always start with your research question, not the technical implementation.
+        </div>
+      </section>
+
+      <!-- Data Strategy -->
+      <section>
+        <h2>Smart Data Strategy <span class="emoji">📊</span></h2>
+        <h3>The Three-Phase Approach</h3>
+        <div class="fragment">
+          <h4>Phase 1: Explore & Sample</h4>
+          <ul>
+            <li>Start small (100-1000 posts)</li>
+            <li>Understand data structure with AI help</li>
+            <li>Refine research questions</li>
+          </ul>
+        </div>
+        <div class="fragment">
+          <h4>Phase 2: Scale & Refine</h4>
+          <ul>
+            <li>Increase dataset size gradually</li>
+            <li>A/B test different approaches</li>
+            <li>Use AI for alternative strategies</li>
+          </ul>
+        </div>
+        <div class="fragment">
+          <h4>Phase 3: Validate & Document</h4>
+          <ul>
+            <li>Cross-reference with multiple visualizations</li>
+            <li>AI-assisted interpretation</li>
+            <li>Document methodology</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- File Management -->
+      <section>
+        <h2>Data Management Best Practices <span class="emoji">📁</span></h2>
+        <div class="ai-prompt">
+          <strong>AI Prompt:</strong><br>
+          "Help me design a folder structure and naming convention for tracking different experiments, versions, and
+          findings over time."
+        </div>
+        <div class="fragment">
+          <h4>Suggested Structure:</h4>
+          <pre><code>bluesky_ai_posts_raw.jsonl           # Original filtered data
+bluesky_ai_mentions_processed.json   # Processed mention network  
+bluesky_ai_hashtags_v2.json         # Hashtag network (version 2)
+bluesky_ai_analysis_notes.md        # Findings and insights</code></pre>
+        </div>
+        <div class="concept-box fragment">
+          <strong>Key Principle:</strong> Version control everything - data, analysis, insights, and AI conversations.
+        </div>
+      </section>
+
+      <!-- Mention Networks -->
+      <section>
+        <h2>Mention Networks: Social Influence <span class="emoji">👥</span></h2>
+        <div class="ai-prompt">
+          <strong>Ask AI First:</strong><br>
+          "What does a mention network reveal about online communities? What patterns indicate influence, engagement, or
+          community structure?"
+        </div>
+        <div class="two-column fragment">
+          <div>
+            <h4>Key Concepts</h4>
+            <ul>
+              <li><strong>Degree Centrality:</strong> Most connections</li>
+              <li><strong>Betweenness:</strong> Bridges groups</li>
+              <li><strong>Clustering:</strong> Tight subgroups</li>
+              <li><strong>Density:</strong> Overall connectivity</li>
+            </ul>
+          </div>
+          <div>
+            <h4>What to Look For</h4>
+            <ul>
+              <li>Influential users (high centrality)</li>
+              <li>Community clusters</li>
+              <li>Bridge accounts</li>
+              <li>Isolated nodes</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hashtag Networks -->
+      <section>
+        <h2>Hashtag Networks: Topic Relationships <span class="emoji">#️⃣</span></h2>
+        <div class="ai-prompt">
+          <strong>AI Discussion Starter:</strong><br>
+          "Explain hashtag co-occurrence analysis and what patterns I should look for in the results."
+        </div>
+        <div class="fragment">
+          <h4>What You're Learning</h4>
+          <ul>
+            <li><strong>Semantic Clustering:</strong> Topics that appear together</li>
+            <li><strong>Bridge Topics:</strong> Hashtags connecting communities</li>
+            <li><strong>Temporal Patterns:</strong> How relationships change</li>
+            <li><strong>Cultural Insights:</strong> What associations reveal</li>
+          </ul>
+        </div>
+        <div class="concept-box fragment">
+          <strong>Insight:</strong> Hashtag networks often reveal hidden thematic connections that aren't obvious from
+          individual posts.
+        </div>
+      </section>
+
+      <!-- Iterative Process -->
+      <section>
+        <h2>Iterative Visualization with AI <span class="emoji">🔄</span></h2>
+        <h3>The Design Thinking Process</h3>
+        <div class="fragment">
+          <h4>1. Rapid Prototyping</h4>
+          <ul>
+            <li>Create quick, basic visualizations</li>
+            <li>Focus on structure, not aesthetics</li>
+            <li>Use AI to identify what's working</li>
+          </ul>
+        </div>
+        <div class="fragment">
+          <h4>2. Pattern Recognition</h4>
+          <ul>
+            <li>AI helps interpret visualizations</li>
+            <li>Generate hypotheses about patterns</li>
+            <li>Design focused follow-up analyses</li>
+          </ul>
+        </div>
+        <div class="fragment">
+          <h4>3. Refinement & Storytelling</h4>
+          <ul>
+            <li>Craft clear narratives with AI</li>
+            <li>Iterate on visual design</li>
+            <li>Validate through multiple approaches</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- AI Tools Comparison -->
+      <section>
+        <h2>Multi-AI Strategy <span class="emoji">🎯</span></h2>
+        <div class="two-column">
+          <div>
+            <h4>Claude</h4>
+            <ul>
+              <li>Technical explanations</li>
+              <li>Code review & debugging</li>
+              <li>Detailed analysis</li>
+            </ul>
+            <br>
+            <h4>ChatGPT</h4>
+            <ul>
+              <li>Brainstorming</li>
+              <li>Creative problem-solving</li>
+              <li>Research planning</li>
+            </ul>
+          </div>
+          <div class="fragment">
+            <h4>Gemini</h4>
+            <ul>
+              <li>Data interpretation</li>
+              <li>Pattern recognition</li>
+              <li>Statistical analysis</li>
+            </ul>
+            <br>
+            <div class="concept-box">
+              <strong>Pro Tip:</strong> Use different AIs for different perspectives on the same problem.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Troubleshooting -->
+      <section>
+        <h2>AI-Powered Troubleshooting <span class="emoji">🔧</span></h2>
+        <div class="ai-prompt">
+          <strong>Instead of memorizing errors, learn to:</strong><br><br>
+          1. <strong>Describe symptoms:</strong> "My visualization loads but shows no nodes"<br>
+          2. <strong>Provide context:</strong> "Analyzing 500 AI posts, filtered by mentions"<br>
+          3. <strong>Ask for systematic help:</strong> "Walk me through debugging each step"<br>
+          4. <strong>Learn from solutions:</strong> "Why did this error occur?"
+        </div>
+        <div class="fragment">
+          <h4>Common Issues & AI Solutions</h4>
+          <ul>
+            <li><strong>Too crowded:</strong> "Help me reduce complexity while preserving patterns"</li>
+            <li><strong>Unclear results:</strong> "Explain this pattern and suggest questions to ask"</li>
+            <li><strong>Potential bias:</strong> "Help identify biases in my selection methods"</li>
+          </ul>
+        </div>
+      </section>
+
+
+      <!-- From Analysis to Insight -->
+      <section>
+        <h2>From Analysis to Insight <span class="emoji">💡</span></h2>
+        <div class="ai-prompt">
+          <strong>Moving Beyond Description:</strong><br>
+          "I found that AI researchers form tight clusters but rarely mention mainstream tech accounts. Help me
+          interpret what this means for knowledge transfer in the tech community."
+        </div>
+        <div class="fragment">
+          <h4>AI as Story Editor</h4>
+          <div class="ai-prompt">
+            "Help me craft a compelling narrative from my network analysis that would interest both technical and
+            general audiences."
+          </div>
+        </div>
+        <div class="concept-box fragment">
+          <strong>Remember:</strong> The best insights come from combining computational analysis with human
+          interpretation and domain expertise.
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section>
+        <h2>Key Takeaways <span class="emoji">🎯</span></h2>
+        <div class="fragment">
+          <h4>1. AI as Thinking Partner</h4>
+          <p>Use AI for conceptual understanding, not just code generation</p>
+        </div>
+        <div class="fragment">
+          <h4>2. Concept-First Approach</h4>
+          <p>Understand what you're measuring before measuring it</p>
+        </div>
+        <div class="fragment">
+          <h4>3. Iterative Methodology</h4>
+          <p>Refine through conversation, document everything</p>
+        </div>
+        <div class="fragment">
+          <h4>4. Ethical Responsibility</h4>
+          <p>Remember that data represents real people and communities</p>
+        </div>
+        <div class="highlight-box fragment">
+          <strong>Ultimate Goal:</strong> Build analytical thinking skills that will remain valuable as tools evolve
+        </div>
+      </section>
+
+      <!-- Next Steps -->
+      <section>
+        <h2>Building Your Research Practice <span class="emoji">🚀</span></h2>
+        <div class="two-column">
+          <div>
+            <h4>Immediate Actions</h4>
+            <ul>
+              <li>Set up AI-assisted environment</li>
+              <li>Practice asking analytical questions</li>
+              <li>Build first simple network</li>
+            </ul>
+            <br>
+            <h4>Medium-term Development</h4>
+            <ul>
+              <li>Develop domain expertise</li>
+              <li>Build analytical approach library</li>
+              <li>Create reproducible workflows</li>
+            </ul>
+          </div>
+          <div class="fragment">
+            <h4>Long-term Impact</h4>
+            <ul>
+              <li>Contribute to research communities</li>
+              <li>Develop novel approaches with AI</li>
+              <li>Mentor others in AI-assisted methods</li>
+            </ul>
+            <br>
+            <div class="concept-box">
+              <strong>Remember:</strong> The skills you learn today will help you adapt to whatever new tools emerge
+              tomorrow.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Thank You -->
+      <section class="title-slide">
+        <h1>Thank You! <span class="emoji">🙏</span></h1>
+        <div class="highlight-box">
+          <h3>Questions & Discussion</h3>
+          <p>Let's explore how AI can transform your research practice</p>
+        </div>
+        <p class="small-text">Remember: The best analysis comes from combining computational power with human curiosity
+          and ethical responsibility.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      controls: true,
+      progress: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      navigationMode: 'default',
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      showNotes: false,
+      autoSlide: 0,
+      autoSlideStoppable: true,
+      autoSlideMethod: 'next',
+      defaultTiming: null,
+      mouseWheel: false,
+      previewLinks: false,
+      postMessage: true,
+      postMessageEvents: false,
+      focusBodyOnPageVisibilityChange: true,
+      viewDistance: 3,
+      mobileViewDistance: 2,
+      margin: 0.1,
+      minScale: 0.2,
+      maxScale: 1.5,
+      plugins: [RevealHighlight, RevealNotes]
+    });
+
+    // Enhanced interactive animations
+    Reveal.addEventListener('slidechanged', function (event) {
+      // Animate emojis with staggered delays
+      const emojis = event.currentSlide.querySelectorAll('.emoji');
+      emojis.forEach((emoji, index) => {
+        emoji.style.setProperty('--emoji-delay', `${index * 0.2}s`);
+        setTimeout(() => {
+          emoji.style.animation = 'none';
+          emoji.offsetHeight; // Trigger reflow
+          emoji.style.animation = `emojiPulse 0.8s ease-out`;
+        }, index * 150);
+      });
+
+      // Animate concept boxes
+      const conceptBoxes = event.currentSlide.querySelectorAll('.concept-box, .ai-prompt');
+      conceptBoxes.forEach((box, index) => {
+        setTimeout(() => {
+          box.style.transform = 'translateY(-2px)';
+          setTimeout(() => {
+            box.style.transform = 'translateY(0)';
+          }, 200);
+        }, index * 100);
+      });
+    });
+
+    // Enhanced fragment animations
+    Reveal.addEventListener('fragmentshown', function (event) {
+      if (event.fragment.classList.contains('highlight-current-blue')) {
+        event.fragment.style.animation = 'highlightPulse 1s ease-in-out';
+      }
+    });
+
+    // Add keyboard shortcuts and help
+    document.addEventListener('keydown', function (event) {
+      switch (event.key.toLowerCase()) {
+        case 'h':
+          Reveal.toggleHelp();
+          break;
+        case 'o':
+          Reveal.toggleOverview();
+          break;
+        case 'p':
+          Reveal.togglePause();
+          break;
+      }
+    });
+  </script>
+</body>
+
+</html>markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/
