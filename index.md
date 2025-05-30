@@ -149,8 +149,9 @@ We will walk through the installation process of more complicated tools during t
 ### 9. Friday: Applications and Assignments (Morning)
 
 #### Demo: Coding Education with AI
-- [Coding Archaeology Mystery](./coding_demo/)
-#### Demo: Grading Workflow
+- [Coding Archaeology Mystery (GitHub)](https://github.com/lucidbard/AICodePedagogy)
+- [Coding Archaeology Mystery (Demo)](https://jtm.io/codepedagogy/)
+#### Demo: Grading Workflow using AI for Rubric Drafts
 
 #### Collaboration: DH Pedagogy and Policy
 * [Planning Document](https://docs.google.com/document/d/19NJiU3soxmJHmeEkevpepnmn_HFj2Z8CbTyZ2f62Fqw/edit?usp=sharing)
