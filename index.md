@@ -162,6 +162,7 @@ We will walk through the installation process of more complicated tools during t
 * [Citing Generative AI - MLA](https://style.mla.org/citing-generative-ai/)
 * [Citing ChatGPT - APA](https://apastyle.apa.org/blog/how-to-cite-chatgpt)
 * [Generative AI and Policy Development](https://aiandwriting.hcommons.org/working-paper-2/)
+* ["Why should your students do the work?," Ricky Mouser and Savannah Pearlman](https://blog.apaonline.org/2025/05/21/why-should-your-students-do-the-work/)
 
 #### For Learning More
 * [Programming Historian](https://programminghistorian.org/en/lessons/)
