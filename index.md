@@ -150,10 +150,11 @@ We will walk through the installation process of more complicated tools during t
 
 #### Demo: Coding Education with AI
 - [Coding Archaeology Mystery](./coding_demo/)
-#### Demo: Grading Workflow
 
 #### Collaboration: DH Pedagogy and Policy
 * [Planning Document](https://docs.google.com/document/d/19NJiU3soxmJHmeEkevpepnmn_HFj2Z8CbTyZ2f62Fqw/edit?usp=sharing)
+
+#### Demo: Grading Workflow
 
 #### Additional Resources and Discussion
 * [The Professors are Using ChatGPT... New York Times](https://www.nytimes.com/2025/05/14/technology/chatgpt-college-professors.html)
