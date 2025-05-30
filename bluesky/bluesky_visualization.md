@@ -5,7 +5,7 @@ The second part will have you create a visualization first by hand (using a note
 
 ## Workshop Slides
 
-<iframe src="bluesky_slides.html" width="800" height="500" frameborder="0" allowfullscreen></iframe>
+<iframe src="bluesky_slides_2.html" width="800" height="500" frameborder="0" allowfullscreen></iframe>
 
 **Note:** If the embedded slides don't display properly, [view them directly here](bluesky/bluesky_slides.html).
 
